@@ -1,0 +1,232 @@
+h1{
+    margin-bottom: 50px;
+}
+
+
+.sessionStatus{
+    height: 60px;
+    width: 94%;
+    padding: 0px 30px;
+    display: flex;
+    justify-content: space-between;
+    background-color: #113F59;
+    color: white;
+    align-items: center;
+    font-size: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.sessionStatus button{
+    background-color: #113F59;
+    color: white;
+    border: none;
+    display: block;
+    cursor: pointer;
+    font-size: 30px;
+}
+
+
+.box{
+    background-color: #f1f1f1;
+    padding: 40px 30px;
+    width: 94%;
+    margin-bottom: 60px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 2px hsl(0, 0%, 70%);
+}
+.box h2{
+    font-size: 26px;
+    margin: 0px 0px 20px;
+}
+.box label{
+    font-size: 18px;
+}
+.box input{
+    margin: 5px 0px 10px;
+    width: 50%;
+    height: 36px;
+    border-radius: 4px;
+    border: 1px solid hsl(0, 0%, 80%);
+    font-size: 16px;
+}
+.box input:hover{
+    background-color: hsl(0, 0%, 98%);
+}
+.box input:focus{
+    outline: 1px solid hsl(0, 0%, 80%);
+    background-color: hsl(0, 0%, 98%);
+}
+
+.btn{
+    margin-top: 20px;
+    width: 180px;
+    height: 45px;
+    border-radius: 10px;
+    border: none;
+    background-color: hsl(0, 0%, 84%);
+    cursor: pointer;
+    font-size: 17px;
+}
+.btn:hover{
+    background-color: hsl(0, 0%, 80%);
+}
+
+
+
+.top{
+    display: flex;
+    justify-content: space-between;
+}
+.left{
+    display: flex;
+    align-items: center;
+}
+.left p{
+    color: hsl(0, 0%, 30%);
+}
+.right{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-left: auto;
+    margin-top: 28px;
+}
+.right .signOut{
+    color: #d41936;
+    background-color: none;
+    border: none;
+    font-size: 20px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.right .signOut:hover {
+    text-decoration: none;
+}
+
+input[type="file"] {
+    margin-top: 10px;
+    width: 50%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid hsl(0, 0%, 80%);
+    border-radius: 4px;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    height: 50px;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+    background-color: hsl(0, 0%, 84%);
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 5px 15px;
+}
+
+input[type="file"]::-webkit-file-upload-button:hover {
+    background-color: hsl(0, 0%, 80%);
+}
+
+
+.lineSpace{
+    width: 100%;
+    height: 1px;
+    margin: 50px 0px;
+    background-color: black;
+}
+
+
+/*ALL OF THIS FOR A CONFIRM*/
+
+.modal{
+    display: none;
+    position: fixed; 
+    z-index: 3;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: 500ms;
+
+    -webkit-animation-name: fadeIn;
+    -webkit-animation-duration: 500ms;
+    animation-name: fadeIn;
+    animation-duration: 500ms;
+}
+.modal_content{
+    position: absolute;
+    background-color: #f1f1f1;
+    width: 40%;
+    padding: 50px 10px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px hsl(0, 0%, 20%);
+    text-align: center;
+    left: 50%;
+    top: 50%;
+    transform: translateY(-50%) translateX(-50%);
+
+    -webkit-animation-name: slideIn;
+    -webkit-animation-duration: 500ms;
+    animation-name: slideIn;
+    animation-duration: 500ms;
+}
+
+.btn_delete{
+    margin-top: 20px;
+    margin-right: 20px;
+    width: 180px;
+    height: 45px;
+    border-radius: 10px;
+    border: none;
+    background-color: #d41936;
+    color: white;
+    cursor: pointer;
+    font-size: 17px;
+}
+.btn_delete:hover{
+    background-color: hsl(351, 79%, 38%);
+}
+
+.btn_cancel{
+    margin-top: 20px;
+    width: 200px;
+    height: 45px;
+    border-radius: 10px;
+    border: none;
+    background-color: hsl(0, 0%, 84%);
+    cursor: pointer;
+    font-size: 17px;
+}
+.btn_cancel:hover{
+    background-color: hsl(0, 0%, 80%);
+}
+
+
+/*In animations*/
+@-webkit-keyframes slideIn {
+    from {top: 0; opacity: 0} 
+    to {top: 50%; opacity: 1}
+}
+  
+@keyframes slideIn {
+    from {top: 0; opacity: 0}
+    to {top: 50%; opacity: 1}
+}
+  
+@-webkit-keyframes fadeIn {
+    from {opacity: 0} 
+    to {opacity: 1}
+}
+  
+@keyframes fadeIn {
+    from {opacity: 0} 
+    to {opacity: 1}
+}
+/*In animations END*/
+
+/*ALL OF THIS FOR A CONFIRM END*/
+

@@ -1,0 +1,26 @@
+.UsersTable{
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border-radius: 10px;
+    text-align: center;
+    background-color: #f1f1f1;
+    margin: 0px;
+}
+.UsersTable th{
+    border-bottom: 1px solid hsl(0, 0%, 39%);
+}
+.UsersTable th{
+    font-size: 22px;
+    font-weight: 600;
+    height: 60px;
+}
+.UsersTable td{
+    height: 80px;
+}
+.UsersTable img{
+    width: 45px;
+    height: 45px;
+    border-radius: 100px;
+    border: 4px solid #113F59;
+}

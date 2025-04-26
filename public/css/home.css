@@ -1,0 +1,148 @@
+body{
+    background-color: white;
+    padding: 0;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+/*Nav*/
+nav{
+    height: 100px;
+    width: 100%;
+    background-color: #113F59;
+}
+nav img{
+    position: absolute;
+    height: 75px;
+    width: 75px;
+    left: 20px;
+    top: 10px;
+}
+nav .links{
+    margin-left: 125px;
+}
+nav .links a{
+    justify-content: left;
+    position: relative;
+    text-decoration: none;
+    display: inline-block;
+    margin: 34px 12px 0;
+    color: white;
+    font-size: 20px;
+}
+nav .links a:hover{
+    color: hsl(0, 0%, 86%);
+}
+
+nav .authN{
+    position: absolute;
+    top: 34px;
+    right: 30px;
+}
+
+nav .authY{
+    position: absolute;
+    top: 34px;
+    right: 40px;
+}
+nav .authY a, nav .authN a{
+    background-color: #59abe6;
+    color: white;
+    padding: 8px 30px;
+    margin-right: 10px;
+    border-radius: 10px;
+    text-align: center;
+    align-self: center;
+    text-decoration: none;
+    font-size: 20px;
+}
+nav .authY a:hover, nav .authN a:hover{
+    background-color: #40a0e6;
+}
+/*End Nav*/
+.HeroSec{
+    background-color: #113F59;
+}
+.HeroSec img{
+    width: 100%;
+    filter: brightness(50%);
+}
+.HeroSec .text{
+    height: 200px;
+    background-color: #113F59;
+    text-align: center;
+    color: white;
+}
+.HeroSec .text div{
+    align-items: center;
+    justify-content: center;
+}
+.HeroSec .text h3{
+    font-size: 32px;
+}
+.HeroSec .text p{
+    font-size: 22px;
+}
+
+
+
+/*Responsive*/
+.hamburger {
+    cursor: pointer;
+    position: absolute;
+    top: 8px;
+    z-index: 1;
+}
+.hamburger img{
+    width: 60px;
+    height: 60px;
+}
+.menuMB {
+    height: 100%;
+    width: 300px;
+    position: fixed;
+    top: 0;
+    left: -300px;
+    background-color: #113F59;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    z-index: 2;
+}
+.menuMB a{
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 25px;
+    color: white;
+    display: block;
+    transition: 0.3s;
+}
+
+.menuMB a:hover {
+    color: hsl(0, 0%, 86%);
+}
+.menuMB .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+
+@media screen and (min-width: 901px) {
+    .menu{
+        display: block;
+    }
+    .hamburger{
+        visibility: hidden;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .menu{
+        display: none;
+    }
+    .hamburger{
+        visibility: visible;
+    }
+}
