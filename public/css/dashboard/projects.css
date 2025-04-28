@@ -27,16 +27,3 @@
     font-weight: 600;
     margin: 5px 0px;
 }
-
-.createP{
-    font-size: 16px;
-    width: 15%;
-    height: 40px;
-    background-color: #113F59;
-    color: white;
-    border-radius: 5px;
-}
-.createP:hover{
-    cursor: pointer;
-    background-color: hsl(202, 68%, 16%);
-}

@@ -44,7 +44,7 @@
                 <input type="file" name="pfp"  accept="image/*" required>
                 <x-input-error :messages="$errors->get('pfp')" />
                 <br>
-                <button type="submit" class="btn">Keep Changes</button>
+                <button type="submit" class="btn_default">Keep Changes</button>
             </form>
 
             <div class="lineSpace"></div>
@@ -65,7 +65,7 @@
                 <input type="email" name="email" value="{{ old('email', $user->email) }}">
                 <x-input-error :messages="$errors->get('email')" />
                 <br>
-                <button type="submit" class="btn">Keep Changes</button>
+                <button type="submit" class="btn_default">Keep Changes</button>
             </form>
         </div>
     </div>
@@ -95,7 +95,7 @@
             <x-input-error :messages="$errors->updatePassword->get('password_confirmation')"/>
             <br>
 
-            <button type="submit" class="btn">Change Password</button>
+            <button type="submit" class="btn_default">Change Password</button>
         </form>
         
     </div>
@@ -108,7 +108,7 @@
             <br>
             Once you delete your account, you will lose all projects that your were and you will lose all data in this account.
         </p>
-        <button type="submit" class="btn" onclick="toogleModal()">Delete Account</button>
+        <button type="submit" class="btn_default" onclick="toogleModal()">Delete Account</button>
     </div>
 
     {{-- Modal --}}

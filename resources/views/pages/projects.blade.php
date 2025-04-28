@@ -20,6 +20,6 @@
             </div>
         @endforeach
 
-        <a href="{{ route('dashboard.projects-create') }}"><button class="createP">Create Project</button></a>
+        <a href="{{ route('dashboard.projects-create') }}"><button class="btn_default">Create Project</button></a>
     </div>
 @endsection

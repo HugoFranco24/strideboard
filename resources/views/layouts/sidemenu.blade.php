@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/dashboard/sidemenu.css') }}">
     <link rel="icon" href="{{ asset('Images/Logos/Strideboard.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ asset('css/general.css') }}">
 </head>
 <body>
     <div class="hamburger" id="toogleM" onclick="toggleMenu()">

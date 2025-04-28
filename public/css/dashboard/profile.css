@@ -57,19 +57,6 @@ h1{
     background-color: hsl(0, 0%, 98%);
 }
 
-.btn{
-    margin-top: 20px;
-    width: 180px;
-    height: 45px;
-    border-radius: 10px;
-    border: none;
-    background-color: hsl(0, 0%, 84%);
-    cursor: pointer;
-    font-size: 17px;
-}
-.btn:hover{
-    background-color: hsl(0, 0%, 80%);
-}
 
 
 
@@ -229,4 +216,3 @@ input[type="file"]::-webkit-file-upload-button:hover {
 /*In animations END*/
 
 /*ALL OF THIS FOR A CONFIRM END*/
-

@@ -33,7 +33,7 @@
             <h4 style="margin: 0">Not available yet</h4>
             <br><br>
 
-            <button type="submit" class="btn">Create Project</button>
+            <button type="submit" class="btn_default">Create Project</button>
         </form>
     </div>
 @endsection
