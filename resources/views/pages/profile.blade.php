@@ -7,8 +7,11 @@
 {{ asset("css/dashboard/profile.css") }}
 @endsection
 
+@section('body-title')
+    Profile
+@endsection
+
 @section('body')
-    <h1 class="main_title">Profile</h1>
     
     @if(session('status'))
         <div class="sessionStatus" id="sessionStatus">

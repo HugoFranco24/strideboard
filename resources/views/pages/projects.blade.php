@@ -3,12 +3,15 @@
     Projects
 @endsection
 
+@section('body-title')
+    Projects
+@endsection
+
 @section('css')
     {{ asset("css/dashboard/projects.css") }}
 @endsection
 
 @section('body')
-    <h1 class="main_title">Projects</h1>
 
     <div class="box">
         <h3>You have {{ $projects->count() }} {{ $projects->count() == 1 ? 'project' : 'projects'}}</h3>
@@ -17,6 +20,7 @@
                 <h4>{{ $p->name }}</h4>
                 <p>Business: {{ $p->business }}</p>
                 <p>Due Date: {{ $p->due_date }}</p>
+                <a href="/dashboard/projects/edit/{{ $p->id_project }}">Edit Project</a>
             </div>
         @endforeach
 

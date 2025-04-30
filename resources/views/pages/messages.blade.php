@@ -4,13 +4,16 @@
     Messages
 @endsection
 
+@section('body-title')
+    Messages
+@endsection
+
 @section('css')
     {{ asset("css/dashboard/messages.css") }}
 @endsection
 
-@section('body')
-    <h1 class="main_title">Messages</h1>
 
+@section('body')
   
     <table class="UsersTable">
         <tr>
@@ -19,7 +22,7 @@
             <th>Email</th>
             <th>Options</th>
         </tr>
-        @foreach ($user as $u)
+        @foreach ($userAll as $u)
             <tr>
                 <td><img src="{{ asset($u->pfp ?? 'Images/Pfp/pfp_default.png') }}"></td>
                 <td>{{ $u->name }}</td>

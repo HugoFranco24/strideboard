@@ -28,7 +28,9 @@ Route::middleware('auth')->group(function () {
     //project routes
     Route::get('/dashboard/projects', [DashboardController::class, 'projects'])->name('dashboard.projects');
     Route::get('/dashboard/projects/create', [DashboardController::class, 'projectsCreate'])->name('dashboard.projects-create');
-    Route::post('/dashboard/projects/create/add', [DashboardController::class, 'projectsCreateAdd'])->name('dashboard.projects-create-add');
+    Route::post('/dashboard/projects/create/add', [DashboardController::class, 'projectsCreateAdd'])->name('dashboard.projects-add');
+    Route::get('/dashboard/projects/edit/{id}', [DashboardController::class, 'projectsEdit'])->name('dashboard.projects-edit');
+    Route::post('/dashboard/projects/edit/{id}/update', [DashboardController::class, 'projectsUpdate'])->name('dashboard.projects-update');
 });
 
 require __DIR__ . '/auth.php';
