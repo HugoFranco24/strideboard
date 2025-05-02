@@ -17,7 +17,7 @@ body{
     cursor: pointer;
     border-radius: 20px;
     border: none;
-    z-index: 2;
+    z-index: 100;
 }
 .hamburger:hover{
     background-color: hsl(202, 68%, 16%);
@@ -41,6 +41,7 @@ nav{
     justify-content: center;
     align-items: center;
     transition: 500ms;
+    z-index: 99;
 }
 
 .links, .links_colapse{
@@ -156,14 +157,18 @@ nav {
 /*Scroll Bar END*/
 
 /*#region Profile in top*/
-.top-menu{
-    position: relative;
+.top-menu {
+    position: fixed; /* Changed from relative to fixed */
+    top: 0;           /* Ensure it sticks to the top */
+    left: 0;
+    right: 0;
     background-color: hsl(0, 0%, 80%);
     height: 80px;
     margin: 0px 0px 0px 300px;
     transition: 500ms;
-    z-index: 10;
+    z-index: 98;
 }
+
 .flex{
     display: flex;
     justify-content: space-between;
@@ -258,7 +263,7 @@ nav {
 /*#endregion*/
 
 .main_content{
-    padding: 50px 30px 0px 340px;
+    padding: 130px 30px 0px 340px;
     transition: 500ms;
 }
 
