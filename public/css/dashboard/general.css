@@ -1,0 +1,46 @@
+/*#region Themes */
+/* :root{
+    --background-color: white;
+    --box-color: #f1f1f1;
+} */
+:root{
+    --background-color: #12181d;
+    --box-color: #1C1F24;
+    --inner-box-color: #2B2F36;
+    --text-color: white;
+}
+/*#endregion Themes*/
+
+
+.box{
+    background-color: var(--box-color);
+    color: var(--text-color);
+    padding: 40px 30px;
+    width: 94%;
+    margin-bottom: 60px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 2px hsl(0, 0%, 70%);
+}
+.box h3{
+    font-size: 26px;
+    margin: 0px 0px 40px;
+}
+
+
+.btn_default{
+    font-size: 16px;
+    width: 15%;
+    height: 40px;
+    background-color: #113F59;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    min-width: 180px;
+    width: 180px;
+    margin-top: 20px;
+}
+
+.btn_default:hover{
+    cursor: pointer;
+    background-color: hsl(202, 68%, 16%);
+}

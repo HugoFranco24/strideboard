@@ -1,19 +1,6 @@
-.box{
-    background-color: #f1f1f1;
-    padding: 40px 30px;
-    width: 94%;
-    margin-bottom: 60px;
-    border-radius: 10px;
-    box-shadow: 1px 1px 2px hsl(0, 0%, 70%);
-}
-
-.box h3{
-    font-size: 26px;
-    margin: 0px 0px 40px;
-}
-
 .project{
-    background-color: hsl(0, 0%, 85%);
+    /* hsl(0, 0%, 85%) */
+    background-color: var(--inner-box-color);
     border-radius: 10px;
     padding: 12px 20px;
     margin-bottom: 20px;

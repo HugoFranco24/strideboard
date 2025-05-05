@@ -9,8 +9,9 @@
     <link rel="stylesheet" href="@yield('css')">
 
     <link rel="stylesheet" href="{{ asset('css/dashboard/sidemenu.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard/general.css') }}">
+
     <link rel="icon" href="{{ asset('Images/Logos/Strideboard.png') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ asset('css/general.css') }}">
 </head>
 <body>
     <div class="hamburger" id="toogleM" onclick="toggleMenu()">
@@ -127,5 +128,9 @@
             // arrowP.style.transform = 'rotate(-0deg)';
             arrowP.classList.remove('rotated');
         }
+    }
+
+    function toogleTheme(){
+        var 
     }
 </script>
