@@ -1,16 +1,48 @@
 /*#region Themes */
-/* :root{
-    --background-color: white;
-    --box-color: #f1f1f1;
-} */
-:root{
-    --background-color: #12181d;
-    --box-color: #1C1F24;
-    --inner-box-color: #2B2F36;
-    --text-color: white;
+html:not(.dark_theme) body {
+   transition: none !important;
 }
-/*#endregion Themes*/
 
+:root{
+    --background-color: white;
+    --text-color: black;
+
+    /* box */
+    --box-color: #f1f1f1;
+    --box-inner-color: white;
+    --box-inner-color-hover: hsl(0, 0%, 80%);
+    
+    --box-input-border: hsl(0, 0%, 80%);
+    --box-input-bg-hover: hsl(0, 0%, 98%);
+    --box-shadow-color: hsl(0, 0%, 70%);
+    /*box end*/
+
+    /*icon color change*/
+    --filter-icon: invert(0) brightness(0);
+    /*end icon color change*/
+}
+
+.dark_theme
+{
+    --background-color: #12181d;
+    --text-color: white;
+
+    /*box*/
+    --box-color: #1C1F24;
+    --box-inner-color: #2B2F36;
+    --box-inner-color-hover: hsl(218, 11%, 23%);
+
+    --box-input-border: hsl(0, 0%, 30%);
+    --box-input-bg-hover: #2f333a;
+    --box-shadow-color: hsl(0, 0%, 20%);
+    /*box end*/
+
+    /*icon color change*/
+    --filter-icon: invert(1) brightness(2);
+    /*end icon color change*/
+}
+
+/*#endregion Themes*/
 
 .box{
     background-color: var(--box-color);
@@ -19,11 +51,38 @@
     width: 94%;
     margin-bottom: 60px;
     border-radius: 10px;
-    box-shadow: 1px 1px 2px hsl(0, 0%, 70%);
+    box-shadow: 1px 1px 2px var(--box-shadow-color);
 }
-.box h3{
+.box h2{
     font-size: 26px;
-    margin: 0px 0px 40px;
+    margin: 0px 0px 20px;
+}
+.box label{
+    font-size: 18px;
+}
+.box input[type='text'], 
+.box input[type='email'], 
+.box input[type='password'],
+.box input[type='date']
+{
+    margin: 5px 0px 10px;
+    width: 50%;
+    height: 36px;
+    border-radius: 4px;
+    border: 1px solid var(--box-input-border);
+    font-size: 16px;
+    background-color: var(--box-inner-color);
+    color: var(--text-color);
+}
+.dark_theme input[type='date']{
+    color-scheme: dark;
+}
+.box input:hover{
+    background-color: var(--box-input-bg-hover);
+}
+.box input:focus{
+    outline: 1px solid var(--box-input-border);
+    background-color: var(--box-input-bg-hover);
 }
 
 
@@ -43,4 +102,8 @@
 .btn_default:hover{
     cursor: pointer;
     background-color: hsl(202, 68%, 16%);
+}
+
+img.icon{
+    filter: var(--filter-icon);
 }

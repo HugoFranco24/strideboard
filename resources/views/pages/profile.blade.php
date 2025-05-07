@@ -4,7 +4,7 @@
 @endsection
 
 @section('css')
-{{ asset("css/dashboard/profile.css") }}
+    {{ asset("css/dashboard/profile.css") }}
 @endsection
 
 @section('body-title')
@@ -26,7 +26,7 @@
                 <img src="{{ asset($user->pfp ?? 'Images/Pfp/pfp_default.png') }}" alt="" width="150px" height="150px">
                 <div style="display: block; align-items: center">
                     <h3 style="margin: 30px 0px 0px 10px; font-size: 22px; font-weight:600; transform:translateY(-100%)">{{ $user->name }}</h3>
-                    <p style=" margin: 0px 10px 0px 10px; transform:translateY(-100%)">{{ $user->email }}</p>
+                    <p style=" margin: 0px 10px 0px 10px; transform:translateY(-100%); color: var(--text-color);">{{ $user->email }}</p>
                 </div>
             </div>
 
@@ -44,7 +44,7 @@
                 @csrf
                 <label>Change Profile Picture</label>
                 <br>
-                <input type="file" name="pfp"  accept="image/*" required>
+                <input type="file" name="pfp" accept="image/*" required>
                 <x-input-error :messages="$errors->get('pfp')" />
                 <br>
                 <button type="submit" class="btn_default">Keep Changes</button>

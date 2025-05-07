@@ -158,17 +158,35 @@ nav {
 }
 /*Scroll Bar END*/
 
+:root{
+    --top-bg-color: hsl(0, 0%, 80%);
+    --top-gb-color-hover: hsl(0, 0%, 70%);
+
+    --profile-menu: hsl(0, 0%, 90%);
+    --profile-menu-hover: hsl(0, 0%, 80%);
+}
+
+.dark_theme
+{
+    --top-bg-color: #1C1F24;
+    --top-gb-color-hover: hsl(218, 13%, 20%);
+
+    --profile-menu: hsl(218, 13%, 15%);
+    --profile-menu-hover: hsl(218, 13%, 20%);
+}
+
 /*#region Profile in top*/
 .top-menu {
-    position: fixed; /* Changed from relative to fixed */
-    top: 0;           /* Ensure it sticks to the top */
+    position: fixed; 
+    top: 0;           
     left: 0;
     right: 0;
-    background-color: hsl(0, 0%, 80%);
+    background-color: var(--top-bg-color);
+    color: var(--text-color);
     height: 80px;
     margin: 0px 0px 0px 300px;
-    transition: 500ms;
     z-index: 98;
+
 }
 
 .flex{
@@ -179,14 +197,14 @@ nav {
 .goBack{
     margin-top: 4px;
     border-radius: 10px;
-    transition: 200ms;
     width: 35px;
     height: 35px;
     padding: 4px;
-    background-color: hsl(0, 0%, 70%);
+    background-color: var(--top-bg-color);
 }
 .goBack:hover{
-    background-color: hsl(0, 0%, 65%);
+    transition: 200ms;
+    background-color: var(--top-gb-color-hover);
     cursor: pointer;
 }
 .top-menu .user{
@@ -200,7 +218,7 @@ nav {
     transition: 200ms;
 }
 .top-menu .user:hover{
-    background-color: hsl(0, 0%, 70%);
+    background-color: var(--top-gb-color-hover);
     cursor: pointer;
 }
 .top-menu .user:hover span img{
@@ -224,10 +242,10 @@ nav {
 }
 /*#region dropdown */
 .profile-toggle{
-    position: absolute;
+    position: fixed;
     right: 40px;
     top: -90px;
-    background-color: hsl(0, 0%, 90%);
+    background-color: var(--profile-menu);
     border-radius: 10px;
     width: 200px;
     text-align: center;
@@ -239,7 +257,8 @@ nav {
     color: black;
 }
 .profile-toggle button{
-    background-color: hsl(0, 0%, 90%);
+    background-color: var(--profile-menu);
+    color: var(--text-color);
     width: 100%;
     height: 40px;
     border: none;
@@ -248,7 +267,7 @@ nav {
 }
 .profile-toggle button:hover{
     cursor: pointer;
-    background-color: hsl(0, 0%, 80%);
+    background-color: var(--profile-menu-hover);
 }
 .profile-toggle .space{
     height: 1px;

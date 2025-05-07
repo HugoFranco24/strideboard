@@ -1,25 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('theme') || 'system';
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const isDark = savedTheme === 'dark' || (savedTheme === 'system' && prefersDark);
+            if (isDark) {
+                document.documentElement.classList.add('dark_theme');
+            }
+
+            const savedMenuState = localStorage.getItem('menuState') || 'not_collapsed';
+            applyMenuState(savedMenuState);
+        })();
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeRadios = document.querySelectorAll('input[name="theme"]');
+            const savedTheme = localStorage.getItem('theme') || 'system';
+            applyTheme(savedTheme);
+
+            const selectedThemeRadio = document.getElementById(savedTheme);
+            if (selectedThemeRadio) selectedThemeRadio.checked = true;
+
+            themeRadios.forEach((radio) => {
+                radio.addEventListener('change', (e) => {
+                    const selectedTheme = e.target.id;
+                    applyTheme(selectedTheme);
+                    localStorage.setItem('theme', selectedTheme);
+                });
+            });
+
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+                if (localStorage.getItem('theme') === 'system') {
+                    applyTheme('system');
+                }
+            });
+
+            function applyTheme(theme) {
+                const root = document.documentElement;
+                if (theme === 'dark') {
+                    root.classList.add('dark_theme');
+                } else if (theme === 'light') {
+                    root.classList.remove('dark_theme');
+                } else if (theme === 'system') {
+                    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    root.classList.toggle('dark_theme', isDarkMode);
+                }
+            }
+
+            const menuRadios = document.querySelectorAll('input[name="menuState"]');
+            const savedMenuState = localStorage.getItem('menuState') || 'not_collapsed';
+            applyMenuState(savedMenuState);
+
+            const selectedMenuRadio = document.getElementById(savedMenuState);
+            if (selectedMenuRadio) selectedMenuRadio.checked = true;
+
+            menuRadios.forEach((radio) => {
+                radio.addEventListener('change', (e) => {
+                    const selectedMenuState = e.target.id;
+                    applyMenuState(selectedMenuState);
+                    localStorage.setItem('menuState', selectedMenuState);
+                });
+            });
+
+            function applyMenuState(state) {
+                const menu = document.getElementById("nav");
+                const img = document.getElementById("toogleM");
+                const close = document.getElementById("close");
+                const open = document.getElementById("open");
+                const icons8 = document.getElementById("icons8");
+                const links = document.getElementById("links");
+                const top_menu = document.getElementById("top-menu");
+                const main = document.getElementById("main_content");
+                const sepC = document.getElementById("sepC");
+
+                if (state === 'collapsed') {
+                    menu.style.width = "68px";
+                    img.style.left = "6px";
+                    open.style.opacity = "1";
+                    close.style.opacity = "0";
+                    icons8.style.display = "none";
+                    links.classList.add('links_colapse');
+                    top_menu.style.margin = "0px 0px 0px 68px";
+                    main.style.padding = "130px 30px 0px 108px";
+                    sepC.style.visibility = "visible";
+                } else {
+                    menu.style.width = "300px";
+                    img.style.left = "230px";
+                    open.style.opacity = "0";
+                    close.style.opacity = "1";
+                    icons8.style.display = "block";
+                    links.classList.remove('links_colapse');
+                    top_menu.style.margin = "0px 0px 0px 300px";
+                    main.style.padding = "130px 30px 0px 340px";
+                    sepC.style.visibility = "hidden";
+                }
+            }
+        });
+
+        function toggleMenu() {
+            const menu = document.getElementById("nav");
+            const img = document.getElementById("toogleM");
+            const close = document.getElementById("close");
+            const open = document.getElementById("open");
+            const icons8 = document.getElementById("icons8");
+            const links = document.getElementById("links");
+            const top_menu = document.getElementById("top-menu");
+            const main = document.getElementById("main_content");
+            const sepC = document.getElementById("sepC");
+
+            let newState;
+            if (menu.style.width === "300px") {
+                menu.style.width = "68px";
+                img.style.left = "6px";
+                img.style.transition = "500ms";
+                open.style.opacity = "1";
+                close.style.opacity = "0";
+                icons8.style.display = "none";
+                links.classList.add('links_colapse');
+                top_menu.style.margin = "0px 0px 0px 68px";
+                top_menu.style.transition = "500ms";
+                main.style.padding = "130px 30px 0px 108px";
+                sepC.style.visibility = "visible";
+                newState = 'collapsed';
+            } else {
+                menu.style.width = "300px";
+                img.style.left = "230px";
+                open.style.opacity = "0";
+                close.style.opacity = "1";
+                icons8.style.display = "block";
+                links.classList.remove('links_colapse');
+                top_menu.style.margin = "0px 0px 0px 300px";
+                top_menu.style.transition = "500ms";
+                main.style.padding = "130px 30px 0px 340px";
+                sepC.style.visibility = "hidden";
+                newState = 'not_collapsed';
+            }
+            localStorage.setItem('menuState', newState);
+            const selectedMenuRadio = document.getElementById(newState);
+            if (selectedMenuRadio) selectedMenuRadio.checked = true;
+        }
+
+        function toggleProfile() {
+            var profile_toggle = document.getElementById('profile-toggle');
+            var arrowP = document.getElementById('arrowP');
+
+            if (profile_toggle.style.top == '-90px') {
+                profile_toggle.style.top = '90px';
+                arrowP.classList.add('rotated');
+            } else {
+                profile_toggle.style.top = '-90px';
+                arrowP.classList.remove('rotated');
+            }
+        }
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title') | StrideBoard</title>
 
     <link rel="stylesheet" href="@yield('css')">
-
     <link rel="stylesheet" href="{{ asset('css/dashboard/sidemenu.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard/general.css') }}">
-
     <link rel="icon" href="{{ asset('Images/Logos/Strideboard.png') }}" type="image/x-icon">
+
+    @yield('js_custom')
 </head>
+
 <body>
     <div class="hamburger" id="toogleM" onclick="toggleMenu()">
         <img src="https://img.icons8.com/ios-glyphs/90/ffffff/left--v3.png" alt="" width="35" height="35" id="close">
         <img src="https://img.icons8.com/ios-glyphs/90/ffffff/right--v3.png" alt="" width="35" height="35" id="open">
     </div>
 
-    <nav id="nav"  style="width: 300px;"> {{-- {{ $Mopen === True? 'style="left: 0px;"': 'style="left: -200px;"' }} --}}
+    <nav id="nav" style="width: 300px;">
         <div class="links" id="links">
             <span class="sep">Manage</span>
             <a href="/dashboard"><img src="https://img.icons8.com/material-outlined/96/ffffff/control-panel.png" alt=""><span>Dashboard</span></a>
@@ -33,24 +190,23 @@
             <a href="/dashboard/settings"><img src="https://img.icons8.com/ios-filled/100/ffffff/settings.png" alt=""/><span>Settings</span></a>
         </div>
 
-
-        <p ><span id="icons8">Icons by :</span><a href="https://icons8.com/" target="_blank">Icons8</a></p>
+        <p><span id="icons8">Icons by :</span><a href="https://icons8.com/" target="_blank">Icons8</a></p>
     </nav>
 
     <div class="top-menu" id="top-menu">
         <div class="flex">
             <div style="display: flex; align-items: center; gap: 20px;">
-                <a class="goBack" href="javascript:history.back()"><img width="35" height="35" src="https://img.icons8.com/fluency-systems-filled/48/u-turn-to-left.png" alt="undo" title="Go Back"/></a>
+                <a class="goBack" href="javascript:history.back()"><img class="icon" width="35" height="35" src="https://img.icons8.com/fluency-systems-filled/48/u-turn-to-left.png" alt="undo" title="Go Back"/></a>
                 <h1 style="margin: 0px">@yield('body-title')</h1>
             </div>
-            
+
             <div class="user" onclick="toggleProfile()">
                 <img src="{{ asset($user->pfp ?? 'Images/Pfp/pfp_default.png') }}" alt="">
                 <div style="display: block; align-items: center">
                     <p style="font-weight:700; font-size: 15px;">{{ $user->name }}</p>
                     <p style="font-size:13px ">{{ $user->email }}</p>
                 </div>
-                <span><img id="arrowP" src="https://img.icons8.com/metro/26/forward.png"></span>
+                <span><img id="arrowP" class="icon" src="https://img.icons8.com/metro/26/forward.png"></span>
             </div>
         </div>
     </div>
@@ -71,66 +227,3 @@
     </div>
 </body>
 </html>
-
-<script>
-    function toggleMenu(){
-
-        var menu = document.getElementById("nav");
-        var img = document.getElementById("toogleM");
-
-        var close = document.getElementById("close");
-        var open = document.getElementById("open");
-
-        var icons8 = document.getElementById("icons8");
-
-        var links = document.getElementById("links");
-
-        var top_menu = document.getElementById("top-menu");
-        var main = document.getElementById("main_content");
-
-        var sepC = document.getElementById("sepC");
-
-        if (menu.style.width === "300px") {
-            menu.style.width = "68px";
-            img.style.left = "6px";
-            img.style.transition = "500ms";
-            open.style.opacity = "1";
-            close.style.opacity = "0";
-            icons8.style.display = "none";
-            links.classList.toggle('links_colapse');
-            top_menu.style.margin = "0px 0px 0px 68px"
-            main.style.padding = "50px 0px 0px 108px";
-            sepC.style.visibility = "visible";
-        }else{
-            menu.style.width = "300px";
-            img.style.left = "230px";
-            open.style.opacity = "0";
-            close.style.opacity = "1";
-            icons8.style.display = "block";
-            links.classList.toggle('links_colapse');
-            top_menu.style.margin = "0px 0px 0px 300px"
-            main.style.padding = "50px 0px 0px 340px";
-            sepC.style.visibility = "hidden";
-
-        }
-    }
-
-    function toggleProfile(){
-        var profile_toggle = document.getElementById('profile-toggle');
-        var arrowP = document.getElementById('arrowP');
-
-        if(profile_toggle.style.top == '-90px'){
-            profile_toggle.style.top = '90px';
-            // arrowP.style.transform = 'rotate(90deg)';
-            arrowP.classList.add('rotated');
-        }else{
-            profile_toggle.style.top = '-90px';
-            // arrowP.style.transform = 'rotate(-0deg)';
-            arrowP.classList.remove('rotated');
-        }
-    }
-
-    function toogleTheme(){
-        var 
-    }
-</script>

@@ -1,16 +1,19 @@
 .project{
-    /* hsl(0, 0%, 85%) */
-    background-color: var(--inner-box-color);
+    background-color: var(--box-inner-color);
     border-radius: 10px;
     padding: 12px 20px;
     margin-bottom: 20px;
 }
 .project:hover{
     cursor: pointer;
-    background-color: hsl(0, 0%, 80%);
+    background-color: var(--box-inner-color-hover);
 }
 .project h4{
     font-size: 18px;
     font-weight: 600;
     margin: 5px 0px;
+}
+.edit{
+    text-decoration: none;
+    color: var(--text-color);
 }

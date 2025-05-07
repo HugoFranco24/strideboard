@@ -1,0 +1,36 @@
+.radio,
+.radio_text
+{
+    display: flex;
+    gap: 40px;
+}
+
+.radio input[type="radio"] {
+    display: none;
+}
+
+.radio label img{
+    width: 240px;
+    height: 135px;
+    border: 4px solid transparent;
+    border-radius: 8px;
+    transition: border 0.2s, transform 0.2s;
+    cursor: pointer;
+}
+
+.radio label img:hover {
+    transform: scale(1.025);
+}
+
+.radio input[type="radio"]:checked + label img {
+    border-color: var(--box-input-border);
+    transform: scale(1.1);
+}
+
+.radio_text label{
+    color: var(--text-color);
+    margin-top: 10px;
+    width: 240px;
+    border: 4px solid transparent;
+    text-align: center;
+}
