@@ -9,8 +9,8 @@ html:not(.dark_theme) body {
 
     /* box */
     --box-color: #f1f1f1;
-    --box-inner-color: white;
-    --box-inner-color-hover: hsl(0, 0%, 80%);
+    --box-inner-color: hsl(0, 0%, 98%);
+    --box-inner-color-hover: hsl(0, 0%, 88%);
     
     --box-input-border: hsl(0, 0%, 80%);
     --box-input-bg-hover: hsl(0, 0%, 98%);
@@ -20,6 +20,11 @@ html:not(.dark_theme) body {
     /*icon color change*/
     --filter-icon: invert(0) brightness(0);
     /*end icon color change*/
+
+    /*delete red*/
+    --delete-red: hsl(0, 100%, 40%);
+    --delete-red-hover: hsl(0, 100%, 35%);
+    /*end delete red*/
 }
 
 .dark_theme
@@ -40,6 +45,11 @@ html:not(.dark_theme) body {
     /*icon color change*/
     --filter-icon: invert(1) brightness(2);
     /*end icon color change*/
+
+    /*delete red*/
+    --delete-red: hsl(0, 100%, 30%);
+    --delete-red-hover: hsl(0, 100%, 25%);
+    /*end delete red*/
 }
 
 /*#endregion Themes*/
@@ -60,10 +70,10 @@ html:not(.dark_theme) body {
 .box label{
     font-size: 18px;
 }
-.box input[type='text'], 
-.box input[type='email'], 
-.box input[type='password'],
-.box input[type='date']
+input[type='text'], 
+input[type='email'], 
+input[type='password'],
+input[type='date']
 {
     margin: 5px 0px 10px;
     width: 50%;
@@ -77,33 +87,67 @@ html:not(.dark_theme) body {
 .dark_theme input[type='date']{
     color-scheme: dark;
 }
-.box input:hover{
+input:hover{
     background-color: var(--box-input-bg-hover);
 }
-.box input:focus{
+input:focus{ 
     outline: 1px solid var(--box-input-border);
     background-color: var(--box-input-bg-hover);
 }
 
+.pfp{
+    object-fit:cover;
+}
 
-.btn_default{
+
+.btn_default, .btn_delete{
     font-size: 16px;
     width: 15%;
     height: 40px;
-    background-color: #113F59;
     color: white;
     border-radius: 5px;
     border: none;
     min-width: 180px;
     width: 180px;
     margin-top: 20px;
+    cursor: pointer;
+}
+.btn_default{
+    background-color: #113F59;
+}
+.btn_default:hover{
+    background-color: hsl(202, 68%, 16%);
 }
 
-.btn_default:hover{
-    cursor: pointer;
-    background-color: hsl(202, 68%, 16%);
+.btn_delete{
+    background-color: var(--delete-red);
+}
+.btn_delete:hover{
+    background-color: var(--delete-red-hover);
 }
 
 img.icon{
     filter: var(--filter-icon);
 }
+
+
+/* Scrollbar geral */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+::-webkit-scrollbar-track {
+    background: var(--box-inner-color);
+}
+::-webkit-scrollbar-thumb {
+    background-color: var(--box-input-border);
+    border-radius: 6px;
+    border: 2px solid var(--box-inner-color); /* cria "padding" visual */
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--box-shadow-color);
+}
+::-webkit-scrollbar-corner {
+    background: var(--box-inner-color);
+}
+/*Fim da Scrollbar geral */

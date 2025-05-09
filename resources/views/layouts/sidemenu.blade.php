@@ -2,103 +2,6 @@
 <html lang="en">
 <head>
     <script>
-        (function () {
-            const savedTheme = localStorage.getItem('theme') || 'system';
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const isDark = savedTheme === 'dark' || (savedTheme === 'system' && prefersDark);
-            if (isDark) {
-                document.documentElement.classList.add('dark_theme');
-            }
-
-            const savedMenuState = localStorage.getItem('menuState') || 'not_collapsed';
-            applyMenuState(savedMenuState);
-        })();
-    </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const themeRadios = document.querySelectorAll('input[name="theme"]');
-            const savedTheme = localStorage.getItem('theme') || 'system';
-            applyTheme(savedTheme);
-
-            const selectedThemeRadio = document.getElementById(savedTheme);
-            if (selectedThemeRadio) selectedThemeRadio.checked = true;
-
-            themeRadios.forEach((radio) => {
-                radio.addEventListener('change', (e) => {
-                    const selectedTheme = e.target.id;
-                    applyTheme(selectedTheme);
-                    localStorage.setItem('theme', selectedTheme);
-                });
-            });
-
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-                if (localStorage.getItem('theme') === 'system') {
-                    applyTheme('system');
-                }
-            });
-
-            function applyTheme(theme) {
-                const root = document.documentElement;
-                if (theme === 'dark') {
-                    root.classList.add('dark_theme');
-                } else if (theme === 'light') {
-                    root.classList.remove('dark_theme');
-                } else if (theme === 'system') {
-                    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                    root.classList.toggle('dark_theme', isDarkMode);
-                }
-            }
-
-            const menuRadios = document.querySelectorAll('input[name="menuState"]');
-            const savedMenuState = localStorage.getItem('menuState') || 'not_collapsed';
-            applyMenuState(savedMenuState);
-
-            const selectedMenuRadio = document.getElementById(savedMenuState);
-            if (selectedMenuRadio) selectedMenuRadio.checked = true;
-
-            menuRadios.forEach((radio) => {
-                radio.addEventListener('change', (e) => {
-                    const selectedMenuState = e.target.id;
-                    applyMenuState(selectedMenuState);
-                    localStorage.setItem('menuState', selectedMenuState);
-                });
-            });
-
-            function applyMenuState(state) {
-                const menu = document.getElementById("nav");
-                const img = document.getElementById("toogleM");
-                const close = document.getElementById("close");
-                const open = document.getElementById("open");
-                const icons8 = document.getElementById("icons8");
-                const links = document.getElementById("links");
-                const top_menu = document.getElementById("top-menu");
-                const main = document.getElementById("main_content");
-                const sepC = document.getElementById("sepC");
-
-                if (state === 'collapsed') {
-                    menu.style.width = "68px";
-                    img.style.left = "6px";
-                    open.style.opacity = "1";
-                    close.style.opacity = "0";
-                    icons8.style.display = "none";
-                    links.classList.add('links_colapse');
-                    top_menu.style.margin = "0px 0px 0px 68px";
-                    main.style.padding = "130px 30px 0px 108px";
-                    sepC.style.visibility = "visible";
-                } else {
-                    menu.style.width = "300px";
-                    img.style.left = "230px";
-                    open.style.opacity = "0";
-                    close.style.opacity = "1";
-                    icons8.style.display = "block";
-                    links.classList.remove('links_colapse');
-                    top_menu.style.margin = "0px 0px 0px 300px";
-                    main.style.padding = "130px 30px 0px 340px";
-                    sepC.style.visibility = "hidden";
-                }
-            }
-        });
 
         function toggleMenu() {
             const menu = document.getElementById("nav");
@@ -138,9 +41,6 @@
                 sepC.style.visibility = "hidden";
                 newState = 'not_collapsed';
             }
-            localStorage.setItem('menuState', newState);
-            const selectedMenuRadio = document.getElementById(newState);
-            if (selectedMenuRadio) selectedMenuRadio.checked = true;
         }
 
         function toggleProfile() {
@@ -155,6 +55,101 @@
                 arrowP.classList.remove('rotated');
             }
         }
+        
+        function applyMenuState(state) {
+            const menu = document.getElementById("nav");
+            const img = document.getElementById("toogleM");
+            const close = document.getElementById("close");
+            const open = document.getElementById("open");
+            const icons8 = document.getElementById("icons8");
+            const links = document.getElementById("links");
+            const top_menu = document.getElementById("top-menu");
+            const main = document.getElementById("main_content");
+            const sepC = document.getElementById("sepC");
+
+            if (state === 'collapsed') {
+                menu.style.width = "68px";
+                img.style.left = "6px";
+                img.style.transition = "500ms";
+                open.style.opacity = "1";
+                close.style.opacity = "0";
+                icons8.style.display = "none";
+                links.classList.add('links_colapse');
+                top_menu.style.margin = "0px 0px 0px 68px";
+                top_menu.style.transition = "500ms";
+                main.style.padding = "130px 30px 0px 108px";
+                sepC.style.visibility = "visible";
+            } else {
+                menu.style.width = "300px";
+                img.style.left = "230px";
+                open.style.opacity = "0";
+                close.style.opacity = "1";
+                icons8.style.display = "block";
+                links.classList.remove('links_colapse');
+                top_menu.style.margin = "0px 0px 0px 300px";
+                top_menu.style.transition = "500ms";
+                main.style.padding = "130px 30px 0px 340px";
+                sepC.style.visibility = "hidden";
+            }
+        }
+
+        function applyTheme(theme) {
+            const root = document.documentElement;
+            if (theme === 'dark') {
+                root.classList.add('dark_theme');
+            } else if (theme === 'light') {
+                root.classList.remove('dark_theme');
+            } else if (theme === 'system') {
+                const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                root.classList.toggle('dark_theme', isDarkMode);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const savedTheme = localStorage.getItem('theme') || 'system';
+
+            const selectedThemeRadio = document.getElementById(savedTheme);
+            if (selectedThemeRadio) selectedThemeRadio.checked = true;
+
+
+            document.querySelectorAll('input[name="theme"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                const selectedTheme = e.target.id;
+                applyTheme(selectedTheme);
+                localStorage.setItem('theme', selectedTheme);
+                });
+            });
+            
+
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+                if (localStorage.getItem('theme') === 'system') {
+                    applyTheme('system');
+                }
+            });
+
+            const savedMenuState = localStorage.getItem('menuState') || 'not_collapsed';
+            applyMenuState(savedMenuState);
+
+            const selectedMenuRadio = document.getElementById(savedMenuState);
+            if (selectedMenuRadio) selectedMenuRadio.checked = true;
+
+            document.querySelectorAll('input[name="menuState"]').forEach((radio) => {
+                radio.addEventListener('change', (e) => {
+                    const selectedMenuState = e.target.id;
+                    applyMenuState(selectedMenuState);
+                    localStorage.setItem('menuState', selectedMenuState);
+                });
+            });
+
+            const savedTheme1 = localStorage.getItem('theme') || 'system';
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const isDark = savedTheme1 === 'dark' || (savedTheme1 === 'system' && prefersDark);
+            if (isDark) {
+                document.documentElement.classList.add('dark_theme');
+            }
+
+        });
     </script>
 
     <meta charset="UTF-8">
@@ -165,9 +160,12 @@
     <link rel="stylesheet" href="@yield('css')">
     <link rel="stylesheet" href="{{ asset('css/dashboard/sidemenu.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard/general.css') }}">
+
     <link rel="icon" href="{{ asset('Images/Logos/Strideboard.png') }}" type="image/x-icon">
 
-    @yield('js_custom')
+    @yield('custom_links')
+
+    @yield('custom_js')
 </head>
 
 <body>
@@ -179,15 +177,15 @@
     <nav id="nav" style="width: 300px;">
         <div class="links" id="links">
             <span class="sep">Manage</span>
-            <a href="/dashboard"><img src="https://img.icons8.com/material-outlined/96/ffffff/control-panel.png" alt=""><span>Dashboard</span></a>
-            <a href="/dashboard/projects"><img src="https://img.icons8.com/material/96/ffffff/clipboard--v1.png" alt=""><span>Projects</span></a>
-            <a href="/dashboard/tasks"><img src="https://img.icons8.com/material/96/ffffff/task-completed.png" alt=""/><span>Tasks</span></a>
-            <a href="/dashboard/calendar"><img src="https://img.icons8.com/material/96/ffffff/tear-off-calendar.png" alt=""><span>Calendar</span></a>
+            <a href="/dashboard" title="Dashboard"><img src="https://img.icons8.com/material-outlined/96/ffffff/control-panel.png" alt=""><span>Dashboard</span></a>
+            <a href="/dashboard/projects" title="Projects"><img src="https://img.icons8.com/material/96/ffffff/clipboard--v1.png" alt=""><span>Projects</span></a>
+            <a href="/dashboard/tasks" title="Tasks"><img src="https://img.icons8.com/material/96/ffffff/task-completed.png" alt=""/><span>Tasks</span></a>
+            <a href="/dashboard/calendar" title="Calendar"><img src="https://img.icons8.com/material/96/ffffff/tear-off-calendar.png" alt=""><span>Calendar</span></a>
             <div class="sepC" id="sepC"></div>
             <span class="sep">Settings</span>
-            <a href="/dashboard/messages"><img src="https://img.icons8.com/material/96/ffffff/new-post--v1.png" alt="" ><span>Messages</span></a>
-            <a href="/dashboard/profile"><img src="https://img.icons8.com/material/100/ffffff/user--v1.png" alt=""/><span>Profile</span></a>
-            <a href="/dashboard/settings"><img src="https://img.icons8.com/ios-filled/100/ffffff/settings.png" alt=""/><span>Settings</span></a>
+            <a href="/dashboard/messages" title="Messages"><img src="https://img.icons8.com/material/96/ffffff/new-post--v1.png" alt="" ><span>Messages</span></a>
+            <a href="/dashboard/profile" title="Profile"><img src="https://img.icons8.com/material/100/ffffff/user--v1.png" alt=""/><span>Profile</span></a>
+            <a href="/dashboard/settings" title="Settings"><img src="https://img.icons8.com/ios-filled/100/ffffff/settings.png" alt=""/><span>Settings</span></a>
         </div>
 
         <p><span id="icons8">Icons by :</span><a href="https://icons8.com/" target="_blank">Icons8</a></p>
@@ -201,7 +199,7 @@
             </div>
 
             <div class="user" onclick="toggleProfile()">
-                <img src="{{ asset($user->pfp ?? 'Images/Pfp/pfp_default.png') }}" alt="">
+                <img src="{{ asset($user->pfp ?? 'Images/Pfp/pfp_default.png') }}" alt="" class="pfp">
                 <div style="display: block; align-items: center">
                     <p style="font-weight:700; font-size: 15px;">{{ $user->name }}</p>
                     <p style="font-size:13px ">{{ $user->email }}</p>
@@ -225,5 +223,7 @@
     <div class="main_content" id="main_content">
         @yield('body')
     </div>
+          
+    @yield('custom_vue')
 </body>
 </html>

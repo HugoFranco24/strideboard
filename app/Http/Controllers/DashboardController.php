@@ -23,8 +23,6 @@ class DashboardController extends Controller {
         ]);
     }
 
-    
-
     public function tasks(){
         return view("pages.tasks", [
             'user' => auth()->user(),
@@ -54,76 +52,6 @@ class DashboardController extends Controller {
 
     public function settings(){
         return view("pages.settings", [
-            'user' => auth()->user(),
-        ]);
-    }
-
-    //project functions
-    public function projects(){
-
-        $projects = auth()->user()->projects; //gets all projects that the user has
-
-        return view('pages.projects', [
-            'user' => auth()->user(),
-            'projects' => $projects
-        ]);
-    }
-
-    public function projectsCreate(){
-        return view('pages.projects-create', [
-            'user' => auth()->user(),
-        ]);
-    }
-
-    public function projectsCreateAdd(Request $request){
-        
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'business' => 'required|string|max:255',
-            'due_date' => 'required',
-        ]);
-
-        $project = new Projects();
-        $project->name = $request->name;
-        $project->business = $request->business;
-        $project->due_date = $request->due_date;
-        $project->save();
-
-
-        $projectsUsers = new ProjectsUsers();
-        $projectsUsers->id_project = $project->id_project;
-        $projectsUsers->id_user = auth()->id();
-        $projectsUsers->user_type = 1;
-        $projectsUsers->save();
-
-        return redirect()->route('dashboard.projects');
-    }
-
-    public function projectsEdit($id){
-
-        $project = Projects::findorFail($id);
-
-        return view('pages.projects-create', [
-            'user' => auth()->user(),
-            'project' => $project
-        ]);
-    }
-
-    public function projectsUpdate(Request $request, $id){
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'business' => 'required|string|max:255',
-            'due_date' => 'required',
-        ]);
-
-        $project = Projects::findorFail($id);
-        $project->name = $request->name;
-        $project->business = $request->business;
-        $project->due_date = $request->due_date;
-        $project->save();
-
-        return view('pages.projects-create', [
             'user' => auth()->user(),
         ]);
     }

@@ -1,0 +1,176 @@
+[v-cloak] {
+    display: none;
+  }
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px; 
+    align-items: start;
+}
+
+.container .item{
+    background-color: var(--box-color);
+    color: var(--text-color);
+    padding: 25px 20px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 2px var(--box-shadow-color);
+}
+.container h2{
+    font-size: 26px;
+    margin-top: 5px;
+    margin-bottom: 30px;
+}
+.container p{
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+.container .item:nth-child(1) span{
+    font-weight: 600;
+}
+.item:nth-child(1) {
+
+}
+.btns{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.btns button{
+    margin-top: 0px;
+}
+
+.item:nth-child(2) {
+    
+}
+.addmember-wrapper {
+    width: 80%;
+    max-height: 200px; /* ou 60vh ou o que tu quiseres */
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 8px;
+    background-color: var(--box-inner-color);
+}
+.addmember {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.addmember tr{
+    background-color: var(--box-inner-color);
+    border-bottom: 1px solid var(--box-input-border);
+    transition: 200ms;
+    height: 40px;
+}
+.addmember tr:hover{
+    background-color: var(--box-inner-color-hover);
+}
+.addmember tr:last-child{
+    border-bottom: 0px;
+}
+.addmember tr:hover {
+    background-color: var(--box-inner-color-hover);
+}
+
+.addmember tr:last-child {
+    border-bottom: none;
+}
+
+.addmember td {
+    text-align: center; 
+    vertical-align: middle;
+    padding: 10px;
+}
+
+.addmember .pfp {
+    width: 50px;
+    height: 50px;
+    border-radius: 100px;
+    border: 2px solid var(--box-input-border);
+}
+
+.addmember button {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--box-input-border);
+    background-color: var(--box-color);
+    color: var(--text-color);
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.addmember button img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    filter: var(--filter-icon);
+}
+.addmember button:hover{
+    background-color: var(--box-inner-color);
+}
+
+.members-wrapper {
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 8px;
+}
+.members{
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.members tr{
+    background-color: var(--box-inner-color);
+    border-bottom: 1px solid var(--box-input-border);
+    transition: 200ms;
+    height: 40px;
+}
+.members tr:hover{
+    background-color: var(--box-inner-color-hover);
+}
+.members tr:last-child{
+    border-bottom: 0px;
+}
+.members td {
+    padding: 10px;
+}
+.members td:first-child {
+    padding: 10px 16px;
+}
+.members select{
+    height: 28px;
+    border-radius: 4px;
+    border: 1px solid var(--box-input-border);
+    font-size: 16px;
+    background-color: var(--box-inner-color);
+    color: var(--text-color);
+}
+.members img{
+    width: 100%;
+    min-width: 50px;
+    max-width: 50px;
+    height: 50px;
+    border-radius: 100px;
+}
+.members button{
+    width: 25px;
+    height: 25px;
+    object-fit: contain;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+
+@media (max-width: 1300px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+}

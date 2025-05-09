@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_project');
             $table->unsignedBigInteger('id_user');
             $table->integer('user_type');
+            $table->softDeletes();
         });
     }
 
