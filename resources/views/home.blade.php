@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <meta
+            name="description"
+            content="Projeto de Aptidão Profissional | Hugo Carreira Franco 3ºC Nº7 | Ano Letivo 2024/2025 | Escola Secundária Pinhal do Rei"
+        >
         <title>StrideBoard - Home</title>
         <link rel="icon" href="{{ asset('Images/Logos/StrideBoard.png') }}">
 

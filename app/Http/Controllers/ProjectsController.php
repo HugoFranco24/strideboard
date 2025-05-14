@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\TasksUsers;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +14,6 @@ use App\Models\User;
 use App\Models\Projects;
 use App\Models\Tasks;
 use App\Models\ProjectsUsers;
-use App\Models\ProjectsTasks;
 use Illuminate\Support\Facades\DB;
 
 class ProjectsController extends Controller {
@@ -74,7 +74,7 @@ class ProjectsController extends Controller {
         $request->validate([
             'name' => 'required|string|max:255',
             'business' => 'required|string|max:255',
-            'due_date' => 'required',
+            'due_date' => 'required|date',
         ]);
 
         $project = Projects::findorFail($id);
@@ -110,6 +110,7 @@ class ProjectsController extends Controller {
         ->where('id_user', auth()->id())
         ->value('user_type');
 
+        $tasks = Tasks::where('id_project', $id)->get();
 
         return view('pages.projects.projects-overview', [
             'user' => auth()->user(),
@@ -117,7 +118,8 @@ class ProjectsController extends Controller {
             'project' => $project,
             'project_users' => $project_users,
             'user_all' => $user_all,
-            'owner' => $owner
+            'owner' => $owner,
+            'tasks' => $tasks
         ]);
     }
 
@@ -138,6 +140,7 @@ class ProjectsController extends Controller {
                                         ->where('id_user', $id_user)
                                         ->first();
 
+        $projectsUsers->delete();
 
         if($id_user != auth()->id()){
             return redirect(route('projects.overview', $id_project));
@@ -156,5 +159,72 @@ class ProjectsController extends Controller {
         $projectsUsers->save();
 
         return redirect(route('projects.overview', $id_project));    
+    }
+
+
+    //region Tasks
+    public function TasksCreate($id_project){
+
+        $project = Projects::findOrFail($id_project);
+
+        $project_users = ProjectsUsers::leftJoin('users', 'projects_users.id_user', '=', 'users.id')
+        ->where('projects_users.id_project', $id_project)
+        ->select('users.id','users.pfp', 'users.name', 'users.email', 'projects_users.user_type')
+        ->get();
+
+        return view('pages.projects.tasks-create', [
+            'user' => auth()->user(),
+            'project' => $project,
+            'project_users' => $project_users
+        ]);
+    }
+
+    public function TasksCreateAdd(Request $request, $id_project){
+        
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'start_date' => 'required|date|before:end_date',
+            'end_date' => 'required|date',
+            'user_id' => 'required'
+        ]);
+
+        $task = new Tasks();
+        $task->id_project = $id_project;
+        $task->id_user = $request->user_id;
+        $task->name = $request->name;
+        $task->description = $request->description;
+        $task->start_date = $request->start_date;
+        $task->end_date = $request->end_date;
+        $task->state = 0;
+        $task->save();
+
+        return redirect(route('projects.overview', $id_project));
+    }
+
+    public function TasksEdit($id){
+
+        $project = Projects::findorFail($id);
+
+        return view('pages.projects.projects-create', [
+            'project' => $project,
+            'user'=> auth()->user()
+        ]);
+    }
+
+    public function TasksUpdate(Request $request, $id){
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'business' => 'required|string|max:255',
+            'due_date' => 'required',
+        ]);
+
+        $project = Projects::findorFail($id);
+        $project->name = $request->name;
+        $project->business = $request->business;
+        $project->due_date = $request->due_date;
+        $project->save();
+
+        return redirect(route('projects.overview', $id));
     }
 }

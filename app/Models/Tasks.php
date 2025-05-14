@@ -10,4 +10,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Tasks extends Model
 {
     protected $table = "tasks";
+
+    protected $primaryKey = 'id_task';
 }

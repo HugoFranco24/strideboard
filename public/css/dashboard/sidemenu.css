@@ -1,3 +1,8 @@
+html.preload *, html.preload *::before, html.preload *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
 body{
     margin: 0;
     padding: 0;
@@ -42,7 +47,6 @@ nav{
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: 500ms;
     z-index: 99;
 }
 
@@ -284,11 +288,17 @@ nav {
 /*#endregion*/
 
 .main_content{
-    padding: 130px 30px 0px 340px;
-    transition: 500ms;
+    padding: 130px 30px 0px 30px;
 }
 
 .main_title{
     font-size: 34px;
     color: black;
 }
+
+@media (max-width: 900px){
+    .top-menu h1{
+        display: none;
+    }
+}
+

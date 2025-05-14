@@ -4,7 +4,7 @@
 @endsection
 
 @section('css')
-    {{ asset("css/dashboard/settings.css") }}
+    <link rel="stylesheet" href="{{ asset('css/dashboard/settings.css') }}">
 @endsection
 
 @section('body-title')

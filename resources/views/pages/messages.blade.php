@@ -9,7 +9,7 @@
 @endsection
 
 @section('css')
-    {{ asset("css/dashboard/messages.css") }}
+    <link rel="stylesheet" href="{{ asset('css/dashboard/messages.css') }}">
 @endsection
 
 

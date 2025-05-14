@@ -58,7 +58,7 @@ html:not(.dark_theme) body {
     background-color: var(--box-color);
     color: var(--text-color);
     padding: 40px 30px;
-    width: 94%;
+    width: calc(100% - 60px);
     margin-bottom: 60px;
     border-radius: 10px;
     box-shadow: 1px 1px 2px var(--box-shadow-color);
@@ -73,10 +73,13 @@ html:not(.dark_theme) body {
 input[type='text'], 
 input[type='email'], 
 input[type='password'],
-input[type='date']
+input[type='date'],
+textarea
 {
     margin: 5px 0px 10px;
     width: 50%;
+    max-width: 50%;
+    min-width: 50%;
     height: 36px;
     border-radius: 4px;
     border: 1px solid var(--box-input-border);
@@ -87,10 +90,14 @@ input[type='date']
 .dark_theme input[type='date']{
     color-scheme: dark;
 }
-input:hover{
+input:hover, 
+textarea:hover
+{
     background-color: var(--box-input-bg-hover);
 }
-input:focus{ 
+input:focus, 
+textarea:focus
+{ 
     outline: 1px solid var(--box-input-border);
     background-color: var(--box-input-bg-hover);
 }
@@ -151,3 +158,31 @@ img.icon{
     background: var(--box-inner-color);
 }
 /*Fim da Scrollbar geral */
+
+@media (max-width: 1500px){
+    input[type='text'], 
+    input[type='email'], 
+    input[type='password'],
+    input[type='date'],
+    input[type='file'],
+    textarea
+    {
+        width: 75%;
+        max-width: 75%;
+        min-width: 75%;
+    }
+}
+
+@media (max-width: 1200px){
+    input[type='text'], 
+    input[type='email'], 
+    input[type='password'],
+    input[type='date'],
+    input[type='file'],
+    textarea
+    {
+        width: 100%;
+        max-width: 100%;
+        min-width: 100%;
+    }
+}

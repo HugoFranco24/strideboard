@@ -10,5 +10,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ProjectsUsers extends Model
 {
     public $timestamps = false;
+    use SoftDeletes;
     protected $table = "projects_users";
 }

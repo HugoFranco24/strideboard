@@ -1,0 +1,66 @@
+.addmember-wrapper {
+    max-height: 140px;
+    overflow-y: auto;
+    border-radius: 8px;
+    background-color: var(--box-inner-color);
+    position: absolute;
+    width: 45%;
+}
+.addmember {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.addmember tr{
+    background-color: var(--box-inner-color);
+    border-bottom: 1px solid var(--box-input-border);
+    transition: 200ms;
+    height: 40px;
+}
+.addmember tr:hover{
+    background-color: var(--box-inner-color-hover);
+}
+.addmember tr:last-child{
+    border-bottom: 0px;
+}
+.addmember tr:hover {
+    background-color: var(--box-inner-color-hover);
+}
+
+.addmember td {
+    text-align: center; 
+    vertical-align: middle;
+    padding: 10px;
+}
+
+.addmember .pfp {
+    width: 50px;
+    height: 50px;
+    border-radius: 100px;
+    border: 2px solid var(--box-input-border);
+}
+
+.addmember button {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--box-input-border);
+    background-color: var(--box-color);
+    color: var(--text-color);
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.addmember button img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    filter: var(--filter-icon);
+}
+.addmember button:hover{
+    background-color: var(--box-inner-color);
+}
+

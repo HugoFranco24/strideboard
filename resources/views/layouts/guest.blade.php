@@ -9,6 +9,8 @@
 
         <link rel="stylesheet" href=" {{ asset('css/guest.css') }} ">
 
+        <link rel="icon" href="{{ asset('Images/Logos/Strideboard.png') }}" type="image/x-icon">
+
     </head>
     <body>
         <div class="main">

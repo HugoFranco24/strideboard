@@ -2,6 +2,7 @@
 .radio_text
 {
     display: flex;
+    flex-wrap: wrap;
     gap: 40px;
 }
 
@@ -33,4 +34,14 @@
     width: 240px;
     border: 4px solid transparent;
     text-align: center;
+}
+
+@media (max-width: 1245px) {
+    .radio label img{
+        width: 180px;
+        height: 101px;
+    }
+    .radio_text{
+        display: none;
+    }
 }

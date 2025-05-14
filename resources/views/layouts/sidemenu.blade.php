@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <script>
+        document.documentElement.classList.add('preload');
 
         function toggleMenu() {
             const menu = document.getElementById("nav");
@@ -17,6 +18,7 @@
             let newState;
             if (menu.style.width === "300px") {
                 menu.style.width = "68px";
+                menu.style.transition = "500ms";
                 img.style.left = "6px";
                 img.style.transition = "500ms";
                 open.style.opacity = "1";
@@ -26,11 +28,14 @@
                 top_menu.style.margin = "0px 0px 0px 68px";
                 top_menu.style.transition = "500ms";
                 main.style.padding = "130px 30px 0px 108px";
+                main.style.transition = "500ms";
                 sepC.style.visibility = "visible";
                 newState = 'collapsed';
             } else {
                 menu.style.width = "300px";
+                menu.style.transition = "500ms";
                 img.style.left = "230px";
+                img.style.transition = "500ms";
                 open.style.opacity = "0";
                 close.style.opacity = "1";
                 icons8.style.display = "block";
@@ -38,9 +43,11 @@
                 top_menu.style.margin = "0px 0px 0px 300px";
                 top_menu.style.transition = "500ms";
                 main.style.padding = "130px 30px 0px 340px";
+                main.style.transition = "500ms";
                 sepC.style.visibility = "hidden";
                 newState = 'not_collapsed';
             }
+            
         }
 
         function toggleProfile() {
@@ -67,16 +74,22 @@
             const main = document.getElementById("main_content");
             const sepC = document.getElementById("sepC");
 
+
+            if (window.innerWidth <= 900) {
+                state = 'collapsed';
+                img.style.display = "none";
+            }else{
+                img.style.display = "block";
+            }
+
             if (state === 'collapsed') {
                 menu.style.width = "68px";
                 img.style.left = "6px";
-                img.style.transition = "500ms";
                 open.style.opacity = "1";
                 close.style.opacity = "0";
                 icons8.style.display = "none";
                 links.classList.add('links_colapse');
                 top_menu.style.margin = "0px 0px 0px 68px";
-                top_menu.style.transition = "500ms";
                 main.style.padding = "130px 30px 0px 108px";
                 sepC.style.visibility = "visible";
             } else {
@@ -87,7 +100,6 @@
                 icons8.style.display = "block";
                 links.classList.remove('links_colapse');
                 top_menu.style.margin = "0px 0px 0px 300px";
-                top_menu.style.transition = "500ms";
                 main.style.padding = "130px 30px 0px 340px";
                 sepC.style.visibility = "hidden";
             }
@@ -106,6 +118,11 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+
+            window.addEventListener('resize', () => {  //para checkar se esta abaixo de 900px a window
+                const savedMenuState = localStorage.getItem('menuState') || 'not_collapsed';
+                applyMenuState(savedMenuState);
+            });
 
             const savedTheme = localStorage.getItem('theme') || 'system';
 
@@ -149,17 +166,24 @@
                 document.documentElement.classList.add('dark_theme');
             }
 
+            window.addEventListener('load', () => {
+                document.documentElement.classList.remove('preload');
+            });
         });
     </script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta
+        name="description"
+        content="Projeto de Aptidão Profissional | Hugo Carreira Franco 3ºC Nº7 | Ano Letivo 2024/2025 | Escola Secundária Pinhal do Rei"
+    >
     <title>@yield('title') | StrideBoard</title>
 
-    <link rel="stylesheet" href="@yield('css')">
     <link rel="stylesheet" href="{{ asset('css/dashboard/sidemenu.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard/general.css') }}">
+    @yield('css')
 
     <link rel="icon" href="{{ asset('Images/Logos/Strideboard.png') }}" type="image/x-icon">
 
@@ -194,7 +218,7 @@
     <div class="top-menu" id="top-menu">
         <div class="flex">
             <div style="display: flex; align-items: center; gap: 20px;">
-                <a class="goBack" href="javascript:history.back()"><img class="icon" width="35" height="35" src="https://img.icons8.com/fluency-systems-filled/48/u-turn-to-left.png" alt="undo" title="Go Back"/></a>
+                @yield('go-back')
                 <h1 style="margin: 0px">@yield('body-title')</h1>
             </div>
 

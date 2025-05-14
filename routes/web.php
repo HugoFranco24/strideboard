@@ -40,6 +40,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/dashboard/projects/overview/{id_project}/add-member/{id_user}', [ProjectsController::class, 'addMember'])->name('projects.add-member');
     Route::post('/dashboard/projects/overview/{id_project}/delete-member/{id_user}', [ProjectsController::class, 'deleteMember'])->name('projects.delete-member');
     Route::post('/dashboard/projects/overview/{id_project}/update-member/{id_user}', [ProjectsController::class, 'updateMember'])->name('projects.update-member');
+    
+    //tasks
+    Route::get('/dashboard/projects/overview/{id_project}/create-task/step-1', [ProjectsController::class, 'TasksCreate'])->name('projects.create-task.step-1');
+    Route::post('/dashboard/projects/overview/{id_project}/create-task/add', [ProjectsController::class, 'TasksCreateAdd'])->name('projects.create-task.add');
+    Route::get('/dashboard/projects/overview/{id_project}/create-task/step-2/{id_task}', [ProjectsController::class, 'TasksCreateStep2'])->name('projects.create-task.step-2');
+    Route::post('/dashboard/projects/overview/{id_project}/create-task/step-2/{id_task}/add/{id_user}', [ProjectsController::class, 'TaskMemberAdd'])->name('projects.create-task.step-2.add');
     //end project routes
 
     //search routes

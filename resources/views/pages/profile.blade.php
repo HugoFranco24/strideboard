@@ -4,7 +4,7 @@
 @endsection
 
 @section('css')
-    {{ asset("css/dashboard/profile.css") }}
+    <link rel="stylesheet" href="{{ asset('css/dashboard/profile.css') }}">
 @endsection
 
 @section('body-title')
@@ -44,10 +44,8 @@
                 @csrf
                 <label>Change Profile Picture</label>
                 <br>
-                <input type="file" name="pfp" accept="image/*" required>
+                <input type="file" name="pfp" accept="image/*" required onchange="this.form.submit();">
                 <x-input-error :messages="$errors->get('pfp')" />
-                <br>
-                <button type="submit" class="btn_default">Keep Changes</button>
             </form>
 
             <div class="lineSpace"></div>
