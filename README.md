@@ -1,3 +1,49 @@
+<p align="center"><img src="https://github.com/HugoFranco24/strideboard/blob/main/public/Images/Logos/StrideBoard.png" width="200px" height="200px"></p>
+
+# StrideBoard
+
+This is a project for the **Professional Aptitude Test** to finish the professional course in Portugal(PAP - **Prova de Aptidão Profissional**).
+Neste projeto mostro as minhas competências de programação nas seguintes linguas:
+
+- HTML (HyperText Markup Language)
+- CSS (Cascading Style Sheets)
+- PHP (Hypertext Preprocessor)
+- MYSQL (My Structured Query Language)
+- JS (JavaScript)
+- Blade 
+
+E familiariedade com as frameworks:
+
+- Laravel
+- Vue
+
+## Mais Sobre o Projeto
+
+**StrideBoard** é um **website de gestão de projetos** elaborada para ajudar equipas and indivíduos a organizarem, planearem e acompanharem o progresso dos mesmos. Este website inclui funcionalidades chave tais como:
+
+- **Gestão e Criação de Tarefas**: Os utilizadores podem criar tarefas, atrubuir prazos, e acompanhar o progresso.
+- **Visão Geral do Projeto**: Um _dashboard_ que mostra projetos em andamento, tarefas realizadas, e prazos a chegarem.
+- **Gerenciamento de Utilizadores**: Administradores consegem gerir o acessos e funções garantindo que os funcionários certos têm acesso a informação certa.
+- **Atualizações a Tempo Real**: Estados de tarefas e projetos atualizam em tempo real, garantido que os utilizadores têm sempre informações em primeira mão.
+- **Notificações**: Alertas automáticos que lembram utilizadores sobre prazos a chegarem e atualizações de tarefas.
+
+## Propósito do Projeto
+
+O proposito principal do **StrideBoard** é mostrar as minhas competencias de programação e criar um inicio de um website de gestão de projetos com uma interface intuitiva e limpa para gerir múltiplos projetos, garantindo uma melhor colaboração e produtividade entre funcionários. Com este projeto, consigo demonstrar as seguintes competências:
+
+- **Design de Bases de Dados**: o MySQL foi usado para criar tabelas para armazenar dados de utilizadores, tarefas, e projetos.
+- **Desenvolvimento Back-End/Back-Office**: o Laravel foi usado para gerir a logica do backend.
+- **Desenvolvimento Front-End/Front-Office**: o CSS foi usado para haver uma interface intuitiva e o JS para ter um website interativo.
+- **UI/UX Design**: O foco para criar uma interface simples e facil de usar minimiza o tempo de familiarização dos utilizadores.
+  
+## Porquê este projeto?
+
+O proposito deste projeto  is to provide a functional and efficient **project management tool** that could be used in real-world applications. It not only shows my ability to build and manage a web application, but also my understanding of user needs and how to incorporate various technologies to achieve a seamless experience.
+
+Este projeto ajudou-me a demonstrar **competência em resolução de problemas**, **atenção a detalhes**, e **comunicação efetiva** com utilizadores, enquanto utilizando ferramentas moderenas na programação.
+
+<br><br><br><br><br><br><br><br><br><br>
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
