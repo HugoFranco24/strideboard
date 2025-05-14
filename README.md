@@ -1,8 +1,13 @@
 <p align="center"><img src="https://github.com/HugoFranco24/strideboard/blob/main/public/Images/Logos/StrideBoard.png" width="200px" height="200px"></p>
 
 ---
+<h3 align="center">
+    PAP - Prova de Aptidão Profissional | Hugo Carreira Franco | Nº7 | 3ºC |
+</h3>
+<h3 align="center">
+    Escola Secundária Pinhal do Rei | Ano Letivo 2024/2025
+</h3>
 
-### PAP - **Prova de Aptidão Profissional** | Ano Letivo 2024/2025 | Hugo Carreira Franco | Nº7 | 3ºC
 
 ---
 
