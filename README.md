@@ -1,8 +1,14 @@
 <p align="center"><img src="https://github.com/HugoFranco24/strideboard/blob/main/public/Images/Logos/StrideBoard.png" width="200px" height="200px"></p>
 
+---
+
+### PAP - **Prova de Aptidão Profissional** | Ano Letivo 2024/2025 | Hugo Carreira Franco | Nº7 | 3ºC
+
+---
+
+
 # StrideBoard
 
-This is a project for the **Professional Aptitude Test** to finish the professional course in Portugal(PAP - **Prova de Aptidão Profissional**).
 Neste projeto mostro as minhas competências de programação nas seguintes linguas:
 
 - HTML (HyperText Markup Language)
