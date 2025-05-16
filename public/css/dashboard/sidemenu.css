@@ -1,6 +1,10 @@
 html.preload *, html.preload *::before, html.preload *::after {
   transition: none !important;
   animation: none !important;
+  visibility: hidden;
+}
+html:not(.preload) * {
+    visibility: visible;
 }
 
 body{
@@ -11,7 +15,6 @@ body{
 *{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
 
 
 .hamburger{
@@ -244,6 +247,11 @@ nav {
     height: 16px;
     width: 16px;
 }
+/* .top-menu .user span img{
+    transition: 300ms;
+    height: 30px;
+    width: 30px;
+} */
 /*#region dropdown */
 .profile-toggle{
     position: fixed;

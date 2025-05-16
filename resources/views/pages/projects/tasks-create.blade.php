@@ -4,8 +4,8 @@
 @endsection
 
 @section('go-back')
-    <a class="goBack" href="{{ route('projects.overview', $project->id_project) }}">
-        <img class="icon" width="35" height="35" src="https://img.icons8.com/fluency-systems-filled/48/u-turn-to-left.png" alt="undo" title="Go Back"/>
+    <a class="goBack" href="{{ route('projects.overview', $project->id) }}">
+        <img class="icon" width="35" height="35" src="{{ asset('Images/Icons/Menu/Go-back.png') }}" alt="undo" title="Go Back"/>
     </a>
 @endsection
 
@@ -26,8 +26,11 @@
     <div id="app">
         <div class="box">
             <h2>Task Details</h2>
-            <form action="/dashboard/projects/overview/{{$project->id_project}}/create-task/add" method="POST">
+            <form action="/dashboard/projects/overview/{{$project->id}}/create-task/add" method="POST">
                 @csrf
+                @if(isset($task))
+                    @method('put')
+                @endif
 
                 <label>Task Name</label><br>
                 <input type="text" name="name" style="margin-bottom: 10px" value="{{ old('name', $task->name ?? '') }}"><br>
@@ -39,12 +42,12 @@
 
                 <br>
                 <label>Start Date</label><br>
-                <input type="date" name="start_date" style="margin-bottom: 10px" value="{{ old('start_date', $project->start_date ?? '') }}"><br>
-                <x-input-error :messages="$errors->get('start_date')"/>
+                <input type="date" name="start" style="margin-bottom: 10px" value="{{ old('start', $project->start ?? '') }}"><br>
+                <x-input-error :messages="$errors->get('start')"/>
 
                 <label>End Date</label><br>
-                <input type="date" name="end_date" style="margin-bottom: 10px" value="{{ old('end_date', $project->end_date ?? '') }}"><br>
-                <x-input-error :messages="$errors->get('end_date')"/>
+                <input type="date" name="end" style="margin-bottom: 10px" value="{{ old('end', $project->end ?? '') }}"><br>
+                <x-input-error :messages="$errors->get('end')"/>
 
                 <br><br>
                 <label>Responsible for task</label><br>
@@ -59,7 +62,7 @@
                                     <td>@{{ user.email }}</td>
                                     <td>
                                         <button type="button" @click="selectUser(user)">
-                                            <img width="30" height="30" src="https://img.icons8.com/ios/50/plus-math--v1.png" alt="plus"/>
+                                            <img width="50" height="50" src="{{ asset('Images/Icons/UserAdd.png') }}" alt="plus"/>
                                         </button>
                                     </td>
                                 </tr>
@@ -75,7 +78,7 @@
                                 <td>@{{ selectedUser.email }}</td>
                                 <td>
                                     <button type="button" @click="removeUser">
-                                        <img width="30" height="30" src="https://img.icons8.com/ios-glyphs/60/cc0000/delete-sign.png" alt="remove"/>
+                                        <img width="35" height="35" src="{{ asset('Images/Icons/UserDelete.png') }}" alt="remove"/>
                                     </button>
                                 </td>
                             </tr>
@@ -85,12 +88,12 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn_default" style="margin-top: 20px">Next Step</button>
+                <button type="submit" class="btn_default" style="margin-top: 20px">{{ isset($task) ? 'Update' : 'Create' }} Task</button>
             </form>
         </div> 
     </div>
 
-    <div id="users" data-users='@json($project_users)'></div>
+    <div id="users" data-users='@json($project->users)'></div>
     <div id="project" data-project='@json($project)'></div>
 @endsection
 

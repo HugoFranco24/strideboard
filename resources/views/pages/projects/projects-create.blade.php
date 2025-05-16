@@ -5,7 +5,7 @@
 
 @section('go-back')
     <a class="goBack" href="{{ route('dashboard.projects') }}">
-        <img class="icon" width="35" height="35" src="https://img.icons8.com/fluency-systems-filled/48/u-turn-to-left.png" alt="undo" title="Go Back"/>
+        <img class="icon" width="35" height="35" src="{{ asset('Images/Icons/Menu/Go-back.png') }}" alt="undo" title="Go Back"/>
     </a>
 @endsection
 
@@ -20,8 +20,11 @@
 @section('body')
 <div class="box">
     <h2>About Project</h2>
-    <form action="{{ isset($project) ? route('projects.update', $project->id_project) : route('projects.add') }}" method="POST">
+    <form action="{{ isset($project) ? route('projects.update', $project->id) : route('projects.add') }}" method="POST">
         @csrf
+        @if(isset($project))
+            @method('put')
+        @endif
 
         <label>Project Name</label><br>
         <input type="text" name="name" style="margin-bottom: 10px" value="{{ old('name', $project->name ?? '') }}"><br>

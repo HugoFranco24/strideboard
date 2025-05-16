@@ -26,14 +26,14 @@
     grid-row-start: 3;
 }
 .item:nth-child(4) {
-    grid-column: span 3 / span 3;
+    grid-column: span 4 / span 4;
     grid-row: span 3 / span 3;
     grid-row-start: 5;
 }
 .item:nth-child(5) {
-    grid-column: span 3 / span 3;
+    grid-column: span 2 / span 2;
     grid-row: span 3 / span 3;
-    grid-column-start: 4;
+    grid-column-start: 5;
     grid-row-start: 5;
 }
 
@@ -70,7 +70,7 @@
     width: 100%;
     max-height: 280px;
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: auto;
     border-radius: 8px;
 }
 .members{
@@ -112,12 +112,16 @@
     border-radius: 100px;
 }
 .members button{
-    width: 25px;
-    height: 25px;
+    width: 35px;
+    height: 35px;
     object-fit: contain;
     background-color: transparent;
     border: none;
     cursor: pointer;
+    padding: 0;
+}
+.members button img{
+    border-radius: 0;
 }
 
 .chart-container {
@@ -131,7 +135,13 @@
     height: auto !important;
 }
 
-
+@media (max-width: 1100px) {
+    .members td:nth-child(3), 
+    .addmember td:nth-child(3)
+    {
+        display: none;
+    }
+}
 @media (max-width: 1450px) {
     .container {
         display: flex;
@@ -142,6 +152,6 @@
     .container .item {
         grid-column: auto !important;
         grid-row: auto !important;
-        width: calc(100% - 60px);
+        width: calc(100% - 40px);
     }
 }

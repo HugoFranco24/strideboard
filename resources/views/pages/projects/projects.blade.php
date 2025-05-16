@@ -16,7 +16,7 @@
     <div class="box">
         <h3>You have {{ $projects->count() }} {{ $projects->count() == 1 ? 'project' : 'projects'}}</h3>
         @foreach($projects as $p)
-            <a href="/dashboard/projects/overview/{{ $p->id_project }}" title="Overview" class="overview">
+            <a href="/dashboard/projects/overview/{{ $p->id }}" title="Overview" class="overview">
                 <div class="project">
                     <h4>{{ $p->name }}</h4>
                     <p>Business: {{ $p->business }}</p>

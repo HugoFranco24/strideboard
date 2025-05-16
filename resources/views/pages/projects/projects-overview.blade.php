@@ -5,7 +5,7 @@
 
 @section('go-back')
     <a class="goBack" href="{{ route('dashboard.projects') }}">
-        <img class="icon" width="35" height="35" src="https://img.icons8.com/fluency-systems-filled/48/u-turn-to-left.png" alt="undo" title="Go Back"/>
+        <img class="icon" width="35" height="35" src="{{ asset('Images/Icons/Menu/Go-back.png') }}" alt="undo" title="Go Back"/>
     </a>
 @endsection
 
@@ -29,27 +29,31 @@
         <div class="item">
             <h2>Project Details</h2>
             <p><span>Project Name:</span> {{ $project->name }}</p>
-            <p><span>Business:</span> {{ $project->business }}</p>
+            <p><span>Business:</span> {{ $project->business == '' ? 'Not Defined' : $project->business }}</p>
             <p><span>Due Date:</span> {{ $project->due_date }}</p>
             <br>
             <div class="btns">
                 @if ($authUserType != 0)
-                    <a href="/dashboard/projects/edit/{{ $project->id_project }}"><button type="button" class="btn_default">Edit Project</button></a>
+                    <a href="/dashboard/projects/edit/{{ $project->id }}"><button type="button" class="btn_default">Edit Project</button></a>
                 @endif
                 
                 @if ($authUserType == 2)
-                    <form action="/dashboard/projects/delete/{{ $project->id_project }}">
+                    <form action="/dashboard/projects/delete/{{ $project->id }}"
+                        method="post"
+                    >
                         @csrf
+                        @method('delete')
                         <button type="submit" class="btn_delete">Delete Project</button>
                     </form>
                 @endif
 
                 @if ($authUserType != 2)
-                    <form action="/dashboard/projects/overview/{{ $project->id_project }}/delete-member/{{ $user->id }}"
-                        method="post"
+                    <form action="/dashboard/projects/overview/{{ $project->id }}/delete-member/{{ $user->id }}"
                         onsubmit="return confirm('Are you sure you want to leave the project?')"
+                        method="post"
                     >
                         @csrf
+                        @method('delete')
                         <button type="submit" class="btn_default">Leave Project</button>
                     </form>
                 @endif
@@ -70,13 +74,14 @@
                                 <td>@{{ user.name }}</td>
                                 <td>@{{ user.email }}</td>
                                 <td>
-                                    <form :action="'/dashboard/projects/overview/'+ project.id_project +'/add-member/'+ user.id" 
-                                        class="addmember_form" 
+                                    <form :action="'/dashboard/projects/overview/'+ project.id +'/add-member/'+ user.id" 
+                                        class="addmember_form"
                                         method="post"
                                     >
                                         @csrf
+                                        @method('post')
                                         <button type="submit">
-                                            <img width="50" height="50" src="https://img.icons8.com/ios/50/plus-math--v1.png" alt="plus-math--v1"/>
+                                            <img width="50" height="50" src="{{ asset('Images/Icons/UserAdd.png') }}" alt="plus-math--v1"/>
                                         </button>
                                     </form>
                                 </td>
@@ -89,51 +94,55 @@
             <h3>Collaborators in Project:</h3>
             <div class="members-wrapper">
                 <table class="members">
-                    @foreach ($project_users as $pu)
+                    @foreach ($project->users as $pu)
                         <tr>
                             <td><img src="{{ asset($pu->pfp ?? 'Images/Pfp/pfp_default.png') }}" alt="" class="pfp"></td>
                             <td>{{ $pu->name }}</td>
                             <td>{{ $pu->email }}</td>
                             <td>
                                 @if ($pu->id != auth()->id())
-                                    @if ($authUserType == 1 && $pu->user_type == 1)
+                                    @if ($authUserType == 1 && $pu->pivot->user_type == 1)
                                         <span>Admin</span>
-                                    @elseif ($authUserType != 0 && $pu->user_type == 0 || $authUserType == 2 && $pu->user_type == 1 )
-                                        <form action="/dashboard/projects/overview/{{ $project->id_project }}/update-member/{{ $pu->id }}" method="POST">
+                                    @elseif ($authUserType != 0 && $pu->pivot->user_type == 0 || $authUserType == 2 && $pu->pivot->user_type == 1 )
+                                        <form action="/dashboard/projects/overview/{{ $project->id }}/update-member/{{ $pu->id }}"
+                                            method="post"    
+                                        >
                                             @csrf
+                                            @method('put')
                                             <select name="user_type" onchange="this.form.submit()">
-                                                <option value="0" {{ $pu->user_type == 0 ? 'selected' : '' }}>Collaborator</option>
-                                                <option value="1" {{ $pu->user_type == 1 ? 'selected' : '' }}>Admin</option>
+                                                <option value="0" {{ $pu->pivot->user_type == 0 ? 'selected' : '' }}>Collaborator</option>
+                                                <option value="1" {{ $pu->pivot->user_type == 1 ? 'selected' : '' }}>Admin</option>
                                             </select>
                                         </form>
                                     @else
-                                        @if ($pu->user_type == 2)
+                                        @if ($pu->pivot->user_type == 2)
                                             <span>Owner</span>
                                         @else
-                                            <span>{{ $pu->user_type == 0 ? 'Collaborator' : 'Admin' }}</span>
+                                            <span>{{ $pu->pivot->user_type == 0 ? 'Collaborator' : 'Admin' }}</span>
                                         @endif
                                     @endif
                                 @else
-                                    @if ($pu->user_type == 2)
+                                    @if ($pu->pivot->user_type == 2)
                                         <span>Owner</span>
                                     @else
-                                        <span>{{ $pu->user_type == 0 ? 'Collaborator' : 'Admin' }}</span>
+                                        <span>{{ $pu->pivot->user_type == 0 ? 'Collaborator' : 'Admin' }}</span>
                                     @endif
                                 @endif
                             </td>
 
                             @if ($pu->id != auth()->id())
-                                @if ($authUserType == 1 && $pu->user_type == 1)
+                                @if ($authUserType == 1 && $pu->pivot->user_type == 1)
                                     <td></td>
-                                @elseif ($authUserType != 0 && $pu->user_type == 0 || $authUserType == 2 && $pu->user_type == 1 )
+                                @elseif ($authUserType != 0 && $pu->pivot->user_type == 0 || $authUserType == 2 && $pu->pivot->user_type == 1 )
                                     <td style="width: 50px">
-                                        <form action="/dashboard/projects/overview/{{ $project->id_project }}/delete-member/{{ $pu->id }}" 
-                                            method="post"
+                                        <form action="/dashboard/projects/overview/{{ $project->id }}/delete-member/{{ $pu->id }}" 
                                             onsubmit="return confirm('Are you sure you want to delete this user?');"
+                                            method="post"
                                         >
                                             @csrf
+                                            @method('delete')
                                             <button type="submit">
-                                                <img style="min-width: 35px; max-width: 35px; height: 35px;" src="https://img.icons8.com/material-rounded/50/cc0000/filled-trash.png" alt="filled-trash"/>
+                                                <img style="min-width: 35px; max-width: 35px; height: 35px;" src="{{ asset('Images/Icons/UserDelete.png') }}" alt="UserDelete"/>
                                             </button>
                                         </form>
                                     </td>
@@ -154,7 +163,7 @@
             $to_do = 0;
             $total = 0;
 
-            foreach($tasks as $t){
+            foreach($project->tasks as $t){
                 if($t->state == 0){
                     $to_do += 1;
                 }elseif($t->state == 1){
@@ -177,7 +186,7 @@
             
             <div class="btns">
                 @if ($authUserType != 0)
-                    <a href="/dashboard/projects/overview/{{$project->id_project}}/create-task/step-1"><button type="button" class="btn_default">Create Task</button></a>
+                    <a href="/dashboard/projects/overview/{{$project->id}}/create-task"><button type="button" class="btn_default">Create Task</button></a>
                 @endif
                 
                 <a href=""><button class="btn_default">View All Tasks</button></a>
@@ -192,11 +201,11 @@
                         <th>End Date</th>
                         <th>Status</th>
                     </tr>
-                    @foreach ($tasks as $t)
+                    @foreach ($project->tasks as $t)
                         <tr>
                             <td>{{ $t->name }}</td>
-                            <td>{{ $t->start_date }}</td>
-                            <td>{{ $t->end_date }}</td>
+                            <td>{{ $t->start }}</td>
+                            <td>{{ $t->end }}</td>
                             <td>
                                 @if ($t->state == 0)
                                     To Do
@@ -209,6 +218,7 @@
                         </tr>
                     @endforeach
                 </table>
+                <input type="color" name="" id="">
             </div>
             <div class="item">
                 <div class="chart-container">

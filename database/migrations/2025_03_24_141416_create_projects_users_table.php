@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('projects_users', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_project');
-            $table->unsignedBigInteger('id_user');
+            $table->foreignId('project_id')->constrained('projects');
+            $table->foreignId('user_id')->constrained('users');
             $table->integer('user_type');
             $table->softDeletes();
         });

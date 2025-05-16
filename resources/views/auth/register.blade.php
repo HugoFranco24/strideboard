@@ -3,7 +3,7 @@
 @endsection
 
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+    <form method="POST" action="{{ route('register') }}" onclick="this.disabled=true; this.form.submit();">
         @csrf
 
         <!-- Name -->

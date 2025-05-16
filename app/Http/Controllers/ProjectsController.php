@@ -11,220 +11,236 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use phpDocumentor\Reflection\Types\Boolean;
 use App\Models\User;
-use App\Models\Projects;
-use App\Models\Tasks;
-use App\Models\ProjectsUsers;
+use App\Models\Project;
+use App\Models\Task;
+use App\Models\ProjectUser;
 use Illuminate\Support\Facades\DB;
 
 class ProjectsController extends Controller {
 
-    public function projects(){
-
-        $projects = auth()->user()->projects; //gets all projects that the user has
-
+    public function projects()
+    {
         return view('pages.projects.projects', [
             'user' => auth()->user(),
-            'projects' => $projects
+            'projects' => auth()->user()->projects,
         ]);
     }
 
-    public function projectsCreate(){
+    public function projectsCreate()
+    {
         return view('pages.projects.projects-create', [
             'user' => auth()->user(),
-            'user_all' => User::all()->where('id', '!=', auth()->id())
+            'user_all' => User::all()->where('id', '!=', auth()->id()),
         ]);
     }
 
-    public function projectsCreateAdd(Request $request){
-        
+    public function projectsCreateAdd(Request $request)
+    {
         $request->validate([
             'name' => 'required|string|max:255',
-            'business' => 'required|string|max:255',
+            'business' => 'max:255',
             'due_date' => 'required',
         ]);
 
-        $project = new Projects();
-        $project->name = $request->name;
-        $project->business = $request->business;
-        $project->due_date = $request->due_date;
-        $project->save();
+        $project = new Project()->create([
+            'name' => $request->name,
+            'business' => $request->business,
+            'due_date' => $request->due_date,
+        ]);
+        
+        new ProjectUser()->create([
+            'project_id' => $project->id,
+            'business' => auth()->id(),
+            'user_type' => 2,
+        ]);
 
-
-        $projectsUsers = new ProjectsUsers();
-        $projectsUsers->id_project = $project->id_project;
-        $projectsUsers->id_user = auth()->id();
-        $projectsUsers->user_type = 2;
-        $projectsUsers->save();
-
-        return redirect(route('projects.overview', $project->id_project));
+        return redirect(route('projects.overview', $project->id));
     }
 
-    public function projectsEdit($id){
+    public function projectsEdit($id)
+    {   
+        $project = Project::findorFail($id)
+        ->load('users','tasks');
 
-        $project = Projects::findorFail($id);
+        //permitions check
+        $user = $project->users->where('id', auth()->id())->first();
+
+        if (!$project->users->contains('id', auth()->id())) {
+            abort(code: 403);
+        }  
+        if($user->pivot->user_type == 0){
+            abort(403);
+        }
+        //permitions check end
 
         return view('pages.projects.projects-create', [
             'project' => $project,
-            'user'=> auth()->user()
+            'user'=> auth()->user(),
         ]);
     }
 
-    public function projectsUpdate(Request $request, $id){
+    public function projectsUpdate(Request $request, $id)
+    {   
+        $project = Project::findorFail($id)
+        ->load('users','tasks');
 
+        //permitions check
+        $user = $project->users->where('id', auth()->id())->first();
+
+        if(!$project->users->contains('id', auth()->id())) {
+            abort(code: 403);
+        }  
+        if($user->pivot->user_type == 0){
+            abort(403);
+        }
+        //permitions check end
+        
         $request->validate([
             'name' => 'required|string|max:255',
-            'business' => 'required|string|max:255',
+            'business' => 'max:255',
             'due_date' => 'required|date',
         ]);
 
-        $project = Projects::findorFail($id);
-        $project->name = $request->name;
-        $project->business = $request->business;
-        $project->due_date = $request->due_date;
-        $project->save();
+        Project::findOrFail($id)->update([
+            'name' => $request->name,
+            'business' => $request->business,
+            'due_date' => $request->due_date,
+        ]);
 
         return redirect(route('projects.overview', $id));
     }
 
-    public function projectOverview($id){
-        $project = Projects::findorFail($id);
+    public function projectsDelete($id)
+    {
+        $project = Project::findorFail($id)
+        ->load('users','tasks');
 
-        $project_users = ProjectsUsers::leftJoin('users', 'projects_users.id_user', '=', 'users.id') //ver todos os utilizadores ligados ao projeto
-        ->where('projects_users.id_project', $id)
-        ->select('users.id','users.pfp', 'users.name', 'users.email', 'projects_users.user_type')
-        ->get();
+        $user = $project->users->where('id', auth()->id())->first();
 
-        $owner = ProjectsUsers::leftJoin('users', 'projects_users.id_user', '=', 'users.id') // ver o owner do projeto
-        ->where('projects_users.id_project', $id)
-        ->where('projects_users.user_type', 2)
-        ->select('users.name')
-        ->first();
+        if(!$project->users->contains('id', auth()->id())) {
+            abort(code: 403);
+        }  
+        if($user->pivot->user_type != 2){
+            abort(403);
+        }
+
+        foreach($project->tasks as $task){
+            $task->delete();
+        }
+        foreach($project->users as $user){
+            $user->delete();
+        }
+        $project->delete();
+
+        return redirect(route('dashboard.projects'));
+    }
+
+    public function projectOverview($id)
+    {   
+        $project = Project::findorFail($id)
+        ->load('users','tasks');
+
+        //permitions check
+        if (!$project->users->contains('id', auth()->id())) {
+            abort(code: 403); //ver se o utilizador está no projeto
+        }     
+        //permitions check end  
         
         $user_all = User::whereNotIn('id', DB::table('projects_users') //ver todos os users que nao estao ligado ao project
-        ->select('id_user')
-        ->where('id_project', $project->id_project))
+        ->select('user_id')
+        ->where('project_id', $project->id))
         ->select('id', 'pfp', 'name', 'email')
         ->get();
 
-        $authUserType = ProjectsUsers::where('id_project', $id) //ver qual é o tipo de user
-        ->where('id_user', auth()->id())
-        ->value('user_type');
-
-        $tasks = Tasks::where('id_project', $id)->get();
-
         return view('pages.projects.projects-overview', [
             'user' => auth()->user(),
-            'authUserType' => $authUserType,
             'project' => $project,
-            'project_users' => $project_users,
             'user_all' => $user_all,
-            'owner' => $owner,
-            'tasks' => $tasks
+            'authUserType' => $project->users->filter(function(User $u) {return $u->id == auth()->id();})->first()->pivot->user_type,
+            'owner' => $project->users->filter(function(User $u) {return $u->pivot->user_type == 2;})->first(),
         ]);
     }
 
-    public function addMember($id_project, $id_user){
+    public function addMember($project_id, $user_id)
+    {
+        $project = Project::findorFail($project_id)
+        ->load('users','tasks');
 
-        $projectsUsers = new ProjectsUsers();
-        $projectsUsers->id_project = $id_project;
-        $projectsUsers->id_user = $id_user;
-        $projectsUsers->user_type = 0;
-        $projectsUsers->save();
+        //permitions check
+        $user = $project->users->where('id', auth()->id())->first();
 
-        return redirect(route('projects.overview', $id_project));
+        if (!$project->users->contains('id', auth()->id())) {
+            abort(code: 403);
+        }  
+        if($user->pivot->user_type == 0){
+            abort(403);
+        }
+        //permitions check end
+
+        new ProjectUser()->create([
+            'project_id' => $project_id,
+            'user_id' => $user_id,
+            'user_type' => 0
+        ]);
+
+        return redirect(route('projects.overview', $project_id));
     }
 
-    public function deleteMember($id_project, $id_user){
+    public function updateMember(Request $request, $project_id, $user_id){
 
-        $projectsUsers = ProjectsUsers::where('id_project', $id_project)
-                                        ->where('id_user', $id_user)
-                                        ->first();
+        $project = Project::findorFail($project_id)
+        ->load('users','tasks');
 
-        $projectsUsers->delete();
+        $project_user = ProjectUser::where('user_id', $user_id)->firstOrFail();
+        $user = $project->users->where('id', auth()->id())->first();
 
-        if($id_user != auth()->id()){
-            return redirect(route('projects.overview', $id_project));
+        if (!$project->users->contains('id', auth()->id())) {
+            abort(code: 403); //ver se o utilizador está no projeto
+        }
+        if($user->pivot->user_type == 0){
+            abort(403);
+        }
+        if($user->pivot->user_type == 1 && $project_user->pivot->user_type == 1 && $user->id != $project_user->id){
+            abort(403);
+        }
+
+        $request->validate([
+            'user_type' => 'required|string|max:255',
+        ]);
+        
+        $project_user->update([
+            'user_type'=> $request->user_type
+        ]);
+
+        return redirect(route('projects.overview', $project_id));    
+    }
+
+    public function deleteMember($project_id, $user_id)
+    {
+        $project = Project::findorFail($project_id)
+        ->load('users','tasks');
+
+        $project_user = ProjectUser::where('user_id', $user_id)->firstOrFail();
+        $user = $project->users->where('id', auth()->id())->first();
+
+        //permitions check
+        if (!$project->users->contains('id', auth()->id())) {
+            abort(code: 403); //ver se o utilizador está no projeto
+        }
+        if($user->pivot->user_type == 0){
+            abort(403);
+        }
+        if($user->pivot->user_type == 1 && $project_user->pivot->user_type == 1 && $user->id != $project_user->id){
+            abort(403);
+        }
+        //permitions check end
+
+        $project_user->delete();
+
+        if($user->id != $project_user->id){
+            return redirect(route('projects.overview', $project_id));
         }else{
             return redirect(route('dashboard.projects'));
         }
-    }
-
-    public function updateMember($id_project, $id_user){
-
-        $projectsUsers = ProjectsUsers::where('id_project', $id_project)
-                                        ->where('id_user', $id_user)
-                                        ->first();
-
-        $projectsUsers->user_type = request('user_type');
-        $projectsUsers->save();
-
-        return redirect(route('projects.overview', $id_project));    
-    }
-
-
-    //region Tasks
-    public function TasksCreate($id_project){
-
-        $project = Projects::findOrFail($id_project);
-
-        $project_users = ProjectsUsers::leftJoin('users', 'projects_users.id_user', '=', 'users.id')
-        ->where('projects_users.id_project', $id_project)
-        ->select('users.id','users.pfp', 'users.name', 'users.email', 'projects_users.user_type')
-        ->get();
-
-        return view('pages.projects.tasks-create', [
-            'user' => auth()->user(),
-            'project' => $project,
-            'project_users' => $project_users
-        ]);
-    }
-
-    public function TasksCreateAdd(Request $request, $id_project){
-        
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'start_date' => 'required|date|before:end_date',
-            'end_date' => 'required|date',
-            'user_id' => 'required'
-        ]);
-
-        $task = new Tasks();
-        $task->id_project = $id_project;
-        $task->id_user = $request->user_id;
-        $task->name = $request->name;
-        $task->description = $request->description;
-        $task->start_date = $request->start_date;
-        $task->end_date = $request->end_date;
-        $task->state = 0;
-        $task->save();
-
-        return redirect(route('projects.overview', $id_project));
-    }
-
-    public function TasksEdit($id){
-
-        $project = Projects::findorFail($id);
-
-        return view('pages.projects.projects-create', [
-            'project' => $project,
-            'user'=> auth()->user()
-        ]);
-    }
-
-    public function TasksUpdate(Request $request, $id){
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'business' => 'required|string|max:255',
-            'due_date' => 'required',
-        ]);
-
-        $project = Projects::findorFail($id);
-        $project->name = $request->name;
-        $project->business = $request->business;
-        $project->due_date = $request->due_date;
-        $project->save();
-
-        return redirect(route('projects.overview', $id));
     }
 }

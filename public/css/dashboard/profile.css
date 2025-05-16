@@ -14,7 +14,7 @@ h1{
 
 .sessionStatus{
     height: 60px;
-    width: 94%;
+    width: calc(100% - 60px);
     padding: 0px 30px;
     display: flex;
     justify-content: space-between;

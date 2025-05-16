@@ -40,8 +40,16 @@
     background-color: transparent;
     border: none;
     cursor: pointer;
+    padding: 0;
 }
 
+@media (max-width: 650px) {
+    .addmember td:nth-child(3),
+    .selectedUser td:nth-child(3)
+    {
+        display: none;
+    }
+}
 @media (max-width: 1300px) {
     .addmember-wrapper{
         width: 100% !important;

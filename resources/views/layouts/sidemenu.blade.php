@@ -194,22 +194,22 @@
 
 <body>
     <div class="hamburger" id="toogleM" onclick="toggleMenu()">
-        <img src="https://img.icons8.com/ios-glyphs/90/ffffff/left--v3.png" alt="" width="35" height="35" id="close">
-        <img src="https://img.icons8.com/ios-glyphs/90/ffffff/right--v3.png" alt="" width="35" height="35" id="open">
+        <img src="{{ asset('Images/Icons/Menu/Left-arrow.png') }}" alt="" width="35" height="35" id="close">
+        <img src="{{ asset('Images/Icons/Menu/Right-arrow.png') }}" alt="" width="35" height="35" id="open">
     </div>
 
     <nav id="nav" style="width: 300px;">
         <div class="links" id="links">
             <span class="sep">Manage</span>
-            <a href="/dashboard" title="Dashboard"><img src="https://img.icons8.com/material-outlined/96/ffffff/control-panel.png" alt=""><span>Dashboard</span></a>
-            <a href="/dashboard/projects" title="Projects"><img src="https://img.icons8.com/material/96/ffffff/clipboard--v1.png" alt=""><span>Projects</span></a>
-            <a href="/dashboard/tasks" title="Tasks"><img src="https://img.icons8.com/material/96/ffffff/task-completed.png" alt=""/><span>Tasks</span></a>
-            <a href="/dashboard/calendar" title="Calendar"><img src="https://img.icons8.com/material/96/ffffff/tear-off-calendar.png" alt=""><span>Calendar</span></a>
+            <a href="/dashboard" title="Dashboard"><img src="{{ asset('Images/Icons/Menu/Dashboard.png') }}" alt=""><span>Dashboard</span></a>
+            <a href="/dashboard/projects" title="Projects"><img src="{{ asset('Images/Icons/Menu/Projects.png') }}" alt=""><span>Projects</span></a>
+            <a href="/dashboard/tasks" title="Tasks"><img src="{{ asset('Images/Icons/Menu/Tasks.png') }}" alt=""/><span>Tasks</span></a>
+            <a href="/dashboard/calendar" title="Calendar"><img src="{{ asset('Images/Icons/Menu/Calendar.png') }}" alt=""><span>Calendar</span></a>
             <div class="sepC" id="sepC"></div>
             <span class="sep">Settings</span>
-            <a href="/dashboard/messages" title="Messages"><img src="https://img.icons8.com/material/96/ffffff/new-post--v1.png" alt="" ><span>Messages</span></a>
-            <a href="/dashboard/profile" title="Profile"><img src="https://img.icons8.com/material/100/ffffff/user--v1.png" alt=""/><span>Profile</span></a>
-            <a href="/dashboard/settings" title="Settings"><img src="https://img.icons8.com/ios-filled/100/ffffff/settings.png" alt=""/><span>Settings</span></a>
+            <a href="/dashboard/messages" title="Messages"><img src="{{ asset('Images/Icons/Menu/Messages.png') }}" alt="" ><span>Messages</span></a>
+            <a href="/dashboard/profile" title="Profile"><img src="{{ asset('Images/Icons/Menu/Profile.png') }}" alt=""/><span>Profile</span></a>
+            <a href="/dashboard/settings" title="Settings"><img src="{{ asset('Images/Icons/Menu/Settings.png') }}" alt=""/><span>Settings</span></a>
         </div>
 
         <p><span id="icons8">Icons by :</span><a href="https://icons8.com/" target="_blank">Icons8</a></p>
@@ -228,7 +228,7 @@
                     <p style="font-weight:700; font-size: 15px;">{{ $user->name }}</p>
                     <p style="font-size:13px ">{{ $user->email }}</p>
                 </div>
-                <span><img id="arrowP" class="icon" src="https://img.icons8.com/metro/26/forward.png"></span>
+                <span><img id="arrowP" class="icon" src="{{ asset('Images/Icons/Menu/ProfileToggle.png') }}"></span>
             </div>
         </div>
     </div>

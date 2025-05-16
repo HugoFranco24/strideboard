@@ -4,14 +4,16 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\Projects;
+use App\Models\Project;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -47,8 +49,14 @@ class User extends Authenticatable
         ];
     }
 
-    public function projects()
+    //Relationships
+    public function projects(): BelongsToMany
     {
-        return $this->belongsToMany(Projects::class, 'projects_users', 'id_user', 'id_project');
+        return $this->belongsToMany(Project::class, 'projects_users')
+                    ->withPivot('user_type')->whereNull('projects_users.deleted_at');
+    }
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
     }
 }

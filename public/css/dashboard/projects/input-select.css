@@ -41,26 +41,15 @@
 }
 
 .addmember button {
-    width: 40px;
-    height: 40px;
-    border: 1px solid var(--box-input-border);
-    background-color: var(--box-color);
-    color: var(--text-color);
-    border-radius: 4px;
+    all: unset;
     cursor: pointer;
     padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .addmember button img {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     object-fit: contain;
     filter: var(--filter-icon);
-}
-.addmember button:hover{
-    background-color: var(--box-inner-color);
 }
 

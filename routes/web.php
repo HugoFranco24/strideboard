@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ProjectsController;
+use App\Http\Controllers\TasksController;
 
 Route::get('/', function () {
     return view('home');
@@ -28,24 +29,25 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/profile', [DashboardController::class, 'profile'])->name('dashboard.profile');
     Route::get('/dashboard/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');
 
-    //project routes
+    //region Project Routes
     Route::get('/dashboard/projects', [ProjectsController::class, 'projects'])->name('dashboard.projects');
     Route::get('/dashboard/projects/create', [ProjectsController::class, 'projectsCreate'])->name('projects.create');
     Route::post('/dashboard/projects/create/add', [ProjectsController::class, 'projectsCreateAdd'])->name('projects.add');
-    Route::get('/dashboard/projects/edit/{id}', [ProjectsController::class, 'projectsEdit'])->name('projects.edit');
-    Route::post('/dashboard/projects/edit/{id}/update', [ProjectsController::class, 'projectsUpdate'])->name('projects.update');
-
-    Route::get('/dashboard/projects/overview/{id}', [ProjectsController::class, 'projectOverview'])->name('projects.overview');
-
-    Route::post('/dashboard/projects/overview/{id_project}/add-member/{id_user}', [ProjectsController::class, 'addMember'])->name('projects.add-member');
-    Route::post('/dashboard/projects/overview/{id_project}/delete-member/{id_user}', [ProjectsController::class, 'deleteMember'])->name('projects.delete-member');
-    Route::post('/dashboard/projects/overview/{id_project}/update-member/{id_user}', [ProjectsController::class, 'updateMember'])->name('projects.update-member');
+    Route::get('/dashboard/projects/edit/{project_id}', [ProjectsController::class, 'projectsEdit'])->name('projects.edit');
+    Route::put('/dashboard/projects/edit/{project_id}/update', [ProjectsController::class, 'projectsUpdate'])->name('projects.update');
+    Route::delete('/dashboard/projects/delete/{project_id}', [ProjectsController::class, 'projectsDelete'])->name('projects.delete');
     
-    //tasks
-    Route::get('/dashboard/projects/overview/{id_project}/create-task/step-1', [ProjectsController::class, 'TasksCreate'])->name('projects.create-task.step-1');
-    Route::post('/dashboard/projects/overview/{id_project}/create-task/add', [ProjectsController::class, 'TasksCreateAdd'])->name('projects.create-task.add');
-    Route::get('/dashboard/projects/overview/{id_project}/create-task/step-2/{id_task}', [ProjectsController::class, 'TasksCreateStep2'])->name('projects.create-task.step-2');
-    Route::post('/dashboard/projects/overview/{id_project}/create-task/step-2/{id_task}/add/{id_user}', [ProjectsController::class, 'TaskMemberAdd'])->name('projects.create-task.step-2.add');
+    Route::get('/dashboard/projects/overview/{project_id}', [ProjectsController::class, 'projectOverview'])->name('projects.overview');
+
+    Route::post('/dashboard/projects/overview/{project_id}/add-member/{id_user}', [ProjectsController::class, 'addMember'])->name('projects.add-member');
+    Route::put('/dashboard/projects/overview/{project_id}/update-member/{id_user}', [ProjectsController::class, 'updateMember'])->name('projects.update-member');
+    Route::delete('/dashboard/projects/overview/{project_id}/delete-member/{id_user}', [ProjectsController::class, 'deleteMember'])->name('projects.delete-member');
+    
+    //region Tasks
+    Route::get('/dashboard/projects/overview/{project_id}/create-task', [TasksController::class, 'TasksCreate'])->name('projects.create-task');
+    Route::post('/dashboard/projects/overview/{project_id}/create-task/add', [TasksController::class, 'TasksCreateAdd'])->name('projects.create-task.add');
+    Route::get('/dashboard/projects/overview/{project_id}/edit-task/{task_id}', [TasksController::class, 'TaskEdit'])->name('projects.edit-task');
+    Route::put('/dashboard/projects/overview/{project_id}/edit-task/{task_id}/update', [TasksController::class, 'TasksUpdate'])->name('projects.edit-task.update');
     //end project routes
 
     //search routes
