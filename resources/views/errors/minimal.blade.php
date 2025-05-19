@@ -7,7 +7,7 @@
         <link rel="icon" href="{{ asset('Images/Logos/Strideboard.png') }}" type="image/x-icon">
         <link rel="stylesheet" href="{{ asset('css/dashboard/general.css') }}">
 
-        <title>@yield('title')</title>
+        <title>@yield('title') Error | StrideBoard</title>
 
         <!-- Styles -->
         <style>
@@ -30,14 +30,42 @@
 
             h1{
                 font-size: 5vw;
-                margin-top: 0;
+                margin: 0;
             }
             h2{
                 font-size: 1.5vw;
+                margin-top: 0; 
             }
-            .img{
-                width: 60vw;
-                height: 40vh;
+
+            .img {
+                width: 70vw;
+                height: 50vh;
+                position: relative;
+            }
+
+            .light-mode-img,
+            .dark-mode-img {
+                width: 100%;
+                height: 100%;
+            }
+
+            .light-mode-img img,
+            .dark-mode-img img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+
+            .dark-mode-img {
+                display: none;
+            }
+
+            .dark_theme .dark-mode-img {
+                display: block;
+            }
+
+            .dark_theme .light-mode-img {
+                display: none;
             }
         </style>
 
@@ -63,7 +91,12 @@
                     <h1>OOPS!!</h1>
                 </div>
                 <div class="img">
-                    @yield('img')
+                    <div class="light-mode-img">
+                        @yield('img')
+                    </div>
+                    <div class="dark-mode-img">
+                        @yield('img-dark')
+                    </div>
                 </div>
                 <div class="desc">
                     @yield('desc')

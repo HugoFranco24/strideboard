@@ -5,7 +5,10 @@
     404
 @endsection
 @section('img')
-    <iframe src="https://lottie.host/embed/de4fa499-7b77-41b2-bb08-a1ce1b71bb27/bmX0YxRraO.lottie" width="100%" height="100%" style="border: none"></iframe>
+    <img src="{{ asset('Images/Errors/404.jpg') }}" alt="" width="100%" height="100%">
+@endsection
+@section('img-dark')
+    <img src="{{ asset('Images/Errors/404-Dark.jpg') }}" alt="" width="100%" height="100%">
 @endsection
 @section('desc')
     <h2>This page doesn't exist</h2>
