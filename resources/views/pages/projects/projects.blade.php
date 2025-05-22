@@ -17,10 +17,12 @@
         <h3>You have {{ $projects->count() }} {{ $projects->count() == 1 ? 'project' : 'projects'}}</h3>
         @foreach($projects as $p)
             <a href="/dashboard/projects/overview/{{ $p->id }}" title="Overview" class="overview">
-                <div class="project">
-                    <h4>{{ $p->name }}</h4>
-                    <p>Business: {{ $p->business }}</p>
-                    <p>Due Date: {{ $p->due_date }}</p>
+                <div class="project" style="--project-bar-color: {{ $p->color }}">
+                    <div style="margin-left: 25px;">
+                        <h4>{{ $p->name }}</h4>
+                        <p>Business: {{ $p->business == '' ? 'Not Defined' : $p->business }}</p>
+                        <p>Due Date: {{ $p->due_date }}</p>
+                    </div>
                 </div>
             </a>
         @endforeach

@@ -1,6 +1,7 @@
 .project{
+    position: relative; /* isso é obrigatório */
     background-color: var(--box-inner-color);
-    border-radius: 10px;
+    border-radius: 4px;
     padding: 12px 20px;
     margin-bottom: 20px;
 }
@@ -16,4 +17,14 @@
 .overview{
     text-decoration: none;
     color: var(--text-color);
+}
+.project::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 30px;
+    border-radius: 4px 0 0 4px;
+    background-color: var(--project-bar-color);
 }

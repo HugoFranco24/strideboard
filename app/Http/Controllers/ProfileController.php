@@ -8,16 +8,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\DB;
+use App\Models\Project;
+use App\Models\Task;
+use App\Models\ProjectUser;
 
 class ProfileController extends Controller
 {
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request): View
+    public function edit(): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
+        return view('pages.profile', [
+            'user' => auth()->user(),
         ]);
     }
 
@@ -46,6 +50,41 @@ class ProfileController extends Controller
 
         Auth::logout();
 
+        $ownedProjectIds = ProjectUser::where('user_id', $user->id)
+                            ->where('user_type', 2)
+                            ->pluck('project_id');
+
+        foreach ($ownedProjectIds as $project_id) {
+            $newOwner = ProjectUser::where('project_id', $project_id)
+                        ->where('user_id', '!=', $user->id)
+                        ->whereIn('user_type', [1, 0])
+                        ->orderByDesc('user_type')
+                        ->first();
+
+            if (!$newOwner) {
+                Project::find($project_id)->delete();
+            } else {
+                ProjectUser::where('project_id', $project_id)
+                    ->where('user_id', $newOwner->user_id)
+                    ->update(['user_type' => 2]);
+
+                $ownedTasks = Task::where('user_id', $user->id)->get();
+
+                $newOwner = ProjectUser::where('project_id', $project_id)
+                        ->where('user_id', '!=', $user->id)
+                        ->whereIn('user_type', [2, 1, 0])
+                        ->orderByDesc('user_type')
+                        ->first();
+                
+                if ($newOwner) {
+                    foreach($ownedTasks as $task){
+                        $task->user_id = $newOwner->user_id;
+                        $task->save();
+                    }
+                } 
+            }
+        }
+
         $user->delete();
 
         $request->session()->invalidate();
@@ -58,7 +97,7 @@ class ProfileController extends Controller
     {
 
         $request->validate([
-            'pfp' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
+            'pfp' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $user = $request->user();

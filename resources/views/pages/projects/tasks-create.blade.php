@@ -32,7 +32,7 @@
                     @method('put')
                 @endif
 
-                <label>Task Name</label><br>
+                <label>Task Name<span class="required">*</span></label><br>
                 <input type="text" name="name" style="margin-bottom: 10px" value="{{ old('name', $task->name ?? '') }}"><br>
                 <x-input-error :messages="$errors->get('name')"/>
 
@@ -41,16 +41,16 @@
                 <x-input-error :messages="$errors->get('description')"/>
 
                 <br>
-                <label>Start Date</label><br>
+                <label>Start Date<span class="required">*</span></label><br>
                 <input type="date" name="start" style="margin-bottom: 10px" value="{{ old('start', $project->start ?? '') }}"><br>
                 <x-input-error :messages="$errors->get('start')"/>
 
-                <label>End Date</label><br>
+                <label>End Date<span class="required">*</span></label><br>
                 <input type="date" name="end" style="margin-bottom: 10px" value="{{ old('end', $project->end ?? '') }}"><br>
                 <x-input-error :messages="$errors->get('end')"/>
 
                 <br><br>
-                <label>Responsible for task</label><br>
+                <label>Responsible for task<span class="required">*</span></label><br>
                 <div>
                     <div v-if="!selectedUser" >
                         <input type="text" v-model="term" placeholder="Search User" style="margin-bottom: 0px; width: 80%;">
@@ -58,8 +58,8 @@
                             <table class="addmember">
                                 <tr v-for="user in filteredUsers" :key="user.id">
                                     <td><img :src="'/' + (user.pfp || 'Images/Pfp/pfp_default.png')" class="pfp"></td>
-                                    <td>@{{ user.name }}</td>
-                                    <td>@{{ user.email }}</td>
+                                    <td class="sql_max">@{{ user.name }}</td>
+                                    <td class="sql_max">@{{ user.email }}</td>
                                     <td>
                                         <button type="button" @click="selectUser(user)">
                                             <img width="50" height="50" src="{{ asset('Images/Icons/UserAdd.png') }}" alt="plus"/>
@@ -74,8 +74,8 @@
                         <table class="selectedUser">
                             <tr>
                                 <td><img :src="'/' + (selectedUser.pfp || 'Images/Pfp/pfp_default.png')" class="pfp"></td>
-                                <td>@{{ selectedUser.name }}</td>
-                                <td>@{{ selectedUser.email }}</td>
+                                <td class="sql_max">@{{ selectedUser.name }}</td>
+                                <td class="sql_max">@{{ selectedUser.email }}</td>
                                 <td>
                                     <button type="button" @click="removeUser">
                                         <img width="35" height="35" src="{{ asset('Images/Icons/UserDelete.png') }}" alt="remove"/>

@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('business')->nullable();
             $table->date('due_date');
+            $table->string('color', 7)->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

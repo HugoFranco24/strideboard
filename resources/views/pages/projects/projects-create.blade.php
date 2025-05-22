@@ -17,6 +17,9 @@
     
 @endsection
 
+@section('custom_js')
+@endsection
+
 @section('body')
 <div class="box">
     <h2>About Project</h2>
@@ -26,7 +29,7 @@
             @method('put')
         @endif
 
-        <label>Project Name</label><br>
+        <label>Project Name<span class="required">*</span></label><br>
         <input type="text" name="name" style="margin-bottom: 10px" value="{{ old('name', $project->name ?? '') }}"><br>
         <x-input-error :messages="$errors->get('name')"/>
 
@@ -34,8 +37,12 @@
         <input type="text" name="business" style="margin-bottom: 10px" value="{{ old('business', $project->business ?? '') }}"><br>
         <x-input-error :messages="$errors->get('business')"/>
 
-        <label>Due Date</label><br>
+        <label>Due Date<span class="required">*</span></label><br>
         <input type="date" name="due_date" style="margin-bottom: 10px" value="{{ old('due_date', $project->due_date ?? '') }}"><br>
+        <x-input-error :messages="$errors->get('due_date')"/>
+        
+        <label>Project Color</label><br>
+        <input type="color" name="color" style="margin-bottom: 10px;" value="{{ old('color', $project->color ?? '') }}"><br>
         <x-input-error :messages="$errors->get('due_date')"/>
 
         <button type="submit" class="btn_default">{{ isset($project) ? 'Update' : 'Create' }} Project</button>

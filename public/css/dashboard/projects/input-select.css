@@ -1,7 +1,7 @@
 .addmember-wrapper {
     max-height: 140px;
     overflow-y: auto;
-    border-radius: 8px;
+    border-radius: 4px;
     background-color: var(--box-inner-color);
     position: absolute;
     width: 45%;

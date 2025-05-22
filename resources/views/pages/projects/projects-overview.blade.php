@@ -28,10 +28,13 @@
     <div class="container">
         <div class="item">
             <h2>Project Details</h2>
-            <p><span>Project Name:</span> {{ $project->name }}</p>
-            <p><span>Business:</span> {{ $project->business == '' ? 'Not Defined' : $project->business }}</p>
-            <p><span>Due Date:</span> {{ $project->due_date }}</p>
-            <br>
+            <p class="sql_max"><span>Project Name:</span> {{ $project->name }}</p>
+            <p class="sql_max"><span>Business:</span> {{ $project->business == '' ? 'Not Defined' : $project->business }}</p>
+            <p class="sql_max"><span>Due Date:</span> {{ $project->due_date }}</p>
+            <div style="display: flex">
+                <span  class="sql_max">Project Color:   {{$project->color}} -></span>
+                <div style="background-color: {{ $project->color }}; width: 40px;"></div>
+            </div>
             <div class="btns">
                 @if ($authUserType != 0)
                     <a href="/dashboard/projects/edit/{{ $project->id }}"><button type="button" class="btn_default">Edit Project</button></a>
@@ -71,8 +74,8 @@
                         <table class="addmember">
                             <tr v-for="user in filteredUsers" :key="user.id">                        
                                 <td><img :src="'/' + (user.pfp || 'Images/Pfp/pfp_default.png')" alt="" class="pfp"></td>
-                                <td>@{{ user.name }}</td>
-                                <td>@{{ user.email }}</td>
+                                <td class="sql_max">@{{ user.name }}</td>
+                                <td class="sql_max">@{{ user.email }}</td>
                                 <td>
                                     <form :action="'/dashboard/projects/overview/'+ project.id +'/add-member/'+ user.id" 
                                         class="addmember_form"
@@ -97,8 +100,8 @@
                     @foreach ($project->users as $pu)
                         <tr>
                             <td><img src="{{ asset($pu->pfp ?? 'Images/Pfp/pfp_default.png') }}" alt="" class="pfp"></td>
-                            <td>{{ $pu->name }}</td>
-                            <td>{{ $pu->email }}</td>
+                            <td class="sql_max">{{ $pu->name }}</td>
+                            <td class="sql_max">{{ $pu->email }}</td>
                             <td>
                                 @if ($pu->id != auth()->id())
                                     @if ($authUserType == 1 && $pu->pivot->user_type == 1)
@@ -203,9 +206,9 @@
                     </tr>
                     @foreach ($project->tasks as $t)
                         <tr>
-                            <td>{{ $t->name }}</td>
-                            <td>{{ $t->start }}</td>
-                            <td>{{ $t->end }}</td>
+                            <td class="sql_max">{{ $t->name }}</td>
+                            <td class="sql_max">{{ $t->start }}</td>
+                            <td class="sql_max">{{ $t->end }}</td>
                             <td>
                                 @if ($t->state == 0)
                                     To Do
@@ -218,7 +221,6 @@
                         </tr>
                     @endforeach
                 </table>
-                <input type="color" name="" id="">
             </div>
             <div class="item">
                 <div class="chart-container">

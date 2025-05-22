@@ -1,100 +1,131 @@
+html{
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+}
 body{
     background-color: white;
     padding: 0;
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+}
+h1{
+    font-size: 32px;
+    text-align: center;
+    margin: 0;
+}
+h3{
+    text-align: center;
+    margin-top: 0px;
+    font-weight: 600;
+    font-size: 20px;
 }
 /*Nav*/
 nav{
-    height: 100px;
+    position: fixed;
+    height: 75px;
     width: 100%;
-    background-color: #113F59;
+    background-color: white;
+    top: 0;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    z-index: 100;
 }
 nav img{
     position: absolute;
-    height: 75px;
-    width: 75px;
-    left: 20px;
-    top: 10px;
+    height: 60px;
+    width: 60px;
+    top: 8px;
+    left: 26px;
 }
 nav .links{
     margin-left: 125px;
 }
 nav .links a{
+    position: relative;
     justify-content: left;
     position: relative;
     text-decoration: none;
     display: inline-block;
-    margin: 34px 12px 0;
-    color: white;
+    margin: 24px 12px 0;
     font-size: 20px;
+    color: black;
+    font-weight: 600;
 }
-nav .links a:hover{
-    color: hsl(0, 0%, 86%);
+nav .links a::before{
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    height: 2px;
+    width: 0%;
+    background-color: black;
+    transition: 300ms ease-out;
+}
+nav .links a:hover::before{
+    width: 100%;
 }
 
-nav .authN{
+nav .authN, nav .authY{
     position: absolute;
-    top: 34px;
+    top: 24px;
+}
+nav .authN{
     right: 30px;
 }
-
 nav .authY{
-    position: absolute;
-    top: 34px;
     right: 40px;
 }
 nav .authY a, nav .authN a{
-    background-color: #59abe6;
+    background-image: linear-gradient(to right, #59abe6, #145685, #59abe6);
+    background-size: 200%;
     color: white;
     padding: 8px 30px;
     margin-right: 10px;
-    border-radius: 10px;
+    border-radius: 6px;
     text-align: center;
     align-self: center;
     text-decoration: none;
     font-size: 20px;
+    transition: all 300ms ease-out;
 }
 nav .authY a:hover, nav .authN a:hover{
-    background-color: #40a0e6;
+    background-position: 100% 0;
+}
+.authN a:nth-child(1){
+    background-image: none;
+    background-color: none;
+    padding: 0;
+    margin-right: 30px;
+    color: black;
+}
+.authN a:nth-child(1):hover{
+    background-position: -100% 0;
+}
+.authN a:nth-child(1)::before{
+    content: "";
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    height: 1px;
+    width: 20%;
+    background-color: black;
+    transition: 300ms ease-out;
+}
+.authN a:nth-child(1):hover::before{
+    width: 0%;
 }
 /*End Nav*/
-.HeroSec{
-    background-color: #113F59;
-}
-.HeroSec img{
-    width: 100%;
-    filter: brightness(50%);
-}
-.HeroSec .text{
-    height: 200px;
-    background-color: #113F59;
-    text-align: center;
-    color: white;
-}
-.HeroSec .text div{
-    align-items: center;
-    justify-content: center;
-}
-.HeroSec .text h3{
-    font-size: 32px;
-}
-.HeroSec .text p{
-    font-size: 22px;
-}
-
-
 
 /*Responsive*/
 .hamburger {
     cursor: pointer;
     position: absolute;
-    top: 8px;
+    top: 7px;
     z-index: 1;
 }
 .hamburger img{
-    width: 60px;
-    height: 60px;
+    width: 45px;
+    height: 45px;
 }
 .menuMB {
     height: 100%;
@@ -108,17 +139,24 @@ nav .authY a:hover, nav .authN a:hover{
     padding-top: 60px;
     z-index: 2;
 }
-.menuMB a{
+.menuMB button{
+    all: unset;
+}
+.menuMB a, .menuMB button{
     padding: 10px 15px;
     text-decoration: none;
     font-size: 25px;
     color: white;
     display: block;
     transition: 0.3s;
+    cursor: pointer;
 }
 
-.menuMB a:hover {
+.menuMB a:hover, .menuMB a:hover{
     color: hsl(0, 0%, 86%);
+}
+.menuMB button{
+    padding: 0;
 }
 .menuMB .closebtn {
     position: absolute;
@@ -127,7 +165,465 @@ nav .authY a:hover, nav .authN a:hover{
     font-size: 36px;
     margin-left: 50px;
 }
+/*responsive end*/
 
+.main{
+    margin: 0px auto;
+    max-width: 2000px;
+}
+.margin{
+    margin: 0px 40px;
+}
+.heroSec1, .heroSec2{
+    display: flex;
+}
+.gif-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-right: 2px solid #ddd;
+}
+.gif-panel img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+.gif-panel img:nth-child(2){
+        display: none;
+}
+
+.promo-panel {
+    flex: 1;
+    background-color: #fff;
+    padding: 20px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    text-align: right;
+}
+
+.promo-panel h2 {
+    font-size: 36px;
+    max-width: 500px;
+    margin: 0px 0px 10px;
+}
+.promo-panel span {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+.promo-panel p {
+    margin-bottom: 2rem;
+    text-align: right;
+    overflow: hidden;
+    white-space: nowrap;
+    display:block;
+    border-right: 3px solid black;
+    animation: typewriter 15s steps(50) infinite, blinking-cursor 0.8s infinite;
+    animation-fill-mode: forwards
+}
+
+@keyframes typewriter {
+    0% { width:0 }
+    25% { width: 70% }
+    48% { width: 100% }
+    50% { width: 100% }
+    55% { width: 100% }
+    75% { width: 70%; }
+    85% { width: 30%; }
+    100% { width: 0; }
+}
+@keyframes blinking-cursor {
+    from { border-color: transparent }
+    to { border-color: black }
+}
+
+.promo-panel .links {
+    display: flex;
+    gap: 1rem;
+}
+.promo-panel .links a {
+    font-size: 14px;
+    padding: 12px 20px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    text-decoration: none;
+    transition: 200ms;
+}
+.promo-panel .links .primary {
+    background-color: #113F59;
+    color: white;
+}
+.promo-panel .links .primary:hover {
+    background-color: hsl(202, 68%, 16%);
+}
+.promo-panel .links .secondary {
+    background-color: #e6e6e6;
+    color: black;
+}
+.promo-panel .links .secondary::after {
+    content: "→";
+    margin-right: 7px;
+    margin-left: 2px;
+    transition: 200ms;
+}
+.promo-panel .links .secondary:hover {
+    background-color: hsl(0, 0%, 80%);
+}
+.promo-panel .links .secondary:hover::after {
+    margin-right: 2px;
+    margin-left: 7px;
+}
+
+@media screen and (max-width: 680px) {
+    .promo-panel {
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .promo-panel h2 {
+        font-size: 28px;
+    }
+
+    .promo-panel span {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    .promo-panel p {
+        font-size: 14px;
+        white-space: normal;
+        border-right: none;
+        animation: none;
+        text-align: center;
+    }
+
+    .promo-panel .links {
+        flex-direction: column;
+        gap: 10px;
+        width: calc(100% - 80px);
+        align-items: center;
+        justify-content: center;
+    }
+
+    .promo-panel .links a {
+        width: 100%;
+    }
+}
+
+.heroSec1{
+    margin-top: 100px;
+    border-width: 2px 2px 1px;
+    border-style: solid;
+    border-color: #ccc;
+}
+.heroSec2 {
+    margin-bottom: 20px;
+    border-width: 1px 2px 2px;
+    border-style: solid;
+    border-color: #ccc;
+    padding: 30px 30px;
+}
+
+.heroSec2 .item {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    gap: 30px;
+    align-items: stretch;
+}
+
+.heroSec2 .item .box {
+    background-color: hsl(0, 0%, 98%);
+    border-radius: 8px;
+    padding: 30px;    
+    border: 1px solid #ccc;
+    transition: box-shadow 200ms;
+    min-height: 175px;
+    box-sizing: border-box;
+}
+.heroSec2 .item .box:hover {
+    box-shadow: 0 0 11px rgba(33,33,33,.2); 
+}
+.heroSec2 .item .box .img {
+    width: 60px;
+    height: 60px;
+    background-color: hsl(202, 100%, 83%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.heroSec2 .item .box .img img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+}
+.heroSec2 .item .box .content {
+    margin-top: 20px;
+}
+.heroSec2 .item .box h4 {
+    margin: 0px 0px 20px;
+    font-size: 20px;
+    font-weight: 500;
+}
+.heroSec2 .item .box p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.about{
+    margin-top: 80px;
+    background-color: #fff;
+    padding: 40px 20px;
+    text-align: center;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, #ccc 0px 0px 0px 1px inset;
+}
+.about .grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    align-items: center;
+    margin-bottom: 20px;
+}
+.about .grid div{
+    border-right: 1px solid #ccc;
+    padding: 0px 20px;
+    line-height: 1.5;
+}
+.about .grid div:last-child{
+    border-right: 0px;
+}
+.about button{
+    display: inline;
+    text-align: center;
+    font-size: 14px;
+    padding: 12px 10px;
+    max-width: 200px;
+    background-color: #113F59;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    margin: 30px 0px 40px;
+
+}
+.about button:hover{
+    background-color: hsl(202, 68%, 16%);
+}
+.about button:disabled{
+    background-color: hsl(0, 0%, 40%);
+    cursor: not-allowed;
+}
+
+.waw{
+    margin: 80px 0px;
+}
+.waw .card .img img {
+    max-width: 110px;
+    max-height: 110px;
+    display: block;
+}
+.waw .card::after,
+.waw .card .img img {
+  border-radius: 50%;
+}
+.waw .card {
+    margin: 40px auto 20px;
+    padding: 40px 60px 40px 40px;
+    border-radius: 4px;
+    background-color: #ffffff;
+    max-width: 700px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+    position: relative;
+    transform-style: preserve-3d;
+    overflow: hidden;
+}
+.waw .card::after{
+    content: '';
+    position: absolute;
+    z-index: -1;
+}
+.waw .card::after {
+    height: 250px;
+    width: 250px;
+    background-color: #113F59;
+    top: -140px;
+    right: -140px;
+    box-shadow: 2rem 6rem 0 -3rem #FFF;
+}
+.waw .card .img{
+    display: flex;
+    margin-bottom: 30px;
+}
+.waw .name {
+    margin-left: 20px;
+}
+.waw .name h2 {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+.waw .name h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: black;
+    margin-top: 0;
+}
+.waw .text {
+    font-size: 14px;
+    margin-bottom: 30px;
+    text-align: justify;
+    line-height: 1.5;
+    margin: 5px 0px;
+}
+.waw .links{
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+.waw .links img{
+    width: auto;
+    height: 40px;
+}
+.waw .links button{
+    all: unset;
+    cursor: pointer;
+    width: 40px;
+}
+.waw .links .tooltipDiv {
+    position: relative;
+    display: inline-block;
+}
+.waw .links .tooltip{
+    visibility: hidden;
+    width: 140px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 48px;
+    right: 0px;
+    margin-left: -15px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.waw .links .tooltip::after{
+    content: "";
+    position: absolute;
+    top: 100%;
+    right: 15px;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+.tooltipDiv:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+/*FAQ
+/*
+/**/
+.faq-item {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 1400px;
+    margin: 20px auto;
+}
+.faq-question {
+    background-color: hsl(0, 0%, 98%);
+    width: 100%;
+    padding: 20px 60px 20px 20px;
+    text-align: left;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.3s ease;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+}
+.faq-question:hover {
+    background-color: hsl(0, 0%, 94%);
+}
+.faq-question .arrow {
+    position: absolute;
+    right: 20px;
+    transition: transform 0.3s ease;
+    width: 20px;
+    height: 20px;
+    top: 20px;
+}
+.faq-question .arrow img{
+    height: 20px;
+    width: 20px;
+}
+.faq-question:hover .arrow{
+    transform: rotate(90deg);
+}
+.faq-question.active {
+    background-color: hsl(0, 0%, 94%);
+}
+.faq-question.active .arrow {
+    transform: rotate(90deg);
+}
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background-color: #fff;
+}
+.faq-answer p {
+    padding: 20px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #555;
+}
+/*
+/*
+/*FAQ*/
+
+/*Responsive
+/*
+/**/
+
+@media screen and (max-width: 1100px) {
+    .gif-panel img:nth-child(1){
+        display: none;
+    }
+    .gif-panel img:nth-child(2){
+        display: block;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .menu img{
+        display: none;
+    }
+    .menu .links{
+        margin-left: 10px;
+    }
+}
 
 @media screen and (min-width: 901px) {
     .menu{
@@ -145,4 +641,72 @@ nav .authY a:hover, nav .authN a:hover{
     .hamburger{
         visibility: visible;
     }
+    .heroSec1 .gif-panel{
+        display: none;
+    }
+    .heroSec2 .item{
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+    }
+    .about{
+        padding: 20px;
+    }
+    .about .grid{
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        margin-bottom: 0px;
+    }
+    .about .grid div{
+        border-right: 0px;
+        border-bottom: 1px solid #ccc;
+    }
+    .about .grid div:last-child{
+        border-bottom: 0px;
+    }
+}
+@media screen and (max-width: 600px) {
+    .waw .card {
+        display: block;
+    }
+    .waw .card .img{
+        display: block;
+    }
+    .waw .card .img .name{
+        margin: 30px 0px 0px 0px;
+    }
+    .waw .card .infos {
+        margin-left: 0;
+        margin-top: 1.5rem;
+    }
+    .waw .card .text{
+        margin: 20px 0px;
+    }
+}
+@media screen and (max-width: 450px) {
+    .text{
+        margin: 20px 0px;
+        text-align: left;
+    }
+    .margin{
+        margin: 0px 20px;
+    }
+}
+/*
+/*
+/*Responsive*/
+
+
+footer{
+    margin-top: 100px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+}
+footer h3{
+    font-size: 26px;
+    font-weight: 600;
+    margin: 20px 0px 10px;
+}
+footer p{
+    margin: 30px 10px;
 }

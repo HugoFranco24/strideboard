@@ -13,7 +13,7 @@ use App\Models\Project;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, SoftDeletes;
+    use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -53,7 +53,7 @@ class User extends Authenticatable
     public function projects(): BelongsToMany
     {
         return $this->belongsToMany(Project::class, 'projects_users')
-                    ->withPivot('user_type')->whereNull('projects_users.deleted_at');
+                    ->withPivot('user_type');
     }
     public function tasks()
     {

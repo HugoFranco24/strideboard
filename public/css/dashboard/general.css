@@ -13,7 +13,7 @@ html:not(.dark_theme) body {
     
     --box-input-border: hsl(0, 0%, 80%);
     --box-input-bg-hover: hsl(0, 0%, 98%);
-    --box-shadow-color: hsl(0, 0%, 70%);
+    --box-shadow-color: #d1d5db;
     /*box end*/
 
     /*icon color change*/
@@ -53,14 +53,21 @@ html:not(.dark_theme) body {
 
 /*#endregion Themes*/
 
+.sql_max{
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .box{
     background-color: var(--box-color);
     color: var(--text-color);
     padding: 40px 30px;
     width: calc(100% - 60px);
     margin-bottom: 60px;
-    border-radius: 10px;
-    box-shadow: 1px 1px 2px var(--box-shadow-color);
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, var(--box-shadow-color) 0px 0px 0px 1px inset;
 }
 .box h2{
     font-size: 26px;
@@ -73,6 +80,7 @@ input[type='text'],
 input[type='email'], 
 input[type='password'],
 input[type='date'],
+input[type='color'],
 textarea
 {
     margin: 5px 0px 10px;
@@ -109,6 +117,10 @@ textarea:focus
     outline: 1px solid var(--box-input-border);
     background-color: var(--box-input-bg-hover);
 }
+.required{
+    color: #cc0000;
+    font-weight: 600;
+}
 
 .pfp{
     object-fit:cover;
@@ -120,7 +132,7 @@ textarea:focus
     width: 15%;
     height: 40px;
     color: white;
-    border-radius: 5px;
+    border-radius: 4px;
     border: none;
     min-width: 180px;
     width: 180px;

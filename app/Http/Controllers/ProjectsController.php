@@ -2,18 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use App\Models\TasksUsers;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
-use phpDocumentor\Reflection\Types\Boolean;
 use App\Models\User;
 use App\Models\Project;
-use App\Models\Task;
 use App\Models\ProjectUser;
+use App\Models\Task;
 use Illuminate\Support\Facades\DB;
 
 class ProjectsController extends Controller {
@@ -39,18 +32,20 @@ class ProjectsController extends Controller {
         $request->validate([
             'name' => 'required|string|max:255',
             'business' => 'max:255',
-            'due_date' => 'required',
+            'due_date' => 'required|date',
+            'color' => 'hex_color|required',
         ]);
 
         $project = new Project()->create([
             'name' => $request->name,
             'business' => $request->business,
             'due_date' => $request->due_date,
+            'color' => $request->color,
         ]);
         
         new ProjectUser()->create([
             'project_id' => $project->id,
-            'business' => auth()->id(),
+            'user_id' => auth()->id(),
             'user_type' => 2,
         ]);
 
@@ -99,12 +94,14 @@ class ProjectsController extends Controller {
             'name' => 'required|string|max:255',
             'business' => 'max:255',
             'due_date' => 'required|date',
+            'color' => 'hex_color|required',
         ]);
 
         Project::findOrFail($id)->update([
             'name' => $request->name,
             'business' => $request->business,
             'due_date' => $request->due_date,
+            'color' => $request->color,
         ]);
 
         return redirect(route('projects.overview', $id));
@@ -114,6 +111,8 @@ class ProjectsController extends Controller {
     {
         $project = Project::findorFail($id)
         ->load('users','tasks');
+
+        $projects_users = ProjectUser::where('project_id', $id);
 
         $user = $project->users->where('id', auth()->id())->first();
 
@@ -127,8 +126,8 @@ class ProjectsController extends Controller {
         foreach($project->tasks as $task){
             $task->delete();
         }
-        foreach($project->users as $user){
-            $user->delete();
+        foreach($projects_users as $p_user){
+            $p_user->delete();
         }
         $project->delete();
 
@@ -191,7 +190,9 @@ class ProjectsController extends Controller {
         $project = Project::findorFail($project_id)
         ->load('users','tasks');
 
-        $project_user = ProjectUser::where('user_id', $user_id)->firstOrFail();
+        $project_user = ProjectUser::where('project_id', $project_id)
+                                    ->where('user_id', $user_id)
+                                    ->firstOrFail();
         $user = $project->users->where('id', auth()->id())->first();
 
         if (!$project->users->contains('id', auth()->id())) {
@@ -205,12 +206,13 @@ class ProjectsController extends Controller {
         }
 
         $request->validate([
-            'user_type' => 'required|string|max:255',
+            'user_type' => 'required',
         ]);
-        
+
         $project_user->update([
             'user_type'=> $request->user_type
         ]);
+
 
         return redirect(route('projects.overview', $project_id));    
     }
@@ -220,7 +222,9 @@ class ProjectsController extends Controller {
         $project = Project::findorFail($project_id)
         ->load('users','tasks');
 
-        $project_user = ProjectUser::where('user_id', $user_id)->firstOrFail();
+        $project_user = ProjectUser::where('project_id', $project_id)
+                                    ->where('user_id', $user_id)
+                                    ->firstOrFail();
         $user = $project->users->where('id', auth()->id())->first();
 
         //permitions check
@@ -234,6 +238,25 @@ class ProjectsController extends Controller {
             abort(403);
         }
         //permitions check end
+
+        //deleting tasks where the user was
+        $ownedTasks = Task::where('user_id', $project_user->user_id)->get();
+
+        foreach ($ownedTasks as $task) {
+            $newOwner = ProjectUser::where('project_id', $task->project_id)
+                        ->where('user_id', '!=', $user->id)
+                        ->whereIn('user_type', [2, 1, 0])
+                        ->orderByDesc('user_type')
+                        ->first();
+
+            if ($newOwner) {
+                $task->user_id = $newOwner->user_id;
+                $task->save();
+            } else {
+                $task->delete();
+            }
+        }
+        //end deleting tasks where the user was
 
         $project_user->delete();
 

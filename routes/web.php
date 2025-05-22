@@ -14,7 +14,6 @@ Route::get('/', function () {
 
 //profile edits
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/profile/uploadImg', [ProfileController::class, 'uploadImg'])->name('profile.uploadImg');
@@ -26,7 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/tasks', [DashboardController::class, 'tasks'])->name('dashboard.tasks');
     Route::get('/dashboard/calendar', [DashboardController::class, 'calendar'])->name('dashboard.calendar');
     Route::get('/dashboard/messages', [DashboardController::class, 'messages'])->name('dashboard.messages');
-    Route::get('/dashboard/profile', [DashboardController::class, 'profile'])->name('dashboard.profile');
+    Route::get('/dashboard/profile', [ProfileController::class, 'edit'])->name('dashboard.profile');
     Route::get('/dashboard/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');
 
     //region Project Routes

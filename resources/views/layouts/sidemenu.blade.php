@@ -212,7 +212,7 @@
             <a href="/dashboard/settings" title="Settings"><img src="{{ asset('Images/Icons/Menu/Settings.png') }}" alt=""/><span>Settings</span></a>
         </div>
 
-        <p><span id="icons8">Icons by :</span><a href="https://icons8.com/" target="_blank">Icons8</a></p>
+        <p><span id="icons8">Icons by -> </span> <a href="https://icons8.com/" target="_blank">Icons8</a></p>
     </nav>
 
     <div class="top-menu" id="top-menu">
@@ -225,8 +225,8 @@
             <div class="user" onclick="toggleProfile()">
                 <img src="{{ asset($user->pfp ?? 'Images/Pfp/pfp_default.png') }}" alt="" class="pfp">
                 <div style="display: block; align-items: center">
-                    <p style="font-weight:700; font-size: 15px;">{{ $user->name }}</p>
-                    <p style="font-size:13px ">{{ $user->email }}</p>
+                    <p class="sql_max" style="font-weight:700; font-size: 15px;">{{ $user->name }}</p>
+                    <p class="sql_max" style="font-size:13px;">{{ $user->email }}</p>
                 </div>
                 <span><img id="arrowP" class="icon" src="{{ asset('Images/Icons/Menu/ProfileToggle.png') }}"></span>
             </div>
@@ -234,13 +234,15 @@
     </div>
 
     <div class="profile-toggle" id="profile-toggle" style="top: -90px;">
-        <a href="/dashboard/profile"><button style="border-radius: 10px 10px 0px 0px">My Profile</button></a>
+        <a href="/"><button style="border-radius: 6px 6px 0px 0px">Home</button></a>
         <div class="space"></div>
-        <a href="/dashboard/settings"><button><img src="" alt="">Settings</button></a>
+        <a href="/dashboard/profile"><button>My Profile</button></a>
+        <div class="space"></div>
+        <a href="/dashboard/settings"><button>Settings</button></a>
         <div class="space"></div>
         <form action="{{ route('logout') }}" method="POST" style="margin: 0px;">
             @csrf
-            <button type="submit" class="signOut" style="border-radius: 0px 0px 10px 10px">Sign Out</button>
+            <button type="submit" class="signOut" style="border-radius: 0px 0px 6px 6px">Sign Out</button>
         </form>
     </div>
 

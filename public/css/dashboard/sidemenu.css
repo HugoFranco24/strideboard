@@ -105,26 +105,6 @@ nav{
     padding: 20px 0px;
     border-bottom: 1px solid white;
 }
-
-
-.icons{
-    position: absolute;
-    left: 314px;
-}
-.icons a{
-    display: flex;
-    width: 70px;
-    height: 70px;
-    border-radius: 20px;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-}
-.icons img{
-    width: 60px;
-    height: 60px;
-}
-
 nav p{
     display: flex;
     position: absolute;
@@ -219,7 +199,7 @@ nav {
     display: flex;
     align-items: center;
     height: 70px;
-    border-radius: 20px;
+    border-radius: 6px;
     padding: 0px 10px;
     margin-top: 5px;
     transition: 200ms;
@@ -258,7 +238,7 @@ nav {
     right: 40px;
     top: -90px;
     background-color: var(--profile-menu);
-    border-radius: 10px;
+    border-radius: 6px;
     width: 200px;
     text-align: center;
     transition: 400ms;
@@ -288,9 +268,6 @@ nav {
 }
 .profile-toggle button img{
     transition: 200ms;
-}
-.profile-toggle button:hover img{
-    display: block;
 }
 /*#endregion*/
 /*#endregion*/
