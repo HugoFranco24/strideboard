@@ -41,27 +41,10 @@ h1{
 .left{
     display: flex;
     align-items: center;
+    width: 100%;
 }
 .left p{
     color: hsl(0, 0%, 30%);
-}
-.right{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    margin-left: auto;
-    margin-top: 28px;
-}
-.right .signOut{
-    color: #d41936;
-    background-color: var(--box-color);
-    border: none;
-    font-size: 20px;
-    text-decoration: underline;
-    cursor: pointer;
-}
-.right .signOut:hover {
-    text-decoration: none;
 }
 
 input[type="file"] {

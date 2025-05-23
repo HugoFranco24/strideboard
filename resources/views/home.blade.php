@@ -11,6 +11,15 @@
         <link rel="icon" href="{{ asset('Images/Logos/StrideBoard.png') }}">
 
         <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    document.querySelector('.heroSec1').classList.add('loaded');
+                    document.querySelector('.heroSec2').classList.add('loaded');
+                }, 50);
+            });
+        </script>
     </head>
     <body>
         <nav>
@@ -61,8 +70,11 @@
                         <span>Hugo Franco, creator of Strideboard</span>
                         <p>Track your progress without getting buried in features you don't need.</p>
                         <div class="links">
-                        <a href="" class="primary">Get Started for Free!</a>
-                        <a class="secondary">Learn More</a>
+                            <div>
+                                <a href="/register" class="primary">Get Started for Free!</a>
+                                <span>(No Credit Card Required)</span>
+                            </div>
+                            <a href="#hiw" class="secondary">Learn More</a>
                         </div>
                     </div>
                 </div>
@@ -161,17 +173,18 @@
                         </div>
                         <div class="infos">
                             <p class="text">
-                                Hello! I'm Hugo and I'm a student at Escola Secundária/3 Pinhal do Rei. I'm doing the last year in the Professional Course of IT Technician - Systems.
+                                Hello! I'm Hugo, a student at Escola Secundária/3 Pinhal do Rei doing my last year on the Professional Course of IT Technician - Systems.   
                             </p>
                             <p class="text">
-                                Right now I'm looking for finishing the 12th year and enter an university to do Informatical Engineering.
+                                Right now I'm looking for finishing the 12th year and entering an university to do Informatical Engineering.    
                             </p>
                             <p class="text">
-                                I'm currently using Laravel to make my web projects because it's easier and more effective to use and beacause it's what I learnt at my internship at Yudo Eu, S.a.
+                                I'm currently using Laravel to make my web projects because it's easier and more effective to use and because
+                                it's what I learnt at my internship at Yudo Eu, S.a.
                             </p>
                             <div class="links">
                                 <a href="https://www.instagram.com/hogu_franco/"><img src="https://img.icons8.com/fluency/96/instagram-new.png"></a>
-                                <a href="https://www.instagram.com/hogu_franco/"><img src="https://img.icons8.com/color/96/linkedin.png"></a>
+                                <a href="https://www.linkedin.com/in/hugo-franco24/"><img src="https://img.icons8.com/color/96/linkedin.png"></a>
                                 <div class="tooltipDiv">
                                     <button onclick="copyEmail()" onmouseout="outCopy()">
                                         <span class="tooltip" id="tooltip">Copy Email Address</span>
@@ -185,6 +198,45 @@
 
                 <div class="hiw" id="hiw">
                     <h1>How it Works</h1>
+                    <div class="container">
+                        <div class="item">
+                            <div class="itemIn">
+                                <h2>Dashboard</h2>
+                                <p>Overview of ongoing projects, key metrics (e.g., tasks completed, deadlines), and quick access to start a new project.</p>
+                                <img src="{{ asset('Images/Home/HeroSec.gif') }}" alt="" width="auto" height="60px">
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="itemIn">
+                                <div>
+                                    <h2>Team Updates</h2>
+                                    <p>Recent activity from team members, announcements, or a live feed of task progress.</p>
+                                </div>
+                                <div>
+                                    <h2>Resource Allocation</h2>
+                                    <p>Status of resources (e.g., team members, tools) and their availability.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="itemIn">
+                                <h2>Task Calendar</h2>
+                                <p>Upcoming deadlines, milestones, or a mini calendar for scheduling.</p>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="itemIn">
+                                <h2>Quick Actions</h2>
+                                <p>Buttons for common tasks (e.g., add task, assign user, view reports).</p>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="itemIn">
+                                <h2>Performance Analytics</h2>
+                                <p>Key performance indicators (e.g., project completion rates, time tracking) or a summary of recent achievements.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="faq" id="faq">
@@ -197,7 +249,10 @@
                             <span class="arrow"><img src="{{ asset('Images/Home/ProfileToggle.png') }}" alt=""></span>
                         </button>
                         <div class="faq-answer">
-                            <p>Yes, it's a website made for educational purposes only so it can't be monetized.</p>
+                            <p>
+                                Yes, this platform has been developed exclusively for educational use, and as such, 
+                                it is not intended to generate revenue or support any form of monetization.
+                            </p>
                         </div>
                     </div>
                     <div class="faq-item">
@@ -206,7 +261,10 @@
                             <span class="arrow"><img src="{{ asset('Images/Home/ProfileToggle.png') }}" alt=""></span>
                         </button>
                         <div class="faq-answer">
-                            <p>No, you can use with with a tablet or desktop, no mobile.</p>
+                            <p>
+                                While access via mobile devices is technically possible, 
+                                it is not recommended due to potential limitations in functionality and user experience.
+                            </p>
                         </div>
                     </div>
                     <div class="faq-item">
@@ -215,7 +273,10 @@
                             <span class="arrow"><img src="{{ asset('Images/Home/ProfileToggle.png') }}" alt=""></span>
                         </button>
                         <div class="faq-answer">
-                            <p>No, you need ethernet to have real time progress.</p>
+                            <p>
+                                No, to ensure accurate and uninterrupted real-time progress tracking, an Ethernet connection is required.
+                                Wi-Fi or other connections may result in data delays or loss.
+                            </p>
                         </div>
                     </div>
                     <div class="faq-item">
@@ -224,7 +285,9 @@
                             <span class="arrow"><img src="{{ asset('Images/Home/ProfileToggle.png') }}" alt=""></span>
                         </button>
                         <div class="faq-answer">
-                            <p>Yes, there is a tab for notifications sent by Strideboard.</p>
+                            <p>
+                                Yes, there is a dedicated tab within the interface specifically for receiving and reviewing notifications dispatched by Strideboard.
+                            </p>
                         </div>
                     </div>
                     <div class="faq-item">
@@ -233,7 +296,10 @@
                             <span class="arrow"><img src="{{ asset('Images/Home/ProfileToggle.png') }}" alt=""></span>
                         </button>
                         <div class="faq-answer">
-                            <p>We have a built in calendar to inform the user about all tasks and projects deadlines.</p>
+                            <p>
+                                The platform includes an integrated calendar feature designed to provide users with comprehensive visibility 
+                                over all upcoming task and project deadlines.
+                            </p>
                         </div>
                     </div>
                 </div>

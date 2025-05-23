@@ -25,16 +25,9 @@
             <div class="left">
                 <img src="{{ asset($user->pfp ?? 'Images/Pfp/pfp_default.png') }}" alt="" width="150px" height="150px" class="pfp">
                 <div style="display: block; align-items: center">
-                    <h3 style="margin: 30px 0px 0px 10px; font-size: 22px; font-weight:600; transform:translateY(-100%)">{{ $user->name }}</h3>
-                    <p style=" margin: 0px 10px 0px 10px; transform:translateY(-100%); color: var(--text-color);">{{ $user->email }}</p>
+                    <h3 class="SQL" style="margin: 30px 0px 0px 10px; font-size: 22px; font-weight:600; transform:translateY(-100%)">{{ $user->name }}</h3>
+                    <p class="SQL" style=" margin: 0px 10px 0px 10px; transform:translateY(-100%); color: var(--text-color);">{{ $user->email }}</p>
                 </div>
-            </div>
-
-            <div class="right">
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="signOut">Sign Out</button>
-                </form>
             </div>
         </div>
         

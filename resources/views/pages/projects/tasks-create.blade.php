@@ -58,8 +58,8 @@
                             <table class="addmember">
                                 <tr v-for="user in filteredUsers" :key="user.id">
                                     <td><img :src="'/' + (user.pfp || 'Images/Pfp/pfp_default.png')" class="pfp"></td>
-                                    <td class="sql_max">@{{ user.name }}</td>
-                                    <td class="sql_max">@{{ user.email }}</td>
+                                    <td class="SQL" style="max-width: 200px">@{{ user.name }}</td>
+                                    <td class="SQL" style="max-width: 200px">@{{ user.email }}</td>
                                     <td>
                                         <button type="button" @click="selectUser(user)">
                                             <img width="50" height="50" src="{{ asset('Images/Icons/UserAdd.png') }}" alt="plus"/>
@@ -74,8 +74,8 @@
                         <table class="selectedUser">
                             <tr>
                                 <td><img :src="'/' + (selectedUser.pfp || 'Images/Pfp/pfp_default.png')" class="pfp"></td>
-                                <td class="sql_max">@{{ selectedUser.name }}</td>
-                                <td class="sql_max">@{{ selectedUser.email }}</td>
+                                <td class="SQL" style="max-width: 200px">@{{ selectedUser.name }}</td>
+                                <td class="SQL" style="max-width: 200px">@{{ selectedUser.email }}</td>
                                 <td>
                                     <button type="button" @click="removeUser">
                                         <img width="35" height="35" src="{{ asset('Images/Icons/UserDelete.png') }}" alt="remove"/>

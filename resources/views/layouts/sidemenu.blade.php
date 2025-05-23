@@ -225,8 +225,8 @@
             <div class="user" onclick="toggleProfile()">
                 <img src="{{ asset($user->pfp ?? 'Images/Pfp/pfp_default.png') }}" alt="" class="pfp">
                 <div style="display: block; align-items: center">
-                    <p class="sql_max" style="font-weight:700; font-size: 15px;">{{ $user->name }}</p>
-                    <p class="sql_max" style="font-size:13px;">{{ $user->email }}</p>
+                    <p class="SQL" style="font-weight:700; font-size: 15px;">{{ $user->name }}</p>
+                    <p class="SQL" style="font-size:13px;">{{ $user->email }}</p>
                 </div>
                 <span><img id="arrowP" class="icon" src="{{ asset('Images/Icons/Menu/ProfileToggle.png') }}"></span>
             </div>

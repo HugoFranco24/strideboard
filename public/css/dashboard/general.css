@@ -53,13 +53,12 @@ html:not(.dark_theme) body {
 
 /*#endregion Themes*/
 
-.sql_max{
-    max-width: 200px;
+.SQL{
+    flex: 1;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
 .box{
     background-color: var(--box-color);
     color: var(--text-color);

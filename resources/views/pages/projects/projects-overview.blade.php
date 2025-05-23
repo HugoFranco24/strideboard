@@ -28,13 +28,14 @@
     <div class="container">
         <div class="item">
             <h2>Project Details</h2>
-            <p class="sql_max"><span>Project Name:</span> {{ $project->name }}</p>
-            <p class="sql_max"><span>Business:</span> {{ $project->business == '' ? 'Not Defined' : $project->business }}</p>
-            <p class="sql_max"><span>Due Date:</span> {{ $project->due_date }}</p>
+            <p class="SQL"><span>Project Name:</span> {{ $project->name }}</p>
+            <p class="SQL"><span>Business:</span> {{ $project->business == '' ? 'Not Defined' : $project->business }}</p>
+            <p class="SQL"><span>Due Date:</span> {{ $project->due_date }}</p>
             <div style="display: flex">
-                <span  class="sql_max">Project Color:   {{$project->color}} -></span>
+                <span>Project Color:   {{$project->color}} -></span>
                 <div style="background-color: {{ $project->color }}; width: 40px;"></div>
             </div>
+            <br>
             <div class="btns">
                 @if ($authUserType != 0)
                     <a href="/dashboard/projects/edit/{{ $project->id }}"><button type="button" class="btn_default">Edit Project</button></a>
@@ -42,22 +43,23 @@
                 
                 @if ($authUserType == 2)
                     <form action="/dashboard/projects/delete/{{ $project->id }}"
+                        onsubmit="return confirm('Are you sure you want to DELETE the project?')"
                         method="post"
                     >
                         @csrf
                         @method('delete')
-                        <button type="submit" class="btn_delete">Delete Project</button>
+                        <button type="submit" class="btn_delete" style="margin-top: 20px;">Delete Project</button>
                     </form>
                 @endif
 
                 @if ($authUserType != 2)
                     <form action="/dashboard/projects/overview/{{ $project->id }}/delete-member/{{ $user->id }}"
-                        onsubmit="return confirm('Are you sure you want to leave the project?')"
+                        onsubmit="return confirm('Are you sure you want to LEAVE the project?')"
                         method="post"
                     >
                         @csrf
                         @method('delete')
-                        <button type="submit" class="btn_default">Leave Project</button>
+                        <button type="submit" class="btn_default" style="margin-top: 20px;">Leave Project</button>
                     </form>
                 @endif
             </div>        
@@ -74,8 +76,8 @@
                         <table class="addmember">
                             <tr v-for="user in filteredUsers" :key="user.id">                        
                                 <td><img :src="'/' + (user.pfp || 'Images/Pfp/pfp_default.png')" alt="" class="pfp"></td>
-                                <td class="sql_max">@{{ user.name }}</td>
-                                <td class="sql_max">@{{ user.email }}</td>
+                                <td class="SQL" style="max-width: 200px">@{{ user.name }}</td>
+                                <td class="SQL" style="max-width: 200px">@{{ user.email }}</td>
                                 <td>
                                     <form :action="'/dashboard/projects/overview/'+ project.id +'/add-member/'+ user.id" 
                                         class="addmember_form"
@@ -100,8 +102,8 @@
                     @foreach ($project->users as $pu)
                         <tr>
                             <td><img src="{{ asset($pu->pfp ?? 'Images/Pfp/pfp_default.png') }}" alt="" class="pfp"></td>
-                            <td class="sql_max">{{ $pu->name }}</td>
-                            <td class="sql_max">{{ $pu->email }}</td>
+                            <td class="SQL" style="max-width: 175px">{{ $pu->name }}</td>
+                            <td class="SQL" style="max-width: 175px">{{ $pu->email }}</td>
                             <td>
                                 @if ($pu->id != auth()->id())
                                     @if ($authUserType == 1 && $pu->pivot->user_type == 1)
@@ -163,6 +165,7 @@
         @php
             $done = 0;
             $in_progress = 0;
+            $stoped = 0;
             $to_do = 0;
             $total = 0;
 
@@ -170,6 +173,8 @@
                 if($t->state == 0){
                     $to_do += 1;
                 }elseif($t->state == 1){
+                    $stoped += 1;
+                }elseif($t->state == 2){
                     $in_progress += 1;
                 }else{
                     $done += 1;
@@ -180,12 +185,13 @@
         <div class="item">
             <input type="hidden" value="{{ $done }}" id="done">
             <input type="hidden" value="{{ $in_progress }}" id="in_progress">
+            <input type="hidden" value="{{ $stoped }}" id="stoped">
             <input type="hidden" value="{{ $to_do }}" id="to_do">
             <h2>Tasks</h2>
-            <p><span>Done:</span> {{ $done }}</p>
-            <p><span>In Progress:</span> {{ $in_progress }}</p>
-            <p><span>To do:</span> {{ $to_do }}</p>
             <p><span>Total:</span> {{ $total }}</p>
+            <p><span>Late: </span> 2</p>
+            <p><span>Urgent: </span> 2</p>
+            <br><br>
             
             <div class="btns">
                 @if ($authUserType != 0)
@@ -206,9 +212,9 @@
                     </tr>
                     @foreach ($project->tasks as $t)
                         <tr>
-                            <td class="sql_max">{{ $t->name }}</td>
-                            <td class="sql_max">{{ $t->start }}</td>
-                            <td class="sql_max">{{ $t->end }}</td>
+                            <td class="SQL">{{ $t->name }}</td>
+                            <td class="SQL">{{ $t->start }}</td>
+                            <td class="SQL">{{ $t->end }}</td>
                             <td>
                                 @if ($t->state == 0)
                                     To Do
@@ -292,6 +298,7 @@ window.onload = function () {
 
     //Tasks Chart
     const to_do = parseInt(document.getElementById('to_do').value);
+    const stoped = parseInt(document.getElementById('stoped').value);
     const in_progress = parseInt(document.getElementById('in_progress').value);
     const done = parseInt(document.getElementById('done').value);
 
@@ -301,11 +308,11 @@ window.onload = function () {
     const taskChart = new Chart('taskChart', {
         type: 'doughnut',
         data: {
-            labels: ["To Do", "In Progress", "Done"],
+            labels: ["To Do", "Stoped", "In Progress", "Done"],
             datasets: [
                 {
-                    data: [to_do, in_progress, done],
-                    backgroundColor: ['#DA291C', '#F3C242', '#008057'],
+                    data: [to_do, stoped, in_progress, done],
+                    backgroundColor: ['#ccc','#da291c', '#f3c242', '#008057'],
                     borderColor: 'transparent'
                 },
                 

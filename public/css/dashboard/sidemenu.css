@@ -203,6 +203,7 @@ nav {
     padding: 0px 10px;
     margin-top: 5px;
     transition: 200ms;
+    width: 300px;
 }
 .top-menu .user:hover{
     background-color: var(--top-gb-color-hover);
@@ -221,17 +222,13 @@ nav {
 }
 .top-menu .user p{
     margin: 0px;
+    max-width: 200px;
 }
 .top-menu .user span img{
     transition: 300ms;
     height: 16px;
     width: 16px;
 }
-/* .top-menu .user span img{
-    transition: 300ms;
-    height: 30px;
-    width: 30px;
-} */
 /*#region dropdown */
 .profile-toggle{
     position: fixed;
