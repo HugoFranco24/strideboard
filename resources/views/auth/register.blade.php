@@ -23,14 +23,26 @@
         <!-- Password -->
         <div>
             <label>Password</label>
-            <input id="password" type="password" name="password" required autocomplete="new-password" />
+            <x-password-input 
+                :id="'password'" 
+                :name="'password'" 
+                :autocomplete="'new-password'" 
+                :visible="'visible1'"
+                :invisible="'invisible1'"
+            />
             <x-input-error :messages="$errors->get('password')" />
         </div>
 
         <!-- Confirm Password -->
         <div>
             <label>Confirm Password</label>
-            <input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password" />
+            <x-password-input 
+                :id="'password_confirmation'" 
+                :name="'password_confirmation'" 
+                :autocomplete="'new-password'" 
+                :visible="'visible2'"
+                :invisible="'invisible2'"
+            />
             <x-input-error :messages="$errors->get('password_confirmation')"/>
         </div>
 

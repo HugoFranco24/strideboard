@@ -163,7 +163,7 @@
                 <div class="waw" id="waw">
                     <h1>Who Are We</h1>
                     <h3>(Well It's actually just me)</h3>
-                    <div class="card">
+                    <div class="card fade-in-on-scroll">
                         <div class="img">
                             <img src="{{ asset('Images/Home/hugoPfp.jpg') }}">
                             <div class="name">
@@ -315,6 +315,26 @@
 </html>
 
 <script>
+    //Animations
+    //
+    //
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target); // Trigger once
+            }
+        });
+    });
+
+    document.querySelectorAll('.fade-in-on-scroll').forEach(el => {
+        observer.observe(el);
+    });
+    //
+    //
+    //Animations End
+
+
     function toggleMenu(){
         var menu = document.getElementById("menuMB");
 

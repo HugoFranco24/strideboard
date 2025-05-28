@@ -1,6 +1,6 @@
 @extends('layouts.sidemenu')
 @section('title')
-    {{ isset($project) ? 'Update' : 'Create' }} Project
+    {{ isset($project) ? 'Edit' : 'Create' }} Project
 @endsection
 
 @section('go-back')
@@ -10,7 +10,7 @@
 @endsection
 
 @section('body-title')
-    {{ isset($project) ? 'Update' : 'Create' }} Project
+    {{ isset($project) ? 'Edit' : 'Create' }} Project
 @endsection
 
 @section('css')
@@ -45,7 +45,7 @@
         <input type="color" name="color" style="margin-bottom: 10px;" value="{{ old('color', $project->color ?? '') }}"><br>
         <x-input-error :messages="$errors->get('due_date')"/>
 
-        <button type="submit" class="btn_default">{{ isset($project) ? 'Update' : 'Create' }} Project</button>
+        <button type="submit" class="btn_default">{{ isset($project) ? 'Edit' : 'Create' }} Project</button>
     </form>
 </div> 
 @endsection

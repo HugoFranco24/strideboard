@@ -11,7 +11,7 @@
     <img src="{{ asset('Images/Errors/401-Dark.jpg') }}" alt="" width="100%" height="100%">
 @endsection
 @section('desc')
-    <h2>Unauthorized, you shall not pass!</h2>
+    <h2>Unauthorized, you shall not pass! - 401</h2>
     <p>This part of the site requires you to prove you're you. Without the secret password or handshake, this door stays shut.</p>
     <p>Login to access this page!</p>
 @endsection

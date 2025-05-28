@@ -1,6 +1,6 @@
 @extends('layouts.sidemenu')
 @section('title')
-    {{ isset($task) ? 'Update' : 'Create' }} Task
+    {{ isset($task) ? 'Edit' : 'Create' }} Task
 @endsection
 
 @section('go-back')
@@ -10,11 +10,11 @@
 @endsection
 
 @section('body-title')
-    {{ isset($task) ? 'Update' : 'Create' }} Task
+    {{ isset($task) ? 'Edit' : 'Create' }} Task
 @endsection
 
 @section('css')
-    <link rel="stylesheet" href="{{ asset('css/dashboard/projects/task-create.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard/tasks/task-create.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard/projects/input-select.css') }}">
 @endsection
 
@@ -26,30 +26,46 @@
     <div id="app">
         <div class="box">
             <h2>Task Details</h2>
-            <form action="/dashboard/projects/overview/{{$project->id}}/create-task/add" method="POST">
+            <form action="{{ route('tasks.add', $project->id)  }}" method="POST">
                 @csrf
-                @if(isset($task))
-                    @method('put')
-                @endif
 
                 <label>Task Name<span class="required">*</span></label><br>
-                <input type="text" name="name" style="margin-bottom: 10px" value="{{ old('name', $task->name ?? '') }}"><br>
+                <input type="text" name="name" style="margin-bottom: 10px"><br>
                 <x-input-error :messages="$errors->get('name')"/>
 
                 <label>Description</label><br>
-                <textarea name="description" style="margin-bottom: 10px; height: auto;" value="{{ old('description', ) }}" rows="4"></textarea>
+                <textarea name="description" style="margin-bottom: 10px; height: auto;" rows="4"></textarea>
                 <x-input-error :messages="$errors->get('description')"/>
 
                 <br>
                 <label>Start Date<span class="required">*</span></label><br>
-                <input type="date" name="start" style="margin-bottom: 10px" value="{{ old('start', $project->start ?? '') }}"><br>
+                <input type="date" name="start" style="margin-bottom: 10px"><br>
                 <x-input-error :messages="$errors->get('start')"/>
 
                 <label>End Date<span class="required">*</span></label><br>
-                <input type="date" name="end" style="margin-bottom: 10px" value="{{ old('end', $project->end ?? '') }}"><br>
+                <input type="date" name="end" style="margin-bottom: 10px"><br>
                 <x-input-error :messages="$errors->get('end')"/>
 
-                <br><br>
+                <label>Status</label><br>
+                <select name="state" id="state">
+                    <option value="0" selected>To Do</option>
+                    <option value="1">Stopped</option>
+                    <option value="2">In Progress</option>
+                    <option value="3">Done</option>
+                </select>
+                <x-input-error :messages="$errors->get('state')"/>
+
+                <br>
+                <label>Priority</label><br>
+                <select name="priority" id="priority">
+                    <option value="0" selected>Low</option>
+                    <option value="1">Normal</option>
+                    <option value="2">High</option>
+                    <option value="3">Urgent</option>
+                </select>
+                <x-input-error :messages="$errors->get('priority')"/>
+
+                <br>
                 <label>Responsible for task<span class="required">*</span></label><br>
                 <div>
                     <div v-if="!selectedUser" >
@@ -87,77 +103,20 @@
                         <input type="hidden" name="user_id" :value="selectedUser.id">
                     </div>
                 </div>
+                <x-input-error :messages="$errors->get('user_id')"/>
 
-                <button type="submit" class="btn_default" style="margin-top: 20px">{{ isset($task) ? 'Update' : 'Create' }} Task</button>
+                <button type="submit" class="btn_default" style="margin-top: 20px">Create Task</button>
             </form>
         </div> 
     </div>
 
     <div id="users" data-users='@json($project->users)'></div>
     <div id="project" data-project='@json($project)'></div>
+    @if (isset($task) && $task->user)
+        <div id="task-user" data-task-user='@json($task->user)'></div>
+    @endif
 @endsection
 
 @section('custom_vue')
-    <script>
-        window.onload = function () {
-            const { createApp, ref, onMounted, computed } = Vue;
-
-            createApp({
-                setup() {
-                    const users = ref([]);
-                    const project = ref(null);
-                    const term = ref('');
-                    const selectedUser = ref(null);
-
-                    onMounted(() => {
-                        let el = document.getElementById('users');
-                        let rawData = el.dataset.users;
-
-                        try {
-                            users.value = JSON.parse(rawData);
-                        } catch (e) {
-                            console.error('Error parsing users:', e);
-                        }
-
-                        el = document.getElementById('project');
-                        rawData = el.dataset.project;
-
-                        try {
-                            project.value = JSON.parse(rawData);
-                        } catch (e) {
-                            console.error('Error parsing project:', e);
-                        }
-                    });
-
-                    const filteredUsers = computed(() => {
-                        if (!term.value || selectedUser.value) return [];
-
-                        return users.value.filter(user =>
-                            user.name.toLowerCase().includes(term.value.toLowerCase()) ||
-                            user.email.toLowerCase().includes(term.value.toLowerCase())
-                        ).slice(0, 4);
-                    });
-
-                    const selectUser = (user) => {
-                        selectedUser.value = user;
-                        term.value = '';
-                    };
-
-                    const removeUser = () => {
-                        selectedUser.value = null;
-                    };
-
-                    return {
-                        users,
-                        term,
-                        project,
-                        selectedUser,
-                        filteredUsers,
-                        selectUser,
-                        removeUser
-                    };
-                }
-            }).mount('#app');
-        }
-    </script>
+    <script src="{{ asset('js/search-select.js') }}"></script>
 @endsection

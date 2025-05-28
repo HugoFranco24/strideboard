@@ -13,7 +13,6 @@ body{
 /*Menu
 /*
 /**/
-/*Nav*/
 nav{
     position: fixed;
     height: 75px;
@@ -209,7 +208,7 @@ h3{
     object-fit: contain;
 }
 .gif-panel img:nth-child(2){
-        display: none;
+    display: none;
 }
 
 .promo-panel {
@@ -263,7 +262,6 @@ h3{
     display: flex;
     gap: 15px;
     align-items: start;
-    /* margin-top: 20px; */
 }
 .promo-panel .links div {
     display: flex;
@@ -418,16 +416,11 @@ h3{
     animation: fadeInSlideUp 0.5s ease-out forwards;
 }
 .promo-panel h2 {
-    animation: fadeIn 0.3s ease-out forwards;
-}
-.promo-panel span, .promo-panel p {
-    animation: fadeIn 0.5s ease-out 0.3s forwards;
-}
-.promo-panel .links .primary {
-    animation: pulse 1s 2;
+    animation-delay: 400ms;
+    animation: fadeIn 1s ease-out forwards;
 }
 .promo-panel .links .secondary:hover {
-    animation: none; /* Disable bounce on hover to avoid conflict */
+    animation: none;
 }
 
 /* Hero Section 2 Animations */
@@ -436,8 +429,8 @@ h3{
     animation: fadeInScaleUp 0.4s ease-out forwards;
 }
 .heroSec2 .item .box:nth-child(1) { animation-delay: 0.2s; }
-.heroSec2 .item .box:nth-child(2) { animation-delay: 0.4s; }
-.heroSec2 .item .box:nth-child(3) { animation-delay: 0.6s; }
+.heroSec2 .item .box:nth-child(2) { animation-delay: 0.5s; }
+.heroSec2 .item .box:nth-child(3) { animation-delay: 0.8s; }
 
 /* Animation Keyframes */
 @keyframes fadeInSlideUp {
@@ -447,11 +440,6 @@ h3{
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
-}
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
 }
 @keyframes fadeInScaleUp {
     from { opacity: 0; transform: scale(0.95); }
@@ -470,7 +458,7 @@ h3{
 /*Hero Section End*/
 
 
-/*Who are We
+/*About the product
 /*
 /**/
 .about{
@@ -516,7 +504,14 @@ h3{
     background-color: hsl(0, 0%, 40%);
     cursor: not-allowed;
 }
+/**/
+/*
+/*About the Product End*/
 
+
+/*Who are We
+/*
+/**/
 .waw{
     margin: 80px 0px;
 }
@@ -626,6 +621,16 @@ h3{
 .tooltipDiv:hover .tooltip {
     visibility: visible;
     opacity: 1;
+}
+.fade-in-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 /**/
 /*

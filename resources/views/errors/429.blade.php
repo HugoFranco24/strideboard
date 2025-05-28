@@ -11,7 +11,7 @@
     <img src="{{ asset('Images/Errors/429-Dark.jpg') }}" alt="" width="100%" height="100%">
 @endsection
 @section('desc')
-    <h2>Too Many Requests - Please calm down</h2>
+    <h2>Too Many Requests - Please calm down - 429</h2>
     <p>You're clicking too much. Slow down or the server is going to file a restraining order against you!</p>
     <p>Breathe and then try again.</p>
 @endsection

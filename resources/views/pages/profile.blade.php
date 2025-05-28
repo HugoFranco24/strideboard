@@ -72,7 +72,7 @@
             @method('put')
             <label>Current Password</label>
             <br>
-            <input type="password" name="current_password" value="">
+            <input type="password" name="current_password" value="" autocomplete="current-password">
             <x-input-error :messages="$errors->updatePassword->get('current_password')"/>
 
             <br>
@@ -80,13 +80,13 @@
             <label>New Password</label>
             <br>
             <input type="password" name="password" value="">
-            <x-input-error :messages="$errors->updatePassword->get('password')"/>
+            <x-input-error :messages="$errors->updatePassword->get('password')" autocomplete="new-password"/>
             <br>
             <label>Confirm New Password</label>
             <br>
 
             <input type="password" name="password_confirmation" value="">
-            <x-input-error :messages="$errors->updatePassword->get('password_confirmation')"/>
+            <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" autocomplete="new-password"/>
             <br>
 
             <button type="submit" class="btn_default">Change Password</button>

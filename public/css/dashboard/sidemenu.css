@@ -11,11 +11,12 @@ body{
     margin: 0;
     padding: 0;
     background-color: var(--background-color);
+    scrollbar-color: hsl(0, 0%, 50%) var(--box-inner-color);
+    
 }
 *{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
 
 .hamburger{
     position: fixed;     
@@ -203,7 +204,7 @@ nav {
     padding: 0px 10px;
     margin-top: 5px;
     transition: 200ms;
-    width: 300px;
+    max-width: 300px;
 }
 .top-menu .user:hover{
     background-color: var(--top-gb-color-hover);
@@ -233,7 +234,6 @@ nav {
 .profile-toggle{
     position: fixed;
     right: 40px;
-    top: -90px;
     background-color: var(--profile-menu);
     border-radius: 6px;
     width: 200px;
@@ -253,18 +253,17 @@ nav {
     border: none;
     font-size: 16px;
     font-weight: 600;
-}
-.profile-toggle button:hover{
     cursor: pointer;
+}
+.profile-toggle a:hover button,
+.profile-toggle form:hover button{
     background-color: var(--profile-menu-hover);
 }
 .profile-toggle .space{
     height: 1px;
     width: 100%;
     background-color: hsl(0, 0%, 55%);
-}
-.profile-toggle button img{
-    transition: 200ms;
+    margin: 1px 0px;
 }
 /*#endregion*/
 /*#endregion*/

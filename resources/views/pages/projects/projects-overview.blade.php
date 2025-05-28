@@ -95,7 +95,7 @@
                     </div>
                 </div>
             @endif
-            <br><br><br><br><br><br><br>
+            
             <h3>Collaborators in Project:</h3>
             <div class="members-wrapper">
                 <table class="members">
@@ -163,7 +163,7 @@
             </div>
         </div>
         @php
-            $done = 0;
+            $doneT = 0;
             $in_progress = 0;
             $stoped = 0;
             $to_do = 0;
@@ -177,13 +177,13 @@
                 }elseif($t->state == 2){
                     $in_progress += 1;
                 }else{
-                    $done += 1;
+                    $doneT += 1;
                 }
                 $total += 1;
             }
         @endphp
         <div class="item">
-            <input type="hidden" value="{{ $done }}" id="done">
+            <input type="hidden" value="{{ $doneT }}" id="done">
             <input type="hidden" value="{{ $in_progress }}" id="in_progress">
             <input type="hidden" value="{{ $stoped }}" id="stoped">
             <input type="hidden" value="{{ $to_do }}" id="to_do">
@@ -202,6 +202,103 @@
             </div>  
         </div>
         @if ($total > 0)
+            <div class="item">
+                <div class="kanban-board">
+                    <div class="column to-do">
+                        <div class="title">
+                            <h2>MY TASKS</h2>
+                        </div>
+                        
+                        @foreach ($my_tasks as $t)
+                            <div class="task-card">
+                                <div style="margin: 10px 10px 5px">
+                                    <h3>{{$t->name}}</h3>
+                                    <div class="space"></div>
+                                    <p>
+                                        Start: {{ $t->start }} <br>
+                                        End: {{ $t->end }}
+                                    </p>
+                                </div>
+                                <div class="func">
+                                    <a href="{{ route('task.overview', $t->id) }}"><img class="icon" src="{{ asset('Images/Icons/Overview/More.svg') }}"></a>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="column late">
+                        <div class="title">
+                            <h2>LATE</h2>
+                        </div>
+                        @foreach ($late as $l)
+                            <div class="task-card">
+                                <div style="margin: 10px 10px 5px">
+                                    <h3>{{$l->name}}</h3>
+                                    <div class="space"></div>
+                                    <p>
+                                        Start: {{ $l->start }} <br>
+                                        End: {{ $l->end }}
+                                    </p>
+                                </div>
+                                <div class="func">
+                                    <a href="{{ route('task.overview', $l->id) }}"><img class="icon" src="{{ asset('Images/Icons/Overview/More.svg') }}"></a>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="column urgent">
+                        <div class="title">
+                            <h2>URGENT</h2>
+                        </div>
+                        @foreach ($urgent as $u)
+                            <div class="task-card">
+                                <div style="margin: 10px 10px 5px">
+                                    <h3>{{$u->name}}</h3>
+                                    <div class="space"></div>
+                                    <p>
+                                        Start: {{ $u->start }} <br>
+                                        End: {{ $u->end }}
+                                    </p>
+                                </div>
+                                <div class="func">
+                                    <a href="{{ route('task.overview', $u->id) }}"><img class="icon" src="{{ asset('Images/Icons/Overview/More.svg') }}"></a>
+                                    
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="column done">
+                        <div class="title">
+                            <h2>DONE</h2>
+                        </div>
+                        @foreach ($done as $d)
+                            <div class="task-card">
+                                <div style="margin: 10px 10px 5px">
+                                    <h3>{{$d->name}}</h3>
+                                    <div class="space"></div>
+                                    <p>
+                                        Start: {{ $d->start }} <br>
+                                        End: {{ $d->end }}
+                                    </p>
+                                </div>
+                                <div class="func">
+                                    <a href="{{ route('task.overview', parameters: $d->id) }}"><img class="icon" src="{{ asset('Images/Icons/Overview/More.svg') }}"></a>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="chart-container">
+                    <canvas id="taskChart"></canvas>
+                </div>
+            </div>
+            <div class="item">
+                <div class="clock">
+                    <h4 id="day"></h4>
+                    <h4 id="dayWeek"></h4>
+                </div>
+            </div>
             <div class="item">
                 <table class="members">
                     <tr>
@@ -228,106 +325,11 @@
                     @endforeach
                 </table>
             </div>
-            <div class="item">
-                <div class="chart-container">
-                    <canvas id="taskChart"></canvas>
-                </div>
-            </div>
         @endif
     </div>
 </div>
 @endsection
 
 @section('custom_vue')
-<script>
-window.onload = function () {
-    const { createApp, ref, onMounted, computed } = Vue;
-
-    createApp({
-        setup() {
-            const users = ref([]);
-            const project = ref(null);
-            const term = ref('');
-            const selectedUsers = ref([]);
-
-            onMounted(() => {
-                
-                let el = document.getElementById('users');
-                let rawData = el.dataset.users;
-
-                try {
-                    users.value = JSON.parse(rawData);
-                } catch (e) {
-                    console.error('Error parsing Blade Data:', e);
-                }
-
-                el = document.getElementById('project');
-                rawData = el.dataset.project;
-
-                try {
-                    project.value = JSON.parse(rawData);
-                } catch (e) {
-                    console.error('Error parsing Blade Data:', e);
-                } 
-            });
-
-
-            const filteredUsers = computed(() => {
-                if (!term.value) return [];
-
-                return users.value.filter(user =>
-                    user.name.toLowerCase().includes(term.value.toLowerCase()) ||
-                    user.email.toLowerCase().includes(term.value.toLowerCase())
-                ).filter(user =>
-                    !selectedUsers.value.find(u => u.id === user.id)
-                )
-                .slice(0, 4);
-            });
-
-            return {
-                users,
-                term,
-                filteredUsers,
-                selectedUsers,
-                project
-            };
-        }
-    }).mount('#app');
-
-    document.getElementById('app').style.display = 'block';
-
-    //Tasks Chart
-    const to_do = parseInt(document.getElementById('to_do').value);
-    const stoped = parseInt(document.getElementById('stoped').value);
-    const in_progress = parseInt(document.getElementById('in_progress').value);
-    const done = parseInt(document.getElementById('done').value);
-
-    const getCSSVar = (varName) => getComputedStyle(document.documentElement).getPropertyValue(varName).trim(); //BUSCAR TEXT COLOR
-    const textColor = getCSSVar('--text-color');
-
-    const taskChart = new Chart('taskChart', {
-        type: 'doughnut',
-        data: {
-            labels: ["To Do", "Stoped", "In Progress", "Done"],
-            datasets: [
-                {
-                    data: [to_do, stoped, in_progress, done],
-                    backgroundColor: ['#ccc','#da291c', '#f3c242', '#008057'],
-                    borderColor: 'transparent'
-                },
-                
-            ],
-        },
-        options: {
-            plugins: {
-                legend: {
-                    labels: {
-                        color: textColor
-                    }
-                }
-            }
-        }
-    });   
-}
-</script>
+    <script src="{{ asset('js/project-overview.js') }}"></script>
 @endsection

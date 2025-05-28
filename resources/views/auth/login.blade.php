@@ -14,7 +14,13 @@ Login
 
         <div>
             <label>Password</label>
-            <input type="password" name="password" id="password" required autocomplete="current-password">
+            <x-password-input 
+                :id="'password'" 
+                :name="'password'" 
+                :autocomplete="'current_password'" 
+                :visible="'visible1'"
+                :invisible="'invisible1'"
+            />
             <x-input-error :messages="$errors->get('password')"/>
         </div>
 

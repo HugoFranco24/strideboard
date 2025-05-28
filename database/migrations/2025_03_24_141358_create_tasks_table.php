@@ -19,7 +19,8 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->date('start');
             $table->date('end');
-            $table->integer('state');
+            $table->integer('state')->default(0);
+            $table->integer('priority')->default(0);
             $table->dateTime('started_at')->nullable();
             $table->dateTime('ended_at')->nullable();
             $table->timestamps();

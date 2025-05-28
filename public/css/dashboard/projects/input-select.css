@@ -3,8 +3,8 @@
     overflow-y: auto;
     border-radius: 4px;
     background-color: var(--box-inner-color);
-    position: absolute;
-    width: 45%;
+    width: 100%;
+    scrollbar-width: thin;
 }
 .addmember {
     width: 100%;
@@ -45,7 +45,6 @@
     cursor: pointer;
     padding: 0;
 }
-
 .addmember button img {
     width: 28px;
     height: 28px;
@@ -53,3 +52,53 @@
     filter: var(--filter-icon);
 }
 
+
+.selectedUser-wrapper {
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: auto;
+    border-radius: 8px;
+}
+.selectedUser{
+    width: 75%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.selectedUser tr{
+    background-color: var(--box-inner-color);
+    transition: 200ms;
+    height: 40px;
+}
+.selectedUser tr:hover{
+    background-color: var(--box-inner-color-hover);
+}
+.selectedUser td {
+    text-align: center; 
+    vertical-align: middle;
+    padding: 10px;
+}
+.selectedUser .pfp {
+    width: 50px;
+    height: 50px;
+    border-radius: 100px;
+    border: 2px solid var(--box-input-border);
+}
+.selectedUser button{
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+@media (max-width: 650px) {
+    .addmember td:nth-child(3),
+    .selectedUser td:nth-child(3)
+    {
+        display: none;
+    }
+}

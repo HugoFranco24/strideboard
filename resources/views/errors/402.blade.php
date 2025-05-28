@@ -11,6 +11,6 @@
     <img src="{{ asset('Images/Errors/402-Dark.jpg') }}" alt="" width="100%" height="100%">
 @endsection
 @section('desc')
-    <h2>Payment Required, show me the money!</h2>
+    <h2>Payment Required, show me the money! - 402</h2>
     <p>I need to buy coffee and for that you gotta pay to go to this page...</p>
 @endsection

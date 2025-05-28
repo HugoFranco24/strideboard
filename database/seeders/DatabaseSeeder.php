@@ -69,6 +69,7 @@ class DatabaseSeeder extends Seeder
                 'start' => $start->toDateTime(),
                 'end' => $end->toDateTime(),
                 'state' => rand(0, 3),
+                'priority' => rand(0, 3),
             ];
         }
         foreach ($tasks as $task) {
@@ -83,6 +84,7 @@ class DatabaseSeeder extends Seeder
             'start' => Carbon::now(),
             'end' => Carbon::now()->addDays(rand(1, 10))->setTime(rand(9, 18), rand(0, 59))->toDateTime(),
             'state' => 0,
+            'priority' => 0,
         ]);
     }
 }

@@ -16,7 +16,7 @@
             const sepC = document.getElementById("sepC");
 
             let newState;
-            if (menu.style.width === "300px") {
+            if (menu.style.width === "265px") {
                 menu.style.width = "68px";
                 menu.style.transition = "500ms";
                 img.style.left = "6px";
@@ -32,17 +32,17 @@
                 sepC.style.visibility = "visible";
                 newState = 'collapsed';
             } else {
-                menu.style.width = "300px";
+                menu.style.width = "265px";
                 menu.style.transition = "500ms";
-                img.style.left = "230px";
+                img.style.left = "195px";
                 img.style.transition = "500ms";
                 open.style.opacity = "0";
                 close.style.opacity = "1";
                 icons8.style.display = "block";
                 links.classList.remove('links_colapse');
-                top_menu.style.margin = "0px 0px 0px 300px";
+                top_menu.style.margin = "0px 0px 0px 265px";
                 top_menu.style.transition = "500ms";
-                main.style.padding = "130px 30px 0px 340px";
+                main.style.padding = "130px 30px 0px 300px";
                 main.style.transition = "500ms";
                 sepC.style.visibility = "hidden";
                 newState = 'not_collapsed';
@@ -93,14 +93,14 @@
                 main.style.padding = "130px 30px 0px 108px";
                 sepC.style.visibility = "visible";
             } else {
-                menu.style.width = "300px";
-                img.style.left = "230px";
+                menu.style.width = "265px";
+                img.style.left = "195px";
                 open.style.opacity = "0";
                 close.style.opacity = "1";
                 icons8.style.display = "block";
                 links.classList.remove('links_colapse');
-                top_menu.style.margin = "0px 0px 0px 300px";
-                main.style.padding = "130px 30px 0px 340px";
+                top_menu.style.margin = "0px 0px 0px 265px";
+                main.style.padding = "130px 30px 0px 300px";
                 sepC.style.visibility = "hidden";
             }
         }
@@ -198,7 +198,7 @@
         <img src="{{ asset('Images/Icons/Menu/Right-arrow.png') }}" alt="" width="35" height="35" id="open">
     </div>
 
-    <nav id="nav" style="width: 300px;">
+    <nav id="nav" style="width: 265px;">
         <div class="links" id="links">
             <span class="sep">Manage</span>
             <a href="/dashboard" title="Dashboard"><img src="{{ asset('Images/Icons/Menu/Dashboard.png') }}" alt=""><span>Dashboard</span></a>
@@ -240,7 +240,7 @@
         <div class="space"></div>
         <a href="/dashboard/settings"><button>Settings</button></a>
         <div class="space"></div>
-        <form action="{{ route('logout') }}" method="POST" style="margin: 0px;">
+        <form action="{{ route('logout') }}" method="POST">
             @csrf
             <button type="submit" class="signOut" style="border-radius: 0px 0px 6px 6px">Sign Out</button>
         </form>

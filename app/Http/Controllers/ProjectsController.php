@@ -143,7 +143,20 @@ class ProjectsController extends Controller {
         if (!$project->users->contains('id', auth()->id())) {
             abort(code: 403); //ver se o utilizador está no projeto
         }     
-        //permitions check end  
+        //permitions check end
+
+        //for kanban
+        $my_tasks = $project->tasks
+                ->where('user_id', auth()->id());
+        $late = $project->tasks
+                ->where('end', '<', now()->format('Y-m-d'))
+                ->where('state', '!=', 3);
+        $urgent = $project->tasks
+                ->where('priority', 3)
+                ->where('state', '!=', 3);
+        $done = $project->tasks
+                ->where('state', 3);
+        //end for kanban
         
         $user_all = User::whereNotIn('id', DB::table('projects_users') //ver todos os users que nao estao ligado ao project
         ->select('user_id')
@@ -157,6 +170,10 @@ class ProjectsController extends Controller {
             'user_all' => $user_all,
             'authUserType' => $project->users->filter(function(User $u) {return $u->id == auth()->id();})->first()->pivot->user_type,
             'owner' => $project->users->filter(function(User $u) {return $u->pivot->user_type == 2;})->first(),
+            'my_tasks' => $my_tasks,
+            'late' => $late,
+            'urgent' => $urgent,
+            'done' => $done,
         ]);
     }
 
@@ -194,14 +211,15 @@ class ProjectsController extends Controller {
                                     ->where('user_id', $user_id)
                                     ->firstOrFail();
         $user = $project->users->where('id', auth()->id())->first();
+        
 
         if (!$project->users->contains('id', auth()->id())) {
             abort(code: 403); //ver se o utilizador está no projeto
         }
-        if($user->pivot->user_type == 0){
+        if($user->pivot->user_type == 0 && $user->id != $project_user->user_id){
             abort(403);
         }
-        if($user->pivot->user_type == 1 && $project_user->pivot->user_type == 1 && $user->id != $project_user->id){
+        if($user->pivot->user_type == $project_user->user_type && $user->id != $project_user->user_id){
             abort(403);
         }
 
@@ -231,10 +249,11 @@ class ProjectsController extends Controller {
         if (!$project->users->contains('id', auth()->id())) {
             abort(code: 403); //ver se o utilizador está no projeto
         }
-        if($user->pivot->user_type == 0){
+        if($user->pivot->user_type == 0 && $user->id != $project_user->user_id){
+           
             abort(403);
         }
-        if($user->pivot->user_type == 1 && $project_user->pivot->user_type == 1 && $user->id != $project_user->id){
+        if($user->pivot->user_type == 1 && $project_user->user_type == 1 && $user->id != $project_user->user_id){
             abort(403);
         }
         //permitions check end
@@ -257,10 +276,10 @@ class ProjectsController extends Controller {
             }
         }
         //end deleting tasks where the user was
-
+        
         $project_user->delete();
 
-        if($user->id != $project_user->id){
+        if($user->id != $project_user->user_id){
             return redirect(route('projects.overview', $project_id));
         }else{
             return redirect(route('dashboard.projects'));
