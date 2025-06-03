@@ -100,6 +100,27 @@ ul{
     padding: 0;
     margin: 4px 0px;
 }
+.error{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: hsl(0, 60%, 45%);
+    border: 1px solid hsl(0, 60%, 40%);
+    padding: 8px 15px 8px 10px;
+    border-radius: 8px;
+    color: white;
+    margin-bottom: 10px;
+    opacity: 0.96;
+}
+.error button{
+    font-weight: 700;
+    font-size: 22px;
+    padding: 0;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
 
 @media (max-width: 1200px) {
     .main{

@@ -33,13 +33,12 @@
                 margin: 0;
             }
             h2{
-                font-size: 1.5vw;
+                font-size: 24px;
                 margin-top: 0; 
             }
 
             .img {
-                width: 70vw;
-                height: 50vh;
+                max-width: 680px;
                 position: relative;
             }
 

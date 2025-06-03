@@ -35,13 +35,6 @@ class DashboardController extends Controller {
         ]);
     }
 
-    public function profile(){
-    
-        return view('pages.profile', [
-            'user' => auth()->user(),
-        ]);
-    }
-
     public function settings(){
         return view("pages.settings", [
             'user' => auth()->user(),

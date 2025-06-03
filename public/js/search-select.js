@@ -31,8 +31,18 @@ window.onload = function () {
                 if (taskUserEl) {
                     try {
                         selectedUser.value = JSON.parse(taskUserEl.dataset.taskUser);
+                        return;
                     } catch (e) {
                         console.error('Error parsing task user:', e);
+                    }
+                }
+
+                const oldUserEl = document.getElementById('old-user-id');
+                if (oldUserEl) {
+                    const oldUserId = oldUserEl.dataset.oldUserId;
+                    const match = users.value.find(u => String(u.id) === oldUserId);
+                    if (match) {
+                        selectedUser.value = match;
                     }
                 }
             });

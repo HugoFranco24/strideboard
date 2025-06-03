@@ -28,7 +28,7 @@
 </style>
 
 <div class="password-input">
-    <input type="password" name="{{ $name }}" id="{{ $id }}" required autocomplete="{{ $autocomplete }}">
+    <input type="password" name="{{ $name }}" id="{{ $id }}" required autocomplete="{{ $autocomplete }}" value="{{ old('password') }}">
     <div class="icons">
         <img 
             id="{{ $visible }}" 

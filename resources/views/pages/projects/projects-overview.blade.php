@@ -1,4 +1,4 @@
-@extends('layouts.sidemenu')
+@extends('layouts.main')
 @section('title')
     Project Overview
 @endsection
@@ -25,12 +25,12 @@
 
 @section('body')
     <div id="app" v-cloak>
-    <div class="container">
+    <div class="container" style="grid-template-rows: repeat({{ isset($task) ? 11 : 4 }}, 1fr)">
         <div class="item">
             <h2>Project Details</h2>
             <p class="SQL"><span>Project Name:</span> {{ $project->name }}</p>
             <p class="SQL"><span>Business:</span> {{ $project->business == '' ? 'Not Defined' : $project->business }}</p>
-            <p class="SQL"><span>Due Date:</span> {{ $project->due_date }}</p>
+            <p class="SQL"><span>Due Date:</span> {{ \Carbon\Carbon::parse($project->due_date)->format('F d, Y') }}</p>
             <div style="display: flex">
                 <span>Project Color:   {{$project->color}} -></span>
                 <div style="background-color: {{ $project->color }}; width: 40px;"></div>
@@ -71,12 +71,12 @@
             @if ($authUserType != 0)
                 <h3>Add Collaborator</h3>
                 <div>
-                    <input type="text" v-model="term" placeholder="Search User" style="margin: 0px; width: 100%;">
+                    <input type="text" v-model="term" placeholder="Search User" style="margin: 0px; min-width: 100% !important;">
                     <div class="addmember-wrapper">
                         <table class="addmember">
                             <tr v-for="user in filteredUsers" :key="user.id">                        
                                 <td><img :src="'/' + (user.pfp || 'Images/Pfp/pfp_default.png')" alt="" class="pfp"></td>
-                                <td class="SQL" style="max-width: 200px">@{{ user.name }}</td>
+                                <td class="SQL" style="max-width: 200px"><a :href="'/dashboard/profile/' + user.id" class="username">@{{ user.name }}</a></td>
                                 <td class="SQL" style="max-width: 200px">@{{ user.email }}</td>
                                 <td>
                                     <form :action="'/dashboard/projects/overview/'+ project.id +'/add-member/'+ user.id" 
@@ -102,7 +102,7 @@
                     @foreach ($project->users as $pu)
                         <tr>
                             <td><img src="{{ asset($pu->pfp ?? 'Images/Pfp/pfp_default.png') }}" alt="" class="pfp"></td>
-                            <td class="SQL" style="max-width: 175px">{{ $pu->name }}</td>
+                            <td class="SQL" style="max-width: 175px"><a href="{{ route('profile.overview', $pu->id) }}" class="username">{{ $pu->name }}</a></td>
                             <td class="SQL" style="max-width: 175px">{{ $pu->email }}</td>
                             <td>
                                 @if ($pu->id != auth()->id())
@@ -188,17 +188,24 @@
             <input type="hidden" value="{{ $stoped }}" id="stoped">
             <input type="hidden" value="{{ $to_do }}" id="to_do">
             <h2>Tasks</h2>
-            <p><span>Total:</span> {{ $total }}</p>
-            <p><span>Late: </span> 2</p>
-            <p><span>Urgent: </span> 2</p>
-            <br><br>
+            @if (!isset($task))
+                <p><span>My Tasks: {{ $my_tasks->count() }}</span></p>
+                <p><span>Late: </span> {{ $late->count() }}</p>
+                <p><span>Urgent: </span> {{ $urgent->count() }}</p>
+                <p><span>Done: </span> {{ $done->count() }}</p>
+            @else
+                <br><br>
+                <h2 style="font-weight: 600">No Tasks</h2>
+                <br><br>
+            @endif
+            
             
             <div class="btns">
                 @if ($authUserType != 0)
                     <a href="/dashboard/projects/overview/{{$project->id}}/create-task"><button type="button" class="btn_default">Create Task</button></a>
                 @endif
                 
-                <a href=""><button class="btn_default">View All Tasks</button></a>
+                <a href="#allTasks"><button class="btn_default">View All Tasks</button></a>
             </div>  
         </div>
         @if ($total > 0)
@@ -208,89 +215,158 @@
                         <div class="title">
                             <h2>MY TASKS</h2>
                         </div>
-                        
-                        @foreach ($my_tasks as $t)
+                        @if ($my_tasks->count() > 0)
+                            @foreach ($my_tasks as $t)
+                                <div class="task-card">
+                                    <div style="margin: 10px 10px 5px">
+                                        <h3>{{$t->name}}</h3>
+                                        <div class="space"></div>
+                                        <p>
+                                            Start: {{ \Carbon\Carbon::parse($t->start)->format('F d, Y') }} <br>
+                                            End: {{ \Carbon\Carbon::parse($t->end)->format('F d, Y') }}
+                                        </p>
+                                    </div>
+                                    <div class="func">
+                                        @if ($authUserType >= 1 || $t->user_id == auth()->id())
+                                            <form 
+                                                action="{{ route('task.delete', $t->id) }}"
+                                                onsubmit="confirm('Are you sure you want to DELETE this task?')"
+                                                method="post"
+                                            >
+                                                @csrf
+                                                @method('delete')
+                                                <button type="submit"><img  class="icon" src="{{ asset('Images/Icons/Overview/Delete.svg') }}"></button>
+                                            </form>
+                                        @endif
+                                        <a href="{{ route('task.overview',  $t->id) }}"><img class="icon" src="{{ asset('Images/Icons/Overview/More.svg') }}"></a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
                             <div class="task-card">
-                                <div style="margin: 10px 10px 5px">
-                                    <h3>{{$t->name}}</h3>
-                                    <div class="space"></div>
-                                    <p>
-                                        Start: {{ $t->start }} <br>
-                                        End: {{ $t->end }}
-                                    </p>
-                                </div>
-                                <div class="func">
-                                    <a href="{{ route('task.overview', $t->id) }}"><img class="icon" src="{{ asset('Images/Icons/Overview/More.svg') }}"></a>
-                                </div>
+                                <h3 style="margin: 10px; text-align: center;">No Owned Tasks</h3>
                             </div>
-                        @endforeach
+                        @endif
                     </div>
                     <div class="column late">
                         <div class="title">
                             <h2>LATE</h2>
                         </div>
-                        @foreach ($late as $l)
+                        @if ($late->count() > 0)
+                            @foreach ($late as $l)
+                                <div class="task-card">
+                                    <div style="margin: 10px 10px 5px">
+                                        <h3>{{$l->name}}</h3>
+                                        <div class="space"></div>
+                                        <p>
+                                            Start: {{ \Carbon\Carbon::parse($l->start)->format('F d, Y') }} <br>
+                                            End: {{ \Carbon\Carbon::parse($l->end)->format('F d, Y') }}
+                                        </p>
+                                    </div>
+                                    <div class="func">
+                                        @if ($authUserType >= 1 || $l->user_id == auth()->id())
+                                            <form 
+                                                action="{{ route('task.delete', $l->id) }}"
+                                                onsubmit="confirm('Are you sure you want to DELETE this task?')"
+                                                method="post"
+                                            >
+                                                @csrf
+                                                @method('delete')
+                                                <button type="submit"><img  class="icon" src="{{ asset('Images/Icons/Overview/Delete.svg') }}"></button>
+                                            </form>
+                                        @endif
+                                        <a href="{{ route('task.overview',  $l->id) }}"><img class="icon" src="{{ asset('Images/Icons/Overview/More.svg') }}"></a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
                             <div class="task-card">
-                                <div style="margin: 10px 10px 5px">
-                                    <h3>{{$l->name}}</h3>
-                                    <div class="space"></div>
-                                    <p>
-                                        Start: {{ $l->start }} <br>
-                                        End: {{ $l->end }}
-                                    </p>
-                                </div>
-                                <div class="func">
-                                    <a href="{{ route('task.overview', $l->id) }}"><img class="icon" src="{{ asset('Images/Icons/Overview/More.svg') }}"></a>
-                                </div>
+                                <h3 style="margin: 10px; text-align: center;">No Late Tasks</h3>
                             </div>
-                        @endforeach
+                        @endif
                     </div>
                     <div class="column urgent">
                         <div class="title">
                             <h2>URGENT</h2>
                         </div>
-                        @foreach ($urgent as $u)
+                        @if ($urgent->count() > 0)
+                            @foreach ($urgent as $u)
+                                <div class="task-card">
+                                    <div style="margin: 10px 10px 5px">
+                                        <h3>{{$u->name}}</h3>
+                                        <div class="space"></div>
+                                        <p>
+                                            Start: {{ \Carbon\Carbon::parse($u->start)->format('F d, Y') }} <br>
+                                            End: {{ \Carbon\Carbon::parse($u->end)->format('F d, Y') }}
+                                        </p>
+                                    </div>
+                                    <div class="func">
+                                        @if ($authUserType >= 1 || $u->user_id == auth()->id())
+                                            <form 
+                                                action="{{ route('task.delete', $u->id) }}"
+                                                onsubmit="confirm('Are you sure you want to DELETE this task?')"
+                                                method="post"
+                                            >
+                                                @csrf
+                                                @method('delete')
+                                                <button type="submit"><img  class="icon" src="{{ asset('Images/Icons/Overview/Delete.svg') }}"></button>
+                                            </form>
+                                        @endif
+                                        <a href="{{ route('task.overview', $u->id) }}"><img class="icon" src="{{ asset('Images/Icons/Overview/More.svg') }}"></a>
+                                        
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
                             <div class="task-card">
-                                <div style="margin: 10px 10px 5px">
-                                    <h3>{{$u->name}}</h3>
-                                    <div class="space"></div>
-                                    <p>
-                                        Start: {{ $u->start }} <br>
-                                        End: {{ $u->end }}
-                                    </p>
-                                </div>
-                                <div class="func">
-                                    <a href="{{ route('task.overview', $u->id) }}"><img class="icon" src="{{ asset('Images/Icons/Overview/More.svg') }}"></a>
-                                    
-                                </div>
+                                <h3 style="margin: 10px; text-align: center;">No Urgent Tasks</h3>
                             </div>
-                        @endforeach
+                        @endif
                     </div>
                     <div class="column done">
                         <div class="title">
                             <h2>DONE</h2>
                         </div>
-                        @foreach ($done as $d)
+                        @if ($done->count() > 0)
+                            @foreach ($done as $d)
+                                <div class="task-card">
+                                    <div style="margin: 10px 10px 5px">
+                                        <h3>{{$d->name}}</h3>
+                                        <div class="space"></div>
+                                        <p>
+                                            Start: {{ \Carbon\Carbon::parse($d->start)->format('F d, Y') }} <br>
+                                            End: {{ \Carbon\Carbon::parse($d->end)->format('F d, Y') }}
+                                        </p>
+                                    </div>
+                                    <div class="func">
+                                        @if ($authUserType >= 1 || $d->user_id == auth()->id())
+                                            <form 
+                                                action="{{ route('task.delete', $d->id) }}"
+                                                onsubmit="confirm('Are you sure you want to DELETE this task?')"
+                                                method="post"
+                                            >
+                                                @csrf
+                                                @method('delete')
+                                                <button type="submit"><img  class="icon" src="{{ asset('Images/Icons/Overview/Delete.svg') }}"></button>
+                                            </form>
+                                        @endif
+                                        <a href="{{ route('task.overview',  $d->id) }}"><img class="icon" src="{{ asset('Images/Icons/Overview/More.svg') }}"></a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
                             <div class="task-card">
-                                <div style="margin: 10px 10px 5px">
-                                    <h3>{{$d->name}}</h3>
-                                    <div class="space"></div>
-                                    <p>
-                                        Start: {{ $d->start }} <br>
-                                        End: {{ $d->end }}
-                                    </p>
-                                </div>
-                                <div class="func">
-                                    <a href="{{ route('task.overview', parameters: $d->id) }}"><img class="icon" src="{{ asset('Images/Icons/Overview/More.svg') }}"></a>
-                                </div>
+                                <h3 style="margin: 10px; text-align: center;">No Tasks Completed</h3>
                             </div>
-                        @endforeach
+                        @endif
                     </div>
                 </div>
             </div>
             <div class="item">
                 <div class="chart-container">
-                    <canvas id="taskChart"></canvas>
+                    @if (!isset($task))
+                        <canvas id="taskChart"></canvas>
+                    @endif
                 </div>
             </div>
             <div class="item">
@@ -300,30 +376,66 @@
                 </div>
             </div>
             <div class="item">
-                <table class="members">
-                    <tr>
-                        <th>Name</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Status</th>
-                    </tr>
-                    @foreach ($project->tasks as $t)
-                        <tr>
-                            <td class="SQL">{{ $t->name }}</td>
-                            <td class="SQL">{{ $t->start }}</td>
-                            <td class="SQL">{{ $t->end }}</td>
-                            <td>
-                                @if ($t->state == 0)
-                                    To Do
-                                @elseif ($t->state == 1)
-                                    In Progress
-                                @else
-                                    Done
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
-                </table>
+                <h1 style="text-align: center; margin: 10px 0px 30px;">Tasks</h1>
+                <div class="tasks">
+                    <div class="table-wrapper">
+                        <table id="allTasks">
+                            <tr>
+                                <th onclick="sortTask(0)">Name <span class="sort-arrow"></span></th>
+                                <th onclick="sortTask(1)">Assigned To <span class="sort-arrow"></span></th>
+                                <th onclick="sortTask(2)">Starting Date <span class="sort-arrow"></span></th>
+                                <th onclick="sortTask(3)">Ending Date <span class="sort-arrow"></span></th>
+                                <th onclick="sortTask(4)">Status <span class="sort-arrow"></span></th>
+                                <th onclick="sortTask(5)">Priority <span class="sort-arrow"></span></th>
+                                <th style="text-align: center">Actions</th>
+                            </tr>
+                            @foreach ($project->tasks as $t)
+                                <tr>
+                                    <td class="SQL">{{ $t->name }}</td>
+                                    <td class="SQL"><a href="{{ route('profile.overview', $project->users->where('id', $t->user_id)->first()?->id) }}" class="username">{{ $project->users->where('id', $t->user_id)->first()?->name }}</a></td>
+                                    <td class="SQL">{{ \Carbon\Carbon::parse($t->start)->format('F d, Y') }}</td>
+                                    <td class="SQL">{{ \Carbon\Carbon::parse($t->end)->format('F d, Y') }}</td>
+                                    @if ($t->state == 0)
+                                        <td data-state="not_started"><span style="display: none">0</span>Not Started</td>
+                                    @elseif ($t->state == 1)
+                                        <td data-state="stoped"><span style="display: none">1</span>Stoped</td>
+                                    @elseif ($t->state == 2)
+                                        <td data-state="in_progress"><span style="display: none">2</span>In Progress</td>
+                                    @elseif ($t->state == 3)
+                                        <td data-state="done"><span style="display: none">3</span>Done</td>
+                                    @endif
+
+                                    @if ($t->priority == 0)
+                                        <td data-priority="low"><span style="display: none">0</span>Low</td>
+                                    @elseif ($t->priority == 1)
+                                        <td data-priority="normal"><span style="display: none">1</span>Normal</td>
+                                    @elseif ($t->priority == 2)
+                                        <td data-priority="high"><span style="display: none">2</span>High</td>
+                                    @elseif ($t->priority == 3)
+                                        <td data-priority="urgent"><span style="display: none">3</span>Urgent</td>
+                                    @endif
+
+                                    <td>
+                                        <div>
+                                            <a href="{{ route('task.overview',  $t->id) }}"><img class="icon" src="{{ asset('Images/Icons/Overview/More.svg') }}"></a>
+                                            @if ($authUserType >= 1 || $t->user_id == auth()->id())
+                                                <form 
+                                                    action="{{ route('task.delete', $t->id) }}"
+                                                    onsubmit="confirm('Are you sure you want to DELETE this task?')"
+                                                    method="post"
+                                                >
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button type="submit"><img  class="icon" src="{{ asset('Images/Icons/Overview/Delete.svg') }}"></button>
+                                                </form>
+                                            @endif
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </table>
+                    </div>
+                </div>
             </div>
         @endif
     </div>
@@ -332,4 +444,45 @@
 
 @section('custom_vue')
     <script src="{{ asset('js/project-overview.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const hash = window.location.hash;
+            if (hash) {
+                setTimeout(() => {
+                    const el = document.querySelector(hash);
+                    if (el) el.scrollIntoView({ behavior: 'auto' });
+                }, 60);  // delay to ensure element is there
+            }
+        });
+
+        function sortTask(colIndex) {
+            const table = document.getElementById("allTasks");
+            const rows = Array.from(table.rows).slice(1); // skip header
+            const asc = table.getAttribute("data-sort-dir") !== "asc"; // toggle
+
+            table.querySelectorAll("th").forEach(th => th.classList.remove("asc", "desc"));
+            table.rows[0].cells[colIndex].classList.add(asc ? "asc" : "desc");
+
+            rows.sort((a, b) => {
+                const A = a.cells[colIndex].textContent.trim().toLowerCase();
+                const B = b.cells[colIndex].textContent.trim().toLowerCase();
+
+                const isNum = !isNaN(Date.parse(A)) || !isNaN(A);
+
+                if (isNum) {
+                    return asc ? (A > B ? 1 : -1) : (A < B ? 1 : -1);
+                }
+
+                return asc ? A.localeCompare(B) : B.localeCompare(A);
+            });
+
+            // Append sorted rows
+            rows.forEach(row => table.tBodies[0].appendChild(row));
+
+            // Store current sort direction
+            table.setAttribute("data-sort-dir", asc ? "asc" : "desc");
+
+
+        }
+    </script>
 @endsection

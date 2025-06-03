@@ -1,4 +1,4 @@
-@extends('layouts.sidemenu')
+@extends('layouts.main')
 @section('title')
     {{ isset($task) ? 'Edit' : 'Create' }} Task
 @endsection
@@ -23,45 +23,46 @@
 @endsection
 
 @section('body')
+    <div id="old-user-id" data-old-user-id="{{ old('user_id') }}"></div>
     <div id="app">
         <div class="box">
             <h2>Task Details</h2>
-            <form action="{{ route('tasks.add', $project->id)  }}" method="POST">
+            <form action="{{ route('task.add', $project->id)  }}" method="POST">
                 @csrf
 
                 <label>Task Name<span class="required">*</span></label><br>
-                <input type="text" name="name" style="margin-bottom: 10px"><br>
+                <input type="text" name="name" style="margin-bottom: 10px" value="{{ old('name') }}"><br>
                 <x-input-error :messages="$errors->get('name')"/>
 
                 <label>Description</label><br>
-                <textarea name="description" style="margin-bottom: 10px; height: auto;" rows="4"></textarea>
+                <textarea name="description" style="margin-bottom: 10px; height: auto;" rows="4">{{ old('description') }}</textarea>
                 <x-input-error :messages="$errors->get('description')"/>
 
                 <br>
                 <label>Start Date<span class="required">*</span></label><br>
-                <input type="date" name="start" style="margin-bottom: 10px"><br>
+                <input type="date" name="start" style="margin-bottom: 10px" value="{{ old('start') }}"><br>
                 <x-input-error :messages="$errors->get('start')"/>
 
                 <label>End Date<span class="required">*</span></label><br>
-                <input type="date" name="end" style="margin-bottom: 10px"><br>
+                <input type="date" name="end" style="margin-bottom: 10px" value="{{ old('end') }}"><br>
                 <x-input-error :messages="$errors->get('end')"/>
 
                 <label>Status</label><br>
                 <select name="state" id="state">
-                    <option value="0" selected>To Do</option>
-                    <option value="1">Stopped</option>
-                    <option value="2">In Progress</option>
-                    <option value="3">Done</option>
+                    <option value="0" {{ old('state') == 0 || old('state') == null ? 'selected' : '' }}>To Do</option>
+                    <option value="1" {{ old('state') == 1 ? 'selected' : '' }}>Stopped</option>
+                    <option value="2" {{ old('state') == 2 ? 'selected' : '' }}>In Progress</option>
+                    <option value="3" {{ old('state') == 3 ? 'selected' : '' }}>Done</option>
                 </select>
                 <x-input-error :messages="$errors->get('state')"/>
 
                 <br>
                 <label>Priority</label><br>
                 <select name="priority" id="priority">
-                    <option value="0" selected>Low</option>
-                    <option value="1">Normal</option>
-                    <option value="2">High</option>
-                    <option value="3">Urgent</option>
+                    <option value="0" {{ old('priority') == 0 || old('priority') == null ? 'selected' : '' }}>Low</option>
+                    <option value="1" {{ old('priority') == 1 ? 'selected' : '' }}>Normal</option>
+                    <option value="2" {{ old('priority') == 2 ? 'selected' : '' }}>High</option>
+                    <option value="3" {{ old('priority') == 3 ? 'selected' : '' }}>Urgent</option>
                 </select>
                 <x-input-error :messages="$errors->get('priority')"/>
 
@@ -90,7 +91,7 @@
                         <table class="selectedUser">
                             <tr>
                                 <td><img :src="'/' + (selectedUser.pfp || 'Images/Pfp/pfp_default.png')" class="pfp"></td>
-                                <td class="SQL" style="max-width: 200px">@{{ selectedUser.name }}</td>
+                                <td class="SQL" style="max-width: 200px"><a :href="'/dashboard/profile/' + selectedUser.id" class="username">@{{ selectedUser.name }}</a></td>
                                 <td class="SQL" style="max-width: 200px">@{{ selectedUser.email }}</td>
                                 <td>
                                     <button type="button" @click="removeUser">
@@ -100,7 +101,7 @@
                             </tr>
                         </table>
 
-                        <input type="hidden" name="user_id" :value="selectedUser.id">
+                        <input v-if="selectedUser" type="hidden" name="user_id" :value="selectedUser.id">
                     </div>
                 </div>
                 <x-input-error :messages="$errors->get('user_id')"/>

@@ -59,6 +59,7 @@
         </nav>
         
         <div class="main">
+            <div class="background"></div>
             <div class="margin">
                 <div class="heroSec1">
                     <div class="gif-panel">
@@ -418,12 +419,9 @@
             // Select the corresponding answer div
             const answer = question.nextElementSibling;
 
-            // Check if the answer is already open
             if (answer.style.maxHeight) {
-                // If open, close it by resetting max-height
                 answer.style.maxHeight = null;
             } else {
-                // If closed, set max-height to scrollHeight to expand it
                 answer.style.maxHeight = answer.scrollHeight + 'px';
             }
         });

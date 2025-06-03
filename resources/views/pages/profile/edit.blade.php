@@ -1,4 +1,4 @@
-@extends('layouts.sidemenu')
+@extends('layouts.main')
 @section('title')
     Profile
 @endsection
@@ -14,10 +14,9 @@
 @section('body')
     
     @if(session('status'))
-        <div class="sessionStatus" id="sessionStatus">
-            {{ session('status') }}
-            <button onclick="closeStatus()">&times;</button>
-        </div>
+        <x-session-status
+            :message="session('status')"
+        />
     @endif
     
     <div class="box">
@@ -30,8 +29,18 @@
                 </div>
             </div>
         </div>
-        
-        <div style="margin-top: 40px">
+
+        <h2 style="margin-top: 40px">Details</h2>
+        <p>Joined on {{ \Carbon\Carbon::parse($user->created_at)->format('d F Y \a\t H:i') }}</p>
+        @if ($user->email_verified_at != '')
+            <p>Verified</p>
+        @else
+            <p>Not Verified</p>
+        @endif
+
+        <div class="lineSpace"></div>
+
+        <div>
             <h2>Profile Picture</h2>
             <form action="{{ route('profile.uploadImg') }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -133,11 +142,5 @@
         else{
             modal.style.display = "none";
         } 
-    }
-
-    function closeStatus(){
-        var status = document.getElementById("sessionStatus");
-
-        status.style.display = "none";
     }
 </script>

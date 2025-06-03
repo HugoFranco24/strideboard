@@ -3,13 +3,18 @@ Login
 @endsection
 <x-guest-layout>
 
+    @error('email')
+        <div class="error" id="error">
+            {{ $message }}
+            <button onclick="closeError()">&times;</button>
+        </div>
+    @enderror
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
         <div>
             <label>Email</label>
-            <input type="email" name="email" id="email">
-            <x-input-error :messages="$errors->get('email')"/>
+            <input type="email" name="email" id="email" value="{{ old('email') }}">
         </div>
 
         <div>
@@ -21,7 +26,6 @@ Login
                 :visible="'visible1'"
                 :invisible="'invisible1'"
             />
-            <x-input-error :messages="$errors->get('password')"/>
         </div>
 
         <div class="remember">
@@ -40,3 +44,9 @@ Login
         </div>
     </form>
 </x-guest-layout>
+
+<script>
+    function closeError(){
+        document.getElementById('error').style.display = 'none';
+    }
+</script>

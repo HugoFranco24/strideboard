@@ -27,7 +27,7 @@
                 links.classList.add('links_colapse');
                 top_menu.style.margin = "0px 0px 0px 68px";
                 top_menu.style.transition = "500ms";
-                main.style.padding = "130px 30px 0px 108px";
+                main.style.padding = "120px 30px 0px 108px";
                 main.style.transition = "500ms";
                 sepC.style.visibility = "visible";
                 newState = 'collapsed';
@@ -42,7 +42,7 @@
                 links.classList.remove('links_colapse');
                 top_menu.style.margin = "0px 0px 0px 265px";
                 top_menu.style.transition = "500ms";
-                main.style.padding = "130px 30px 0px 300px";
+                main.style.padding = "120px 30px 0px 300px";
                 main.style.transition = "500ms";
                 sepC.style.visibility = "hidden";
                 newState = 'not_collapsed';
@@ -90,7 +90,7 @@
                 icons8.style.display = "none";
                 links.classList.add('links_colapse');
                 top_menu.style.margin = "0px 0px 0px 68px";
-                main.style.padding = "130px 30px 0px 108px";
+                main.style.padding = "120px 30px 0px 108px";
                 sepC.style.visibility = "visible";
             } else {
                 menu.style.width = "265px";
@@ -100,7 +100,7 @@
                 icons8.style.display = "block";
                 links.classList.remove('links_colapse');
                 top_menu.style.margin = "0px 0px 0px 265px";
-                main.style.padding = "130px 30px 0px 300px";
+                main.style.padding = "120px 30px 0px 300px";
                 sepC.style.visibility = "hidden";
             }
         }
@@ -185,7 +185,7 @@
     <link rel="stylesheet" href="{{ asset('css/dashboard/general.css') }}">
     @yield('css')
 
-    <link rel="icon" href="{{ asset('Images/Logos/Strideboard.png') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('Images/Logos/StrideBoard.png') }}" type="image/x-icon">
 
     @yield('custom_links')
 
@@ -208,7 +208,7 @@
             <div class="sepC" id="sepC"></div>
             <span class="sep">Settings</span>
             <a href="/dashboard/messages" title="Messages"><img src="{{ asset('Images/Icons/Menu/Messages.png') }}" alt="" ><span>Messages</span></a>
-            <a href="/dashboard/profile" title="Profile"><img src="{{ asset('Images/Icons/Menu/Profile.png') }}" alt=""/><span>Profile</span></a>
+            <a href="/dashboard/my-profile" title="Profile"><img src="{{ asset('Images/Icons/Menu/Profile.png') }}" alt=""/><span>Profile</span></a>
             <a href="/dashboard/settings" title="Settings"><img src="{{ asset('Images/Icons/Menu/Settings.png') }}" alt=""/><span>Settings</span></a>
         </div>
 
@@ -217,7 +217,7 @@
 
     <div class="top-menu" id="top-menu">
         <div class="flex">
-            <div style="display: flex; align-items: center; gap: 20px;">
+            <div style="display: flex; align-items: center; gap: 14px;">
                 @yield('go-back')
                 <h1 style="margin: 0px">@yield('body-title')</h1>
             </div>
@@ -236,11 +236,11 @@
     <div class="profile-toggle" id="profile-toggle" style="top: -90px;">
         <a href="/"><button style="border-radius: 6px 6px 0px 0px">Home</button></a>
         <div class="space"></div>
-        <a href="/dashboard/profile"><button>My Profile</button></a>
+        <a href="/dashboard/my-profile"><button>My Profile</button></a>
         <div class="space"></div>
         <a href="/dashboard/settings"><button>Settings</button></a>
         <div class="space"></div>
-        <form action="{{ route('logout') }}" method="POST">
+        <form action="{{ route('logout') }}" method="POST" style="margin-bottom: 0px">
             @csrf
             <button type="submit" class="signOut" style="border-radius: 0px 0px 6px 6px">Sign Out</button>
         </form>

@@ -136,8 +136,11 @@ class ProjectsController extends Controller {
 
     public function projectOverview($id)
     {   
-        $project = Project::findorFail($id)
-        ->load('users','tasks');
+        $project = Project::with('users', 'tasks')->find($id);
+
+        if (!$project) {
+            return redirect()->route('dashboard.projects');
+        }
 
         //permitions check
         if (!$project->users->contains('id', auth()->id())) {

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\ProjectUser;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -20,7 +21,7 @@ class ProfileController extends Controller
      */
     public function edit(): View
     {
-        return view('pages.profile', [
+        return view('pages.profile.edit', [
             'user' => auth()->user(),
         ]);
     }
@@ -38,7 +39,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('dashboard.profile')->with('status', 'Personal Information Updated!');
+        return Redirect::route('profile.edit')->with('status', 'Personal Information Updated!');
     }
 
     /**
@@ -111,6 +112,22 @@ class ProfileController extends Controller
         $user->pfp = 'storage/' . $filePath;
         $user->save();
 
-        return Redirect::route('dashboard.profile')->with('status', 'Profile Picture Updated!');
+        return Redirect::route('profile.edit')->with('status', 'Profile Picture Updated!');
+    }
+
+    public function overview($user_id){ //check profile of someone
+
+        $OVuser = User::where('id', $user_id)->firstorFail();
+
+        $commonProjects = $OVuser->projects()
+                                ->whereHas('users', function ($q) {
+                                    $q->where('user_id', auth()->id());
+                                })->get();
+
+        return view('pages.profile.overview', [
+            'user' => auth()->user(),
+            'OVuser' => $OVuser,
+            'commonProjects' => $commonProjects,
+        ]);
     }
 }

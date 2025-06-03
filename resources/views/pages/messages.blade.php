@@ -1,4 +1,4 @@
-@extends('layouts.sidemenu')
+@extends('layouts.main')
 
 @section('title')
     Messages
@@ -25,7 +25,7 @@
         @foreach ($userAll as $u)
             <tr>
                 <td><img src="{{ asset($u->pfp ?? 'Images/Pfp/pfp_default.png') }}"></td>
-                <td>{{ $u->name }}</td>
+                <td><a href="{{ route('profile.overview', $u->id) }}" class="username">{{ $u->name }}</a></td>
                 <td>{{ $u->email }}</td>
                 <td>Ainda nada</td>
             </tr>

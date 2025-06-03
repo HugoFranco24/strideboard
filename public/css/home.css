@@ -113,7 +113,7 @@ nav .authY a:hover, nav .authN a:hover{
     cursor: pointer;
     position: absolute;
     top: 7px;
-    z-index: 1;
+    z-index: 100;
 }
 .hamburger img{
     width: 45px;
@@ -129,7 +129,7 @@ nav .authY a:hover, nav .authN a:hover{
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
-    z-index: 2;
+    z-index: 101;
 }
 .menuMB button{
     all: unset;
@@ -187,6 +187,27 @@ h3{
 /*
 /*Page Defaults End*/
 
+/* Background
+/*
+/**/
+.background{
+    background-color: hsl(0, 0%, 90%);
+    border-radius: 0% 100% 100% 0% / 100% 0% 100% 0% ;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 110dvw;
+    height: 80%;
+    z-index: 8;
+    /* max-width: 2200px; */
+    max-height: 900px;
+}
+/**/
+/*
+/* Background End */
+
+
+
 
 /*Hero Section
 /*
@@ -200,12 +221,14 @@ h3{
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    border-right: 2px solid #ddd;
+    /* border-right: 2px solid #ddd; */
+    z-index: 10;
 }
 .gif-panel img {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
+    border-radius: 8px;
 }
 .gif-panel img:nth-child(2){
     display: none;
@@ -226,11 +249,13 @@ h3{
     font-size: 36px;
     max-width: 500px;
     margin: 0px 0px 10px;
+    z-index: 9;
 }
 .promo-panel span {
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 30px;
+    z-index: 9;
 }
 .promo-panel p {
     margin: 10px 0px 40px;
@@ -240,7 +265,8 @@ h3{
     display:block;
     border-right: 3px solid black;
     animation: typewriter 15s steps(50) infinite, blinking-cursor 0.8s infinite;
-    animation-fill-mode: forwards
+    animation-fill-mode: forwards;
+    z-index: 9;
 }
 
 @keyframes typewriter {
@@ -262,18 +288,21 @@ h3{
     display: flex;
     gap: 15px;
     align-items: start;
+    z-index: 9;
 }
 .promo-panel .links div {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 8px;
+    z-index: 9;
 }
 .promo-panel .links div span{
     font-size: 12px;
     color: #222222;
     font-weight: 400;
     margin: 0;
+    z-index: 9;
 }
 .promo-panel .links a {
     font-size: 14px;
@@ -284,26 +313,31 @@ h3{
     font-weight: 500;
     text-decoration: none;
     transition: 200ms;
+    z-index: 9;
 }
 .promo-panel .links .primary {
     background-color: #113F59;
     color: white;
+    z-index: 9;
 }
 .promo-panel .links .primary:hover {
     background-color: hsl(202, 68%, 16%);
 }
 .promo-panel .links .secondary {
-    background-color: #e6e6e6;
-    color: black;
+    border: 1px solid hsl(0, 0%, 60%);
+    background-color: white;
+    color: hsl(0, 0%, 20%);
+    z-index: 9;
 }
 .promo-panel .links .secondary::after {
     content: "→";
     margin-right: 7px;
     margin-left: 2px;
     transition: 200ms;
+    z-index: 9;
 }
 .promo-panel .links .secondary:hover {
-    background-color: hsl(0, 0%, 80%);
+    background-color: hsl(0, 0%, 95%);
 }
 .promo-panel .links .secondary:hover::after {
     margin-right: 2px;
@@ -349,15 +383,9 @@ h3{
 
 .heroSec1{
     margin-top: 100px;
-    border-width: 2px 2px 1px;
-    border-style: solid;
-    border-color: #ccc;
 }
 .heroSec2 {
     margin-bottom: 20px;
-    border-width: 1px 2px 2px;
-    border-style: solid;
-    border-color: #ccc;
     padding: 30px 30px;
 }
 
@@ -380,6 +408,7 @@ h3{
     transition: box-shadow 200ms;
     min-height: 175px;
     box-sizing: border-box;
+    z-index: 9;
 }
 .heroSec2 .item .box:hover {
     box-shadow: 0 0 11px rgba(33,33,33,.2); 
@@ -721,7 +750,7 @@ h3{
         display: flex;
         flex-direction: row;
         
-        gap: 20px;
+        gap: 14px;
     }
     .hiw .container .item:nth-child(3) {
         grid-column: span 4 / span 4;

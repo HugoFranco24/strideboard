@@ -1,12 +1,19 @@
 .container{
-    display: flex;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    gap: 14px;
+    max-height: 970px;
+    margin-bottom: 20px;
 }
 .box:nth-child(1){
-    width: 60%;
+    grid-column: span 3 / span 3;
 }
 .box:nth-child(2){
-    width: 40%;
+    grid-column: span 2 / span 2;
+    grid-column-start: 4;
+    overflow-y: auto;
+    scrollbar-width: thin;
 }
 input[type='text'],
 input[type='date'],
@@ -22,4 +29,93 @@ textarea
     height: 1px;
     background-color: var(--box-input-border);
     margin: 20px 0px;
+}
+.box .func{
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: end;
+}
+
+@media screen and (max-width: 1125px) {
+    .container{
+        display: block;
+    }
+}
+
+.audit{
+    position: relative;
+    background-color: var(--box-inner-color);
+    overflow-y: hidden;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: background-color 200ms;
+}
+.Uinfo{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.Uinfo p{
+    font-size: 16px;
+    margin: 0px 0px 0px 12px;
+}
+.Uinfo p span{
+    font-weight: 600;
+}
+.Uinfo img{
+    border-radius: 100px;
+    width: 60px;
+    height: 60px;
+}
+:root{
+    --btn: hsl(0, 0%, 90%);
+    --btn-hover: hsl(0, 0%, 84%);
+}
+.dark_theme{
+    --btn: hsl(218, 11%, 25%);
+    --btn-hover: hsl(218, 11%, 28%);
+}
+.Uinfo button{
+    cursor: pointer;
+    border-radius: 12px;
+    border: none;
+    background-color: var(--btn);
+    padding: 5px 16px;
+    font-size: 16px;
+    transition: 200ms;
+    margin-left: 10px;
+    color: var(--text-color);
+}
+.Uinfo button:hover{
+    background-color: var(--btn-hover);
+}
+.details{
+    display: none;
+}
+.details.expanded{
+    display: block;
+}
+
+.details table{
+    width: 90%;
+    margin: 0px auto;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+.details th, .details td {
+    text-align: left;
+}
+.details th {
+    padding: 10px;
+    background-color: #113F59;
+    color: white;
+    font-weight: bold;
+}
+.details td {
+    padding: 8px;
+    border-width: 0px 0px 1px 0px;
+    border-style: solid;
+    border-color: #ddd;
 }

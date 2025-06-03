@@ -1,4 +1,4 @@
-@extends('layouts.sidemenu')
+@extends('layouts.main')
 @section('title')
     Calendar
 @endsection

@@ -3,15 +3,15 @@ html:not(.dark_theme) body {
 }
 /*#region Themes */
 :root{
-    --background-color: white;
-    --text-color: black;
+    --background-color: #ffffff;
+    --text-color: hsl(0, 0%, 10%);
 
     /* box */
-    --box-color: #f1f1f1;
-    --box-inner-color: hsl(0, 0%, 98%);
-    --box-inner-color-hover: hsl(0, 0%, 88%);
+    --box-color: hsl(0, 0%, 92%);
+    --box-inner-color: hsl(0, 0%, 100%);
+    --box-inner-color-hover: hsla(0, 0%, 97%);
     
-    --box-input-border: hsl(0, 0%, 80%);
+    --box-input-border: hsl(0, 0%, 82%);
     --box-input-bg-hover: hsl(0, 0%, 98%);
     --box-shadow-color: #d1d5db;
     /*box end*/
@@ -29,12 +29,12 @@ html:not(.dark_theme) body {
 .dark_theme
 {
     --background-color: #12181d;
-    --text-color: white;
+    --text-color: hsl(0, 0%, 90%);
 
     /*box*/
     --box-color: #1d2025;
-    --box-inner-color: #2B2F36;
-    --box-inner-color-hover: hsl(218, 11%, 23%);
+    --box-inner-color: hsl(218, 11%, 17%);
+    --box-inner-color-hover: hsl(218, 11%, 19%);
 
     --box-input-border: hsl(0, 0%, 30%);
     --box-input-bg-hover: #2f333a;
@@ -52,25 +52,31 @@ html:not(.dark_theme) body {
 }
 /*#endregion Themes*/
 
-.dark_theme h1,
-.dark_theme h2,
-.dark_theme h3,
-.dark_theme h4,
-.dark_theme h5,
-.dark_theme h6,
-.dark_theme p,
-.dark_theme span,
-.dark_theme td,
-.dark_theme th{
-    opacity: 0.9;
-}
-
 .SQL{
     flex: 1;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.username{
+    position: relative;
+    color: var(--text-color);
+    text-decoration: none;
+}
+.username::before{
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    height: 1px;
+    width: 100%;
+    background-color: var(--text-color);
+}
+.username:hover::before{
+    width: 0%;
+}
+
+
 .box{
     background-color: var(--box-color);
     color: var(--text-color);

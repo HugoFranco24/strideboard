@@ -1,4 +1,4 @@
-@extends('layouts.sidemenu')
+@extends('layouts.main')
 @section('title')
     Projects
 @endsection
@@ -21,7 +21,7 @@
                     <div style="margin-left: 25px;">
                         <h4>{{ $p->name }}</h4>
                         <p>Business: {{ $p->business == '' ? 'Not Defined' : $p->business }}</p>
-                        <p>Due Date: {{ $p->due_date }}</p>
+                        <p>Due Date: {{ \Carbon\Carbon::parse($p->due_date)->format('F d, Y') }}</p>
                     </div>
                 </div>
             </a>

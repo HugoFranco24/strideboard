@@ -17,6 +17,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/profile/uploadImg', [ProfileController::class, 'uploadImg'])->name('profile.uploadImg');
+    Route::get('/dashboard/my-profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/dashboard/profile/{user_id}', [ProfileController::class, 'overview'])->name('profile.overview');
 });
 
 //dashboard
@@ -25,7 +27,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/tasks', [DashboardController::class, 'tasks'])->name('dashboard.tasks');
     Route::get('/dashboard/calendar', [DashboardController::class, 'calendar'])->name('dashboard.calendar');
     Route::get('/dashboard/messages', [DashboardController::class, 'messages'])->name('dashboard.messages');
-    Route::get('/dashboard/profile', [ProfileController::class, 'edit'])->name('dashboard.profile');
     Route::get('/dashboard/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');
 
     //region Project
@@ -44,12 +45,10 @@ Route::middleware('auth')->group(function () {
     //end project
 
     //region Tasks
-    Route::get('/dashboard/projects/overview/{project_id}/create-task', [TasksController::class, 'TasksCreate'])->name('tasks.create');
-    Route::post('/dashboard/projects/overview/{project_id}/create-task/add', [TasksController::class, 'TasksCreateAdd'])->name('tasks.add');
-    Route::get('/dashboard/projects/overview/{project_id}/edit-task/{task_id}', [TasksController::class, 'TasksEdit'])->name('tasks.edit');
-    Route::put('/dashboard/projects/overview/{project_id}/edit-task/{task_id}/update', [TasksController::class, 'TasksUpdate'])->name('tasks.update');
-    Route::delete('/dashboard/task/delete/{task_id}', [TasksController::class, 'TasksDelete'])->name('tasks.delete');
-
+    Route::get('/dashboard/projects/overview/{project_id}/create-task', [TasksController::class, 'TaskCreate'])->name('task.create');
+    Route::post('/dashboard/projects/overview/{project_id}/create-task/add', [TasksController::class, 'TaskAdd'])->name('task.add');
+    Route::put('/dashboard/projects/overview/{project_id}/update-task/{task_id}', [TasksController::class, 'TaskUpdate'])->name('task.update');
+    Route::delete('/dashboard/tasks/delete/{task_id}', [TasksController::class, 'TaskDelete'])->name('task.delete');
     Route::get('/dashboard/tasks/overview/{task_id}', [TasksController::class, 'TaskOverview'])->name('task.overview');
     //end Tasks
 
