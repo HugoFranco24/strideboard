@@ -36,9 +36,22 @@ textarea
     margin-top: 20px;
     justify-content: end;
 }
+@media screen and (max-width: 950px){
+    .box .func .btn_default,
+    .box .func form
+    {
+        width: calc(50% - 5px); /* 5px por causa da gap 5 cada btn */
+        min-width: calc(50% - 5px);
+    }
+    .box .func .btn_delete{
+        width: 100%;
+        min-width: 100%;
+    }
+}
 
-@media screen and (max-width: 1125px) {
+@media screen and (max-width: 1350px) {
     .container{
+        
         display: block;
     }
 }

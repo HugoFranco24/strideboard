@@ -15,7 +15,8 @@
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/dashboard/projects/overview.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/dashboard/projects/input-select.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard/global/input-select.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard/global/table.css') }}">
 @endsection
 
 @section('custom_links')
@@ -86,7 +87,7 @@
                                         @csrf
                                         @method('post')
                                         <button type="submit">
-                                            <img width="50" height="50" src="{{ asset('Images/Icons/UserAdd.png') }}" alt="plus-math--v1"/>
+                                            <img width="50" height="50" src="{{ asset('Images/Icons/Actions/UserAdd.png') }}" alt="plus-math--v1"/>
                                         </button>
                                     </form>
                                 </td>
@@ -147,7 +148,7 @@
                                             @csrf
                                             @method('delete')
                                             <button type="submit">
-                                                <img style="min-width: 35px; max-width: 35px; height: 35px;" src="{{ asset('Images/Icons/UserDelete.png') }}" alt="UserDelete"/>
+                                                <img style="min-width: 35px; max-width: 35px; height: 35px;" src="{{ asset('Images/Icons/Actions/UserDelete.png') }}" alt="UserDelete"/>
                                             </button>
                                         </form>
                                     </td>
@@ -235,10 +236,10 @@
                                             >
                                                 @csrf
                                                 @method('delete')
-                                                <button type="submit"><img  class="icon" src="{{ asset('Images/Icons/Overview/Delete.svg') }}"></button>
+                                                <button type="submit"><img  class="icon" src="{{ asset('Images/Icons/Actions/Delete.svg') }}"></button>
                                             </form>
                                         @endif
-                                        <a href="{{ route('task.overview',  $t->id) }}"><img class="icon" src="{{ asset('Images/Icons/Overview/More.svg') }}"></a>
+                                        <a href="{{ route('task.overview',  $t->id) }}"><img class="icon" src="{{ asset('Images/Icons/Actions/More.svg') }}"></a>
                                     </div>
                                 </div>
                             @endforeach
@@ -272,10 +273,10 @@
                                             >
                                                 @csrf
                                                 @method('delete')
-                                                <button type="submit"><img  class="icon" src="{{ asset('Images/Icons/Overview/Delete.svg') }}"></button>
+                                                <button type="submit"><img  class="icon" src="{{ asset('Images/Icons/Actions/Delete.svg') }}"></button>
                                             </form>
                                         @endif
-                                        <a href="{{ route('task.overview',  $l->id) }}"><img class="icon" src="{{ asset('Images/Icons/Overview/More.svg') }}"></a>
+                                        <a href="{{ route('task.overview',  $l->id) }}"><img class="icon" src="{{ asset('Images/Icons/Actions/More.svg') }}"></a>
                                     </div>
                                 </div>
                             @endforeach
@@ -309,10 +310,10 @@
                                             >
                                                 @csrf
                                                 @method('delete')
-                                                <button type="submit"><img  class="icon" src="{{ asset('Images/Icons/Overview/Delete.svg') }}"></button>
+                                                <button type="submit"><img  class="icon" src="{{ asset('Images/Icons/Actions/Delete.svg') }}"></button>
                                             </form>
                                         @endif
-                                        <a href="{{ route('task.overview', $u->id) }}"><img class="icon" src="{{ asset('Images/Icons/Overview/More.svg') }}"></a>
+                                        <a href="{{ route('task.overview', $u->id) }}"><img class="icon" src="{{ asset('Images/Icons/Actions/More.svg') }}"></a>
                                         
                                     </div>
                                 </div>
@@ -347,10 +348,10 @@
                                             >
                                                 @csrf
                                                 @method('delete')
-                                                <button type="submit"><img  class="icon" src="{{ asset('Images/Icons/Overview/Delete.svg') }}"></button>
+                                                <button type="submit"><img  class="icon" src="{{ asset('Images/Icons/Actions/Delete.svg') }}"></button>
                                             </form>
                                         @endif
-                                        <a href="{{ route('task.overview',  $d->id) }}"><img class="icon" src="{{ asset('Images/Icons/Overview/More.svg') }}"></a>
+                                        <a href="{{ route('task.overview',  $d->id) }}"><img class="icon" src="{{ asset('Images/Icons/Actions/More.svg') }}"></a>
                                     </div>
                                 </div>
                             @endforeach
@@ -377,8 +378,8 @@
             </div>
             <div class="item">
                 <h1 style="text-align: center; margin: 10px 0px 30px;">Tasks</h1>
-                <div class="tasks">
-                    <div class="table-wrapper">
+                <div class="dtable">
+                    <div class="dtable-wrapper">
                         <table id="allTasks">
                             <tr>
                                 <th onclick="sortTask(0)">Name <span class="sort-arrow"></span></th>
@@ -396,28 +397,28 @@
                                     <td class="SQL">{{ \Carbon\Carbon::parse($t->start)->format('F d, Y') }}</td>
                                     <td class="SQL">{{ \Carbon\Carbon::parse($t->end)->format('F d, Y') }}</td>
                                     @if ($t->state == 0)
-                                        <td data-state="not_started"><span style="display: none">0</span>Not Started</td>
+                                        <td data-state="not_started" class="state"><span style="display: none">0</span>Not Started</td>
                                     @elseif ($t->state == 1)
-                                        <td data-state="stoped"><span style="display: none">1</span>Stoped</td>
+                                        <td data-state="stoped" class="state"><span style="display: none">1</span>Stoped</td>
                                     @elseif ($t->state == 2)
-                                        <td data-state="in_progress"><span style="display: none">2</span>In Progress</td>
+                                        <td data-state="in_progress" class="state"><span style="display: none">2</span>In Progress</td>
                                     @elseif ($t->state == 3)
-                                        <td data-state="done"><span style="display: none">3</span>Done</td>
+                                        <td data-state="done" class="state"><span style="display: none">3</span>Done</td>
                                     @endif
 
                                     @if ($t->priority == 0)
-                                        <td data-priority="low"><span style="display: none">0</span>Low</td>
+                                        <td data-priority="low" class="priority"><span style="display: none">0</span>Low</td>
                                     @elseif ($t->priority == 1)
-                                        <td data-priority="normal"><span style="display: none">1</span>Normal</td>
+                                        <td data-priority="normal" class="priority"><span style="display: none">1</span>Normal</td>
                                     @elseif ($t->priority == 2)
-                                        <td data-priority="high"><span style="display: none">2</span>High</td>
+                                        <td data-priority="high" class="priority"><span style="display: none">2</span>High</td>
                                     @elseif ($t->priority == 3)
-                                        <td data-priority="urgent"><span style="display: none">3</span>Urgent</td>
+                                        <td data-priority="urgent" class="priority"><span style="display: none">3</span>Urgent</td>
                                     @endif
 
                                     <td>
-                                        <div>
-                                            <a href="{{ route('task.overview',  $t->id) }}"><img class="icon" src="{{ asset('Images/Icons/Overview/More.svg') }}"></a>
+                                        <div class="actions">
+                                            <a href="{{ route('task.overview',  $t->id) }}"><img class="icon" src="{{ asset('Images/Icons/Actions/More.svg') }}"></a>
                                             @if ($authUserType >= 1 || $t->user_id == auth()->id())
                                                 <form 
                                                     action="{{ route('task.delete', $t->id) }}"
@@ -426,7 +427,7 @@
                                                 >
                                                     @csrf
                                                     @method('delete')
-                                                    <button type="submit"><img  class="icon" src="{{ asset('Images/Icons/Overview/Delete.svg') }}"></button>
+                                                    <button type="submit"><img  class="icon" src="{{ asset('Images/Icons/Actions/Delete.svg') }}"></button>
                                                 </form>
                                             @endif
                                         </div>
@@ -444,6 +445,7 @@
 
 @section('custom_vue')
     <script src="{{ asset('js/project-overview.js') }}"></script>
+    <script src="{{ asset('js/tableSort.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const hash = window.location.hash;
@@ -454,35 +456,5 @@
                 }, 60);  // delay to ensure element is there
             }
         });
-
-        function sortTask(colIndex) {
-            const table = document.getElementById("allTasks");
-            const rows = Array.from(table.rows).slice(1); // skip header
-            const asc = table.getAttribute("data-sort-dir") !== "asc"; // toggle
-
-            table.querySelectorAll("th").forEach(th => th.classList.remove("asc", "desc"));
-            table.rows[0].cells[colIndex].classList.add(asc ? "asc" : "desc");
-
-            rows.sort((a, b) => {
-                const A = a.cells[colIndex].textContent.trim().toLowerCase();
-                const B = b.cells[colIndex].textContent.trim().toLowerCase();
-
-                const isNum = !isNaN(Date.parse(A)) || !isNaN(A);
-
-                if (isNum) {
-                    return asc ? (A > B ? 1 : -1) : (A < B ? 1 : -1);
-                }
-
-                return asc ? A.localeCompare(B) : B.localeCompare(A);
-            });
-
-            // Append sorted rows
-            rows.forEach(row => table.tBodies[0].appendChild(row));
-
-            // Store current sort direction
-            table.setAttribute("data-sort-dir", asc ? "asc" : "desc");
-
-
-        }
     </script>
 @endsection

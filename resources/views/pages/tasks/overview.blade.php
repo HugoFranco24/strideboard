@@ -4,7 +4,7 @@
 @endsection
 
 @section('go-back')
-    <a class="goBack" href="{{ route('projects.overview', $project->id) }}">
+    <a class="goBack" onclick="history.back()">
         <img class="icon" width="35" height="35" src="{{ asset('Images/Icons/Menu/Go-back.png') }}" alt="undo" title="Go Back"/>
     </a>
 @endsection
@@ -15,7 +15,7 @@
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/dashboard/tasks/overview.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/dashboard/projects/input-select.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard/global/input-select.css') }}">
 @endsection
 
 @section('custom_links')
@@ -99,20 +99,20 @@
 
                     <label>Status</label><br>
                     <select name="state" id="state" class="state" {{ $editable ? '' : 'disabled' }}>
-                        <option value="0">To Do</option>
-                        <option value="1">Stopped</option>
-                        <option value="2">In Progress</option>
-                        <option value="3">Done</option>
+                        <option value="0" {{ old('state') == 0 || $task->state == 0 ? 'selected' : '' }}>To Do</option>
+                        <option value="1" {{ old('state') == 1 || $task->state == 1 ? 'selected' : '' }}>Stopped</option>
+                        <option value="2" {{ old('state') == 2 || $task->state == 2 ? 'selected' : '' }}>In Progress</option>
+                        <option value="3" {{ old('state') == 3 || $task->state == 3 ? 'selected' : '' }}>Done</option>
                     </select>
                     <x-input-error :messages="$errors->get('state')"/>
 
                     <br>
                     <label>Priority</label><br>
                     <select name="priority" id="priority" class="priority" {{ $editable ? '' : 'disabled' }}>
-                        <option value="0">Low</option>
-                        <option value="1">Normal</option>
-                        <option value="2">High</option>
-                        <option value="3">Urgent</option>
+                        <option value="0" {{ old('priority') == 0 || $task->priority == 0 ? 'selected' : '' }}>Low</option>
+                        <option value="1" {{ old('priority') == 1 || $task->priority == 1 ? 'selected' : '' }}>Normal</option>
+                        <option value="2" {{ old('priority') == 2 || $task->priority == 2 ? 'selected' : '' }}>High</option>
+                        <option value="3" {{ old('priority') == 3 || $task->priority == 3 ? 'selected' : '' }}>Urgent</option>
                     </select>
                     <x-input-error :messages="$errors->get('priority')"/>
 
@@ -131,7 +131,7 @@
                                         @if ($editable)
                                             <td>
                                                 <button type="button" @click="selectUser(user)">
-                                                    <img width="50" height="50" src="{{ asset('Images/Icons/UserAdd.png') }}" alt="plus"/>
+                                                    <img width="50" height="50" src="{{ asset('Images/Icons/Actions/UserAdd.png') }}" alt="plus"/>
                                                 </button>
                                             </td>
                                         @endif
@@ -149,7 +149,7 @@
                                     @if ($editable)
                                         <td>
                                             <button type="button" @click="removeUser">
-                                                <img width="35" height="35" src="{{ asset('Images/Icons/UserDelete.png') }}" alt="remove"/>
+                                                <img width="35" height="35" src="{{ asset('Images/Icons/Actions/UserDelete.png') }}" alt="remove"/>
                                             </button>
                                         </td>
                                     @endif

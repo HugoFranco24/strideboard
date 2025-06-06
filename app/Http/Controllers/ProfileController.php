@@ -119,6 +119,10 @@ class ProfileController extends Controller
 
         $OVuser = User::where('id', $user_id)->firstorFail();
 
+        if($OVuser->id == auth()->id()){
+            return redirect(route('profile.edit'));
+        }
+
         $commonProjects = $OVuser->projects()
                                 ->whereHas('users', function ($q) {
                                     $q->where('user_id', auth()->id());

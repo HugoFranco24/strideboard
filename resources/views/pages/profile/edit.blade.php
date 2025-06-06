@@ -37,9 +37,9 @@
         @else
             <p>Not Verified</p>
         @endif
-
-        <div class="lineSpace"></div>
-
+    </div>
+    
+    <div class="box">
         <div>
             <h2>Profile Picture</h2>
             <form action="{{ route('profile.uploadImg') }}" method="POST" enctype="multipart/form-data">

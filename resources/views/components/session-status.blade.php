@@ -5,18 +5,18 @@
 <style>
     .sessionStatus{
         height: 56px;
-        width: calc(100% - 44px);
+        width: 100%;
         padding: 0px 14px 0px 14px;
         display: flex;
         justify-content: space-between;
-        background-color: var(--box-inner-color);
+        background-color: var(--box-color);
         color: var(--text-color);
         align-items: center;
         font-size: 18px;
         border-radius: 4px;
         margin-bottom: 20px;
         border-left: 16px solid #113f59;
-        box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;    
+        box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     }
     .sessionStatus button{
         background-color: transparent;

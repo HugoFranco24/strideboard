@@ -15,7 +15,7 @@
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/dashboard/tasks/task-create.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/dashboard/projects/input-select.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard/global/input-select.css') }}">
 @endsection
 
 @section('custom_links')
@@ -79,7 +79,7 @@
                                     <td class="SQL" style="max-width: 200px">@{{ user.email }}</td>
                                     <td>
                                         <button type="button" @click="selectUser(user)">
-                                            <img width="50" height="50" src="{{ asset('Images/Icons/UserAdd.png') }}" alt="plus"/>
+                                            <img width="50" height="50" src="{{ asset('Images/Icons/Actions/UserAdd.png') }}" alt="plus"/>
                                         </button>
                                     </td>
                                 </tr>
@@ -95,7 +95,7 @@
                                 <td class="SQL" style="max-width: 200px">@{{ selectedUser.email }}</td>
                                 <td>
                                     <button type="button" @click="removeUser">
-                                        <img width="35" height="35" src="{{ asset('Images/Icons/UserDelete.png') }}" alt="remove"/>
+                                        <img width="35" height="35" src="{{ asset('Images/Icons/Actions/UserDelete.png') }}" alt="remove"/>
                                     </button>
                                 </td>
                             </tr>

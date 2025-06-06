@@ -24,11 +24,10 @@ Route::middleware('auth')->group(function () {
 //dashboard
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
-    Route::get('/dashboard/tasks', [DashboardController::class, 'tasks'])->name('dashboard.tasks');
     Route::get('/dashboard/calendar', [DashboardController::class, 'calendar'])->name('dashboard.calendar');
-    Route::get('/dashboard/messages', [DashboardController::class, 'messages'])->name('dashboard.messages');
+    Route::get('/dashboard/notifications', [DashboardController::class, 'notifications'])->name('dashboard.notifications');
     Route::get('/dashboard/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');
-
+    
     //region Project
     Route::get('/dashboard/projects', [ProjectsController::class, 'projects'])->name('dashboard.projects');
     Route::get('/dashboard/projects/create', [ProjectsController::class, 'projectsCreate'])->name('projects.create');
@@ -43,8 +42,9 @@ Route::middleware('auth')->group(function () {
     Route::put('/dashboard/projects/overview/{project_id}/update-member/{id_user}', [ProjectsController::class, 'updateMember'])->name('projects.update-member');
     Route::delete('/dashboard/projects/overview/{project_id}/delete-member/{id_user}', [ProjectsController::class, 'deleteMember'])->name('projects.delete-member');
     //end project
-
+    
     //region Tasks
+    Route::get('/dashboard/tasks', [TasksController::class, 'tasks'])->name('dashboard.tasks');
     Route::get('/dashboard/projects/overview/{project_id}/create-task', [TasksController::class, 'TaskCreate'])->name('task.create');
     Route::post('/dashboard/projects/overview/{project_id}/create-task/add', [TasksController::class, 'TaskAdd'])->name('task.add');
     Route::put('/dashboard/projects/overview/{project_id}/update-task/{task_id}', [TasksController::class, 'TaskUpdate'])->name('task.update');

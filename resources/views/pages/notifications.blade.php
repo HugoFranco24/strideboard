@@ -1,15 +1,15 @@
 @extends('layouts.main')
 
 @section('title')
-    Messages
+    Notifications
 @endsection
 
 @section('body-title')
-    Messages
+    Notifications
 @endsection
 
 @section('css')
-    <link rel="stylesheet" href="{{ asset('css/dashboard/messages.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard/notifications.css') }}">
 @endsection
 
 

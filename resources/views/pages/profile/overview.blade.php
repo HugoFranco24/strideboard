@@ -3,6 +3,13 @@
     Profile
 @endsection
 
+@section('go-back')
+    <a class="goBack" onclick="history.back()">
+        <img class="icon" width="35" height="35" src="{{ asset('Images/Icons/Menu/Go-back.png') }}" alt="undo" title="Go Back"/>
+    </a>
+@endsection
+
+
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/dashboard/profile.css') }}">
 @endsection
@@ -33,7 +40,7 @@
             @else
                 <p>Not Verified</p>
             @endif
-            <p>Projects in Common:</p>
+            <p>Projects in Common: {{$commonProjects->count() == 0 ? 'None' : ''}}</p>
             @foreach ($commonProjects as $p)
                 <a href="/dashboard/projects/overview/{{ $p->id }}" title="Overview" class="overview">
                     <div class="project" style="--project-bar-color: {{ $p->color }}">

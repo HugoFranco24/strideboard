@@ -19,7 +19,7 @@
             if (menu.style.width === "265px") {
                 menu.style.width = "68px";
                 menu.style.transition = "500ms";
-                img.style.left = "6px";
+                img.style.left = "8px";
                 img.style.transition = "500ms";
                 open.style.opacity = "1";
                 close.style.opacity = "0";
@@ -27,14 +27,14 @@
                 links.classList.add('links_colapse');
                 top_menu.style.margin = "0px 0px 0px 68px";
                 top_menu.style.transition = "500ms";
-                main.style.padding = "120px 30px 0px 108px";
+                main.style.padding = "110px 30px 30px 108px";
                 main.style.transition = "500ms";
                 sepC.style.visibility = "visible";
                 newState = 'collapsed';
             } else {
                 menu.style.width = "265px";
                 menu.style.transition = "500ms";
-                img.style.left = "195px";
+                img.style.left = "198px";
                 img.style.transition = "500ms";
                 open.style.opacity = "0";
                 close.style.opacity = "1";
@@ -42,7 +42,7 @@
                 links.classList.remove('links_colapse');
                 top_menu.style.margin = "0px 0px 0px 265px";
                 top_menu.style.transition = "500ms";
-                main.style.padding = "120px 30px 0px 300px";
+                main.style.padding = "110px 30px 30px 300px";
                 main.style.transition = "500ms";
                 sepC.style.visibility = "hidden";
                 newState = 'not_collapsed';
@@ -84,23 +84,23 @@
 
             if (state === 'collapsed') {
                 menu.style.width = "68px";
-                img.style.left = "6px";
+                img.style.left = "8px";
                 open.style.opacity = "1";
                 close.style.opacity = "0";
                 icons8.style.display = "none";
                 links.classList.add('links_colapse');
                 top_menu.style.margin = "0px 0px 0px 68px";
-                main.style.padding = "120px 30px 0px 108px";
+                main.style.padding = "110px 30px 30px 108px";
                 sepC.style.visibility = "visible";
             } else {
                 menu.style.width = "265px";
-                img.style.left = "195px";
+                img.style.left = "198px";
                 open.style.opacity = "0";
                 close.style.opacity = "1";
                 icons8.style.display = "block";
                 links.classList.remove('links_colapse');
                 top_menu.style.margin = "0px 0px 0px 265px";
-                main.style.padding = "120px 30px 0px 300px";
+                main.style.padding = "110px 30px 30px 300px";
                 sepC.style.visibility = "hidden";
             }
         }
@@ -181,8 +181,8 @@
     >
     <title>@yield('title') | StrideBoard</title>
 
-    <link rel="stylesheet" href="{{ asset('css/dashboard/sidemenu.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/dashboard/general.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard/global/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard/global/general.css') }}">
     @yield('css')
 
     <link rel="icon" href="{{ asset('Images/Logos/StrideBoard.png') }}" type="image/x-icon">
@@ -207,8 +207,8 @@
             <a href="/dashboard/calendar" title="Calendar"><img src="{{ asset('Images/Icons/Menu/Calendar.png') }}" alt=""><span>Calendar</span></a>
             <div class="sepC" id="sepC"></div>
             <span class="sep">Settings</span>
-            <a href="/dashboard/messages" title="Messages"><img src="{{ asset('Images/Icons/Menu/Messages.png') }}" alt="" ><span>Messages</span></a>
-            <a href="/dashboard/my-profile" title="Profile"><img src="{{ asset('Images/Icons/Menu/Profile.png') }}" alt=""/><span>Profile</span></a>
+            <a href="/dashboard/notifications" title="Notifications"><img src="{{ asset('Images/Icons/Menu/Notifications.png') }}" alt="" /><span>Notifications</span></a>
+            <a href="/dashboard/my-profile" title="Profile"><img src="{{ asset('Images/Icons/Menu/Profile.png') }}" alt=""/><span>My Profile</span></a>
             <a href="/dashboard/settings" title="Settings"><img src="{{ asset('Images/Icons/Menu/Settings.png') }}" alt=""/><span>Settings</span></a>
         </div>
 

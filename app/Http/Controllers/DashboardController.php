@@ -16,20 +16,14 @@ class DashboardController extends Controller {
         ]);
     }
 
-    public function tasks(){
-        return view("pages.tasks", [
-            'user' => auth()->user(),
-        ]);
-    }
-
     public function calendar(){
         return view("pages.calendar", [
             'user' => auth()->user(),
         ]);
     }
 
-    public function messages(){
-        return view('pages.messages', [
+    public function notifications(){
+        return view('pages.notifications', [
             'user' => auth()->user(),
             'userAll' => User::all(),
         ]);

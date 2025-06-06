@@ -152,11 +152,9 @@ class ProjectsController extends Controller {
         $my_tasks = $project->tasks
                 ->where('user_id', auth()->id());
         $late = $project->tasks
-                ->where('end', '<', now()->format('Y-m-d'))
-                ->where('state', '!=', 3);
+                ->where('end', '<', now()->format('Y-m-d'));
         $urgent = $project->tasks
-                ->where('priority', 3)
-                ->where('state', '!=', 3);
+                ->where('priority', 3);
         $done = $project->tasks
                 ->where('state', 3);
         //end for kanban

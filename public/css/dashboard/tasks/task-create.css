@@ -1,0 +1,24 @@
+.addmember-wrapper{
+    width: 50% !important;
+}
+.selected-wrapper{
+    width: 50% !important;
+}
+
+@media (max-width: 1500px){
+    .addmember-wrapper{
+        width: 75% !important;
+    }
+    .selected-wrapper{
+        width: 75% !important;
+    }
+}
+
+@media (max-width: 1200px){
+    .addmember-wrapper{
+        width: 100% !important;
+    }
+    .selected-wrapper{
+        width: 100% !important;
+    }
+}

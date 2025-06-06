@@ -12,6 +12,6 @@ class SidemenuLayout extends Component
      */
     public function render(): View
     {
-        return view('layouts.sidemenu');
+        return view('layouts.main');
     }
 }

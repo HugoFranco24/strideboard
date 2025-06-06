@@ -4,7 +4,7 @@
 @endsection
 
 @section('go-back')
-    <a class="goBack" href="{{ route('dashboard.projects') }}">
+    <a class="goBack" onclick="history.back()">
         <img class="icon" width="35" height="35" src="{{ asset('Images/Icons/Menu/Go-back.png') }}" alt="undo" title="Go Back"/>
     </a>
 @endsection

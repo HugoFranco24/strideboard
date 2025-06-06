@@ -9,7 +9,41 @@ use App\Models\Task;
 use App\Models\ProjectUser;
 use OwenIt\Auditing\Models\Audit;
 
-class TasksController extends Controller {
+class TasksController extends Controller 
+{
+    public function tasks(Request $request)
+    {
+        $query = Task::leftJoin('projects', 'tasks.project_id', '=', 'projects.id')
+                        ->where('user_id', auth()->id())
+                        ->select(
+                            'tasks.*',
+                            'projects.name as project_name'
+                        );
+
+        if ($request->filled('filter') && $request->filter !== 'no_filter') {
+            if ($request->filter === 'late') {
+                $query->where('tasks.end', '<', now())
+                    ->where('tasks.state', '!=', 3);
+            } elseif ($request->filter === 'urgent') {
+                $query->where('tasks.priority', '=', 3);
+            }elseif ($request->filter === 'done') {
+                $query->where('tasks.state', '=', 3);
+            }
+        }
+
+        if ($request->filled('project') && $request->project !== 'all') {
+            $query->where('tasks.project_id', $request->project);
+        }
+
+        $my_tasks = $query->get();
+
+        return view("pages.tasks.tasks", [
+            'user' => auth()->user(),
+            'my_tasks' => $my_tasks,
+            'projects' => auth()->user()->projects,
+        ]);
+    }
+
 
     public function TaskCreate($project_id)
     {

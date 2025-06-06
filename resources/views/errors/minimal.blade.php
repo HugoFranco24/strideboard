@@ -4,8 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="icon" href="{{ asset('Images/Logos/Strideboard.png') }}" type="image/x-icon">
-        <link rel="stylesheet" href="{{ asset('css/dashboard/general.css') }}">
+        <link rel="icon" href="{{ asset('Images/Logos/StrideBoard.png') }}" type="image/x-icon">
+        <link rel="stylesheet" href="{{ asset('css/dashboard/global/general.css') }}">
 
         <title>@yield('title') Error | StrideBoard</title>
 

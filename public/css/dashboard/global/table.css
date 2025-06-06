@@ -1,0 +1,172 @@
+/*Default Table
+/*
+/**/
+.dtable {
+    width: 100%;
+    background-color: var(--box-inner-color);
+}
+
+.dtable-wrapper {
+    max-height: 800px;
+    overflow-y: auto;
+    border-radius: 4px;
+}
+.dtable table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+.dtable th, .dtable td {
+    padding: 12px;
+    border-bottom: 1px solid var(--box-input-border);
+    text-align: left;
+}
+.dtable th {
+    background-color: #113F59;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    position: relative;
+}
+.dtable th:hover{
+    background-color: hsl(202, 68%, 16%);
+}
+.dtable .sort-arrow::after {
+    content: "";
+    position: absolute;
+    right: 12px;
+    font-size: 16px;
+}
+.dtable th.asc .sort-arrow::after { content: "⬆"; }
+.dtable th.desc .sort-arrow::after { content: "⬇"; }
+
+.dtable tr:hover {
+    background-color: var(--box-inner-color-hover);
+    transition: background-color 0.3s ease;
+}
+.dtable td {
+    font-size: 14px;
+    text-align: left;
+}
+
+.dtable .overdue {
+    width: 20px;        
+    height: 20px;
+}
+
+.dtable .state:before, 
+.dtable .priority:before {
+    content: '';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+.dtable .state[data-state="not_started"]:before {
+    background-color: #7f8c8d;
+}
+.dtable .state[data-state="stoped"]:before {
+    background-color: #ae2727;
+}
+.dtable .state[data-state="in_progress"]:before {
+    background-color: #f39c12;
+}
+.dtable .state[data-state="done"]:before {
+    background-color: #27ae60;
+}
+
+.dtable .priority[data-priority="low"]:before {
+    background-color: #c77dff;
+}
+.dtable .priority[data-priority="normal"]:before {
+    background-color: #9d4edd;
+}
+.dtable .priority[data-priority="high"]:before {
+    background-color: #5a189a;
+}
+.dtable .priority[data-priority="urgent"]:before {
+    background-color: #3c096c;
+}
+
+/* Select dropdown styling */
+.dtable select {
+    padding: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 120px;
+    vertical-align: middle;
+}
+
+.dtable select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+.dtable td .actions{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    height: 25px;
+}
+.dtable td .actions button,
+.dtable td .actions a {
+    all: unset;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 200ms;
+    height: 27px;
+    width: 27px;
+}
+.dtable td .actions button:hover,
+.dtable td .actions a:hover {
+    background-color: var(--box-input-border);
+}
+.dtable td .actions img {
+    width: 25px;
+    height: 25px;
+    object-fit: contain;
+    display: flex;
+    align-items: center;
+    margin: 0px auto;
+}
+/* responsive */
+@media (max-width: 600px) {
+    .dtable table {
+        font-size: 12px;
+    }
+
+    .dtable th, .dtable td {
+        padding: 10px;
+    }
+
+    .dtable select {
+        width: 100px;
+        font-size: 12px;
+    }
+
+    .dtable .edit-btn, .dtable .delete-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}
+
+
+.filters{
+    width: calc(100% - 40px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.filters .filter-item{
+    width: 25%;
+}
+.filters .filter-item select{
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+}
+/**/
+/*
+/*Task Table End*/
