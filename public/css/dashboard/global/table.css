@@ -7,9 +7,10 @@
 }
 
 .dtable-wrapper {
-    max-height: 800px;
+    max-height: 60dvh;
     overflow-y: auto;
     border-radius: 4px;
+    scrollbar-width: thin;
 }
 .dtable table {
     width: 100%;

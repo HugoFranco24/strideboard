@@ -1,18 +1,21 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\DashboardController;
+
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\TasksController;
+use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\NotificationsController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('home');
 });
 
-//profile edits
+//region Profile
 Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -20,14 +23,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/my-profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('/dashboard/profile/{user_id}', [ProfileController::class, 'overview'])->name('profile.overview');
 });
+//end Profile
 
 //dashboard
 Route::middleware('auth')->group(function () {
+    //region Dashboard
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
-    Route::get('/dashboard/calendar', [DashboardController::class, 'calendar'])->name('dashboard.calendar');
-    Route::get('/dashboard/notifications', [DashboardController::class, 'notifications'])->name('dashboard.notifications');
-    Route::get('/dashboard/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');
-    
+    //end Dashboard
+
+
     //region Project
     Route::get('/dashboard/projects', [ProjectsController::class, 'projects'])->name('dashboard.projects');
     Route::get('/dashboard/projects/create', [ProjectsController::class, 'projectsCreate'])->name('projects.create');
@@ -37,10 +41,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/dashboard/projects/delete/{project_id}', [ProjectsController::class, 'projectsDelete'])->name('projects.delete');
     
     Route::get('/dashboard/projects/overview/{project_id}', [ProjectsController::class, 'projectOverview'])->name('projects.overview');
-
+    
     Route::post('/dashboard/projects/overview/{project_id}/add-member/{id_user}', [ProjectsController::class, 'addMember'])->name('projects.add-member');
     Route::put('/dashboard/projects/overview/{project_id}/update-member/{id_user}', [ProjectsController::class, 'updateMember'])->name('projects.update-member');
     Route::delete('/dashboard/projects/overview/{project_id}/delete-member/{id_user}', [ProjectsController::class, 'deleteMember'])->name('projects.delete-member');
+
+    Route::post('/dashboard/projects/accept-invite/{id}', [ProjectsController::class, 'acceptInvite'])->name('projects.accept-invite');
+    Route::post('/dashboard/projects/reject-invite/{id}', [ProjectsController::class, 'rejectInvite'])->name('projects.reject-invite');
     //end project
     
     //region Tasks
@@ -52,8 +59,25 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/tasks/overview/{task_id}', [TasksController::class, 'TaskOverview'])->name('task.overview');
     //end Tasks
 
-    //search routes
-    Route::get('/dashboard/projects/create/user-search', [SearchController::class, 'searchUsers'])->name('search.users');
+    //region Calendar
+    Route::get('/dashboard/calendar', [CalendarController::class, 'calendar'])->name('dashboard.calendar');
+    Route::get('/dashboard/calendar/tasks', [CalendarController::class, 'getTasks']);
+    Route::post('/dashboard/calendar/task/update-date/{task_id}', [CalendarController::class, 'updateDate']);
+    Route::post('/dashboard/calendar/task/resize-date/{task_id}', [CalendarController::class, 'resizeDate']);
+    //end Calendar
+    
+    //region Notifications
+    Route::get('/dashboard/notifications', [NotificationsController::class, 'notifications'])->name('dashboard.notifications');
+    Route::get('/dashboard/notifications/{id}', [NotificationsController::class, 'open'])->name('notification.open');
+    Route::post('/dashboard/notifications/mark-read/{id}', [NotificationsController::class, 'markRead'])->name('notification.mark-read');
+    Route::post('/dashboard/notifications/mark-unread/{id}', [NotificationsController::class, 'markUnread'])->name('notification.mark-unread');
+    Route::delete('/dashboard/notifications/delete/{id}', [NotificationsController::class, 'delete'])->name('notification.delete');
+    Route::post('/dashboard/notifications/mark-all-read', [NotificationsController::class, 'markAllRead'])->name('notification.mark-all-read');
+    //end Notifications
+
+    //region Settings
+    Route::get('/dashboard/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');
+    //end Settigns
 });
 
 require __DIR__ . '/auth.php';

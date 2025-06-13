@@ -22,17 +22,17 @@
     <div class="box">
         <div class="top">
             <div class="left">
-                <img src="{{ asset($user->pfp ?? 'Images/Pfp/pfp_default.png') }}" alt="" width="150px" height="150px" class="pfp">
+                <img src="{{ asset(auth()->user()->pfp ?? 'Images/Pfp/pfp_default.png') }}" alt="" width="150px" height="150px" class="pfp">
                 <div style="display: block; align-items: center">
-                    <h3 class="SQL" style="margin: 30px 0px 0px 10px; font-size: 22px; font-weight:600; transform:translateY(-100%)">{{ $user->name }}</h3>
-                    <p class="SQL" style=" margin: 0px 10px 0px 10px; transform:translateY(-100%); color: var(--text-color);">{{ $user->email }}</p>
+                    <h3 class="SQL" style="margin: 30px 0px 0px 10px; font-size: 22px; font-weight:600; transform:translateY(-100%)">{{ auth()->user()->name }}</h3>
+                    <p class="SQL" style=" margin: 0px 10px 0px 10px; transform:translateY(-100%); color: var(--text-color);">{{ auth()->user()->email }}</p>
                 </div>
             </div>
         </div>
 
         <h2 style="margin-top: 40px">Details</h2>
-        <p>Joined on {{ \Carbon\Carbon::parse($user->created_at)->format('d F Y \a\t H:i') }}</p>
-        @if ($user->email_verified_at != '')
+        <p>Joined on {{ \Carbon\Carbon::parse(auth()->user()->created_at)->format('d F Y \a\t H:i') }}</p>
+        @if (auth()->user()->email_verified_at != '')
             <p>Verified</p>
         @else
             <p>Not Verified</p>
@@ -59,13 +59,13 @@
                 @method('patch')
                 <label>Name</label>
                 <br>
-                <input type="text" name="name" value="{{ old('name', $user->name) }}" style="margin-bottom: 10px">
+                <input type="text" name="name" value="{{ old('name', auth()->user()->name) }}" style="margin-bottom: 10px">
                 <x-input-error :messages="$errors->get('name')" />
                 <br>
                 
                 <label>Email</label>
                 <br>
-                <input type="email" name="email" value="{{ old('email', $user->email) }}">
+                <input type="email" name="email" value="{{ old('email', auth()->user()->email) }}">
                 <x-input-error :messages="$errors->get('email')" />
                 <br>
                 <button type="submit" class="btn_default">Keep Changes</button>

@@ -53,10 +53,18 @@ class User extends Authenticatable
     public function projects(): BelongsToMany
     {
         return $this->belongsToMany(Project::class, 'projects_users')
-                    ->withPivot('user_type');
+                    ->withPivot([
+                        'user_type', 
+                        'active',
+                    ]);
     }
     public function tasks()
     {
         return $this->hasMany(Task::class);
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
     }
 }

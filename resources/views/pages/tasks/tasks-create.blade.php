@@ -111,7 +111,7 @@
         </div> 
     </div>
 
-    <div id="users" data-users='@json($project->users)'></div>
+    <div id="users" data-users='@json($project->users->filter(fn($u) => $u->pivot->active))'></div>
     <div id="project" data-project='@json($project)'></div>
     @if (isset($task) && $task->user)
         <div id="task-user" data-task-user='@json($task->user)'></div>

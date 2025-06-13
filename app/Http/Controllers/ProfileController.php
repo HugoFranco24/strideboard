@@ -21,9 +21,7 @@ class ProfileController extends Controller
      */
     public function edit(): View
     {
-        return view('pages.profile.edit', [
-            'user' => auth()->user(),
-        ]);
+        return view('pages.profile.edit');
     }
 
     /**
@@ -68,21 +66,23 @@ class ProfileController extends Controller
                 ProjectUser::where('project_id', $project_id)
                     ->where('user_id', $newOwner->user_id)
                     ->update(['user_type' => 2]);
+            }
+        }
 
-                $ownedTasks = Task::where('user_id', $user->id)->get();
+        $tasks = Task::where('user_id', $user->id)->get();
 
-                $newOwner = ProjectUser::where('project_id', $project_id)
+        foreach ($tasks as $task) {
+            $newOwner = ProjectUser::where('project_id', $task->project_id)
                         ->where('user_id', '!=', $user->id)
                         ->whereIn('user_type', [2, 1, 0])
                         ->orderByDesc('user_type')
                         ->first();
-                
-                if ($newOwner) {
-                    foreach($ownedTasks as $task){
-                        $task->user_id = $newOwner->user_id;
-                        $task->save();
-                    }
-                } 
+
+            if ($newOwner) {
+                $task->user_id = $newOwner->user_id;
+                $task->save();
+            } else {
+                $task->delete();
             }
         }
 
@@ -129,7 +129,6 @@ class ProfileController extends Controller
                                 })->get();
 
         return view('pages.profile.overview', [
-            'user' => auth()->user(),
             'OVuser' => $OVuser,
             'commonProjects' => $commonProjects,
         ]);

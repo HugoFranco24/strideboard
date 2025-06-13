@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Project;
@@ -14,17 +15,13 @@ class ProjectsController extends Controller {
     public function projects()
     {
         return view('pages.projects.projects', [
-            'user' => auth()->user(),
-            'projects' => auth()->user()->projects,
+            'projects' => auth()->user()->projects->filter(fn($p) => $p->pivot->active == true),
         ]);
     }
 
     public function projectsCreate()
     {
-        return view('pages.projects.projects-create', [
-            'user' => auth()->user(),
-            'user_all' => User::all()->where('id', '!=', auth()->id()),
-        ]);
+        return view('pages.projects.projects-create');
     }
 
     public function projectsCreateAdd(Request $request)
@@ -36,17 +33,18 @@ class ProjectsController extends Controller {
             'color' => 'hex_color|required',
         ]);
 
-        $project = new Project()->create([
+        $project = Project::create([
             'name' => $request->name,
             'business' => $request->business,
             'due_date' => $request->due_date,
             'color' => $request->color,
         ]);
         
-        new ProjectUser()->create([
+        ProjectUser::create([
             'project_id' => $project->id,
             'user_id' => auth()->id(),
             'user_type' => 2,
+            'active' => 1,
         ]);
 
         return redirect(route('projects.overview', $project->id));
@@ -58,9 +56,11 @@ class ProjectsController extends Controller {
         ->load('users','tasks');
 
         //permitions check
-        $user = $project->users->where('id', auth()->id())->first();
+        $user = $project->users
+            ->filter(fn($user) => $user->id === auth()->id() && $user->pivot->active == true)
+            ->firstOrFail();
 
-        if (!$project->users->contains('id', auth()->id())) {
+        if (!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
             abort(code: 403);
         }  
         if($user->pivot->user_type == 0){
@@ -70,7 +70,6 @@ class ProjectsController extends Controller {
 
         return view('pages.projects.projects-create', [
             'project' => $project,
-            'user'=> auth()->user(),
         ]);
     }
 
@@ -80,9 +79,11 @@ class ProjectsController extends Controller {
         ->load('users','tasks');
 
         //permitions check
-        $user = $project->users->where('id', auth()->id())->first();
+        $user = $project->users
+            ->filter(fn($user) => $user->id === auth()->id() && $user->pivot->active == true)
+            ->firstOrFail();
 
-        if(!$project->users->contains('id', auth()->id())) {
+        if(!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
             abort(code: 403);
         }  
         if($user->pivot->user_type == 0){
@@ -114,9 +115,12 @@ class ProjectsController extends Controller {
 
         $projects_users = ProjectUser::where('project_id', $id);
 
-        $user = $project->users->where('id', auth()->id())->first();
+        $user = $project->users
+            ->where('id', auth()->id())
+            ->where('active', true)
+            ->firstOrFail();
 
-        if(!$project->users->contains('id', auth()->id())) {
+        if(!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
             abort(code: 403);
         }  
         if($user->pivot->user_type != 2){
@@ -136,14 +140,14 @@ class ProjectsController extends Controller {
 
     public function projectOverview($id)
     {   
-        $project = Project::with('users', 'tasks')->find($id);
+        $project = Project::with('users', 'tasks')->findOrFail($id);
 
         if (!$project) {
             return redirect()->route('dashboard.projects');
         }
 
         //permitions check
-        if (!$project->users->contains('id', auth()->id())) {
+        if (!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
             abort(code: 403); //ver se o utilizador está no projeto
         }     
         //permitions check end
@@ -166,11 +170,10 @@ class ProjectsController extends Controller {
         ->get();
 
         return view('pages.projects.projects-overview', [
-            'user' => auth()->user(),
             'project' => $project,
             'user_all' => $user_all,
-            'authUserType' => $project->users->filter(function(User $u) {return $u->id == auth()->id();})->first()->pivot->user_type,
-            'owner' => $project->users->filter(function(User $u) {return $u->pivot->user_type == 2;})->first(),
+            'authUserType' => $project->users->filter(fn(User $u) => $u->id == auth()->id())->first()->pivot->user_type,
+            'owner' => $project->users->filter(fn(User $u) => $u->pivot->user_type == 2)->first(),
             'my_tasks' => $my_tasks,
             'late' => $late,
             'urgent' => $urgent,
@@ -184,9 +187,11 @@ class ProjectsController extends Controller {
         ->load('users','tasks');
 
         //permitions check
-        $user = $project->users->where('id', auth()->id())->first();
+        $user = $project->users
+            ->filter(fn($user) => $user->id === auth()->id() && $user->pivot->active == true)
+            ->firstOrFail();
 
-        if (!$project->users->contains('id', auth()->id())) {
+        if (!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
             abort(code: 403);
         }  
         if($user->pivot->user_type == 0){
@@ -194,10 +199,20 @@ class ProjectsController extends Controller {
         }
         //permitions check end
 
-        new ProjectUser()->create([
+        $project_user = ProjectUser::create([
             'project_id' => $project_id,
             'user_id' => $user_id,
-            'user_type' => 0
+            'user_type' => 0,
+            'active' => false,
+        ]);
+
+        Notification::create([
+            'receiver_id' => $user_id,
+            'actor_id' => auth()->id(),
+            'type' => 'invited',
+            'table' => 'project',
+            'message' => $project->name,
+            'reference_id' => $project_user->id,
         ]);
 
         return redirect(route('projects.overview', $project_id));
@@ -211,10 +226,12 @@ class ProjectsController extends Controller {
         $project_user = ProjectUser::where('project_id', $project_id)
                                     ->where('user_id', $user_id)
                                     ->firstOrFail();
-        $user = $project->users->where('id', auth()->id())->first();
-        
 
-        if (!$project->users->contains('id', auth()->id())) {
+        $user = $project->users
+            ->filter(fn($user) => $user->id === auth()->id() && $user->pivot->active == true)
+            ->firstOrFail();
+
+        if (!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
             abort(code: 403); //ver se o utilizador está no projeto
         }
         if($user->pivot->user_type == 0 && $user->id != $project_user->user_id){
@@ -232,6 +249,13 @@ class ProjectsController extends Controller {
             'user_type'=> $request->user_type
         ]);
 
+        Notification::create([
+            'receiver_id' => $user_id,
+            'actor_id' => auth()->id(),
+            'type' => 'changed_role',
+            'table' => 'project',
+            'message' => $project->name,
+        ]);
 
         return redirect(route('projects.overview', $project_id));    
     }
@@ -244,10 +268,12 @@ class ProjectsController extends Controller {
         $project_user = ProjectUser::where('project_id', $project_id)
                                     ->where('user_id', $user_id)
                                     ->firstOrFail();
-        $user = $project->users->where('id', auth()->id())->first();
+        $user = $project->users
+            ->filter(fn($user) => $user->id === auth()->id() && $user->pivot->active == true)
+            ->firstOrFail();
 
         //permitions check
-        if (!$project->users->contains('id', auth()->id())) {
+        if (!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
             abort(code: 403); //ver se o utilizador está no projeto
         }
         if($user->pivot->user_type == 0 && $user->id != $project_user->user_id){
@@ -277,6 +303,14 @@ class ProjectsController extends Controller {
             }
         }
         //end deleting tasks where the user was
+
+        Notification::create([
+            'receiver_id' => $user_id,
+            'actor_id' => auth()->id(),
+            'type' => 'removed',
+            'table' => 'project',
+            'message' => $project->name,
+        ]);
         
         $project_user->delete();
 
@@ -285,5 +319,55 @@ class ProjectsController extends Controller {
         }else{
             return redirect(route('dashboard.projects'));
         }
+    }
+
+    //region Invites
+
+    public function acceptInvite($id){
+
+        $pu = ProjectUser::where('id', $id)->firstOrFail();
+        
+        $noti_users = ProjectUser::where('project_id', $pu->project_id)
+                            ->where('user_type', [2, 1])->get();
+
+        $project = Project::where('id', $pu->project_id)->firstOrFail();
+
+        foreach($noti_users as $nu){
+            Notification::create([
+                'receiver_id' => $nu->id,
+                'actor_id' => $pu->user_id,
+                'type' => 'accepted',
+                'table' => 'project',
+                'message' => $project->name,
+            ]);
+        }
+
+        $pu->update(['active' => true]);
+
+        return redirect(route('projects.overview', $project->id));
+    }
+
+    public function rejectInvite($id){
+
+        $pu = ProjectUser::where('id', $id)->firstOrFail();
+        
+        $noti_users = ProjectUser::where('project_id', $pu->project_id)
+                            ->where('user_type', [2, 1]);
+
+        $project = Project::where('id', $pu->project_id)->firstOrFail();
+
+        foreach($noti_users as $nu){
+            Notification::create([
+                'receiver_id' => $nu->id,
+                'actor_id' => $pu->user_id,
+                'type' => 'accepted',
+                'table' => 'project',
+                'message' => $project->name,
+            ]);
+        }
+
+        $pu->delete();
+
+        return redirect()->back();
     }
 }

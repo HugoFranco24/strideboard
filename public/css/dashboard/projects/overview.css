@@ -249,6 +249,7 @@
     overflow: hidden;
     opacity: 0;
     transition: max-height 200ms ease, opacity 200ms ease;
+    border-radius: 0px 0px 4px 4px;
 }
 .task-card .func a, .task-card .func button{
     all: unset;

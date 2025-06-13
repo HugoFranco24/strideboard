@@ -34,7 +34,7 @@
 
         <div class="Details">
             <h2>Details</h2>
-            <p>Joined on {{ \Carbon\Carbon::parse($user->created_at)->format('d F Y \a\t H:i') }}</p>
+            <p>Joined on {{ \Carbon\Carbon::parse($OVuser->created_at)->format('d F Y \a\t H:i') }}</p>
             @if ($OVuser->email_verified_at != '')
                 <p>Verified</p>
             @else

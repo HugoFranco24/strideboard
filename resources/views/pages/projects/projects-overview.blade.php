@@ -54,7 +54,7 @@
                 @endif
 
                 @if ($authUserType != 2)
-                    <form action="/dashboard/projects/overview/{{ $project->id }}/delete-member/{{ $user->id }}"
+                    <form action="/dashboard/projects/overview/{{ $project->id }}/delete-member/{{ auth()->id() }}"
                         onsubmit="return confirm('Are you sure you want to LEAVE the project?')"
                         method="post"
                     >
@@ -106,20 +106,28 @@
                             <td class="SQL" style="max-width: 175px"><a href="{{ route('profile.overview', $pu->id) }}" class="username">{{ $pu->name }}</a></td>
                             <td class="SQL" style="max-width: 175px">{{ $pu->email }}</td>
                             <td>
-                                @if ($pu->id != auth()->id())
-                                    @if ($authUserType == 1 && $pu->pivot->user_type == 1)
-                                        <span>Admin</span>
-                                    @elseif ($authUserType != 0 && $pu->pivot->user_type == 0 || $authUserType == 2 && $pu->pivot->user_type == 1 )
-                                        <form action="/dashboard/projects/overview/{{ $project->id }}/update-member/{{ $pu->id }}"
-                                            method="post"    
-                                        >
-                                            @csrf
-                                            @method('put')
-                                            <select name="user_type" onchange="this.form.submit()">
-                                                <option value="0" {{ $pu->pivot->user_type == 0 ? 'selected' : '' }}>Collaborator</option>
-                                                <option value="1" {{ $pu->pivot->user_type == 1 ? 'selected' : '' }}>Admin</option>
-                                            </select>
-                                        </form>
+                                @if ($pu->pivot->active == 1)
+                                    @if ($pu->id != auth()->id())
+                                        @if ($authUserType == 1 && $pu->pivot->user_type == 1)
+                                            <span>Admin</span>
+                                        @elseif ($authUserType != 0 && $pu->pivot->user_type == 0 || $authUserType == 2 && $pu->pivot->user_type == 1 )
+                                            <form action="/dashboard/projects/overview/{{ $project->id }}/update-member/{{ $pu->id }}"
+                                                method="post"    
+                                            >
+                                                @csrf
+                                                @method('put')
+                                                <select name="user_type" onchange="this.form.submit()">
+                                                    <option value="0" {{ $pu->pivot->user_type == 0 ? 'selected' : '' }}>Collaborator</option>
+                                                    <option value="1" {{ $pu->pivot->user_type == 1 ? 'selected' : '' }}>Admin</option>
+                                                </select>
+                                            </form>
+                                        @else
+                                            @if ($pu->pivot->user_type == 2)
+                                                <span>Owner</span>
+                                            @else
+                                                <span>{{ $pu->pivot->user_type == 0 ? 'Collaborator' : 'Admin' }}</span>
+                                            @endif
+                                        @endif
                                     @else
                                         @if ($pu->pivot->user_type == 2)
                                             <span>Owner</span>
@@ -128,11 +136,7 @@
                                         @endif
                                     @endif
                                 @else
-                                    @if ($pu->pivot->user_type == 2)
-                                        <span>Owner</span>
-                                    @else
-                                        <span>{{ $pu->pivot->user_type == 0 ? 'Collaborator' : 'Admin' }}</span>
-                                    @endif
+                                    Invite Pending
                                 @endif
                             </td>
 

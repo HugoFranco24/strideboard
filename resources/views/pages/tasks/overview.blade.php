@@ -4,7 +4,7 @@
 @endsection
 
 @section('go-back')
-    <a class="goBack" onclick="history.back()">
+    <a class="goBack" href="{{ $url_previous }}">
         <img class="icon" width="35" height="35" src="{{ asset('Images/Icons/Menu/Go-back.png') }}" alt="undo" title="Go Back"/>
     </a>
 @endsection
@@ -31,9 +31,9 @@
         }
     @endphp
     
-    @if(session('status'))
+    @if($status != null)
         <x-session-status
-            :message="session('status')"
+            :message="$status"
         />
     @endif
 
@@ -49,6 +49,8 @@
                     @if(isset($task))
                         @method('put')
                     @endif
+
+                    <input type="hidden" name="url_previous" value="{{ $url_previous }}">
 
                     <label>Task Name<span class="required">*</span></label><br>
                     <input 
@@ -182,14 +184,18 @@
                 @endphp
                 @foreach ($audits as $a)
                     @php
-                        $user = $users->firstWhere('id', $a->user_id);
+                        $auditUser = $users->firstWhere('id', $a->user_id);
                         $auditCount += 1
                     @endphp
                     <div class="audit">
                         <div class="Uinfo">
                             <div style="display: flex; align-items: center;">
                                 <img src="{{ asset($user->pfp ?? 'Images/Pfp/pfp_default.png') }}" alt="">
-                                <p><a href="{{ route('profile.overview', $user->id) }}" class="username">{{ $user->name }}</a> <span>{{ $a->event }}</span> this Task on <span>{{ \Carbon\Carbon::parse($a->updated_at)->format('F d, Y \a\t H:i') }}</span></p>                            
+                                @if ($auditUser)
+                                    <p><a href="{{ route('profile.overview', $user->id) }}" class="username">{{ $user->name }}</a> <span>{{ $a->event }}</span> this Task on <span>{{ \Carbon\Carbon::parse($a->updated_at)->format('F d, Y \a\t H:i') }}</span></p>                            
+                                @else
+                                    <p>Deleted User <span>{{ $a->event }}</span> this Task on <span>{{ \Carbon\Carbon::parse($a->updated_at)->format('F d, Y \a\t H:i') }}</span></p>                          
+                                @endif
                             </div>
                             <div style="display: flex;">
                                 <button onclick="details(this, {{ $auditCount }})">Details</button>
@@ -286,7 +292,7 @@
         </div>
     </div>
 
-    <div id="users" data-users='@json($project->users)'></div>
+    <div id="users" data-users='@json($project->users->filter(fn($u) => $u->pivot->active))'></div>
     <div id="project" data-project='@json($project)'></div>
     @if (isset($task) && $task->user)
         <div id="task-user" data-task-user='@json($task->user)'></div>

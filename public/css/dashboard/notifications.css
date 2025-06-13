@@ -1,26 +1,165 @@
-.UsersTable{
-    border-collapse: collapse;
-    border-spacing: 0;
+.container {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    gap: 10px;
+    height: calc(100dvh - 140px);
     width: 100%;
-    border-radius: 10px;
-    text-align: center;
-    background-color: #f1f1f1;
-    margin: 0px;
 }
-.UsersTable th{
-    border-bottom: 1px solid hsl(0, 0%, 39%);
+    
+.item:nth-child(1) {
+    grid-column: span 2 / span 2;
 }
-.UsersTable th{
-    font-size: 22px;
+.item:nth-child(2) {
+    grid-column: span 5 / span 5;
+    grid-column-start: 3;
+}
+
+h3{
+    margin: 0;
+}
+
+.item{
+    background-color: var(--box-color);
+    color: var(--text-color);
+    padding: 20px 20px;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, var(--box-shadow-color) 0px 0px 0px 1px inset;
+}
+
+.unread{
+    background-color: var(--box-inner-color);
+    border-radius: 4px;
+    min-height: 60px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+.unread h4{
+    margin: 0;
     font-weight: 600;
-    height: 60px;
+    font-size: 20px;
 }
-.UsersTable td{
-    height: 80px;
+
+.notiBox{
+    width: 100%;
+    max-height: 72dvh;
+    overflow-y: auto;
+    overflow-x: visible;
+    scrollbar-width:none;
 }
-.UsersTable img{
-    width: 45px;
-    height: 45px;
+.notiBox a{
+    text-decoration: none;
+}
+.noti{
+    position: relative;
+    background-color: var(--box-inner-color);
+    border-radius: 4px;
+    min-height: 80px;
+    padding: 14px;
+    cursor: pointer;
+    transition: 400ms;
+    margin-bottom: 15px;
+    color: var(--text-color);
+}
+.noti:hover, .notiDetails:hover{
+    box-shadow: var(--box-shadow-color-2) 0px 2px 8px 0px;
+}
+.noti h3{
+    margin: 0;
+}
+.noti p{
+    margin: 5px 0px 0px;
+}
+.noti .point{
+    position: absolute;
+    background-color: #113F59;
     border-radius: 100px;
-    border: 4px solid #113F59;
+    width: 12px;
+    height: 12px;
+    right: 8px;
+    top: 8px;
+}
+
+.actions{
+    background-color: var(--box-inner-color);
+    width: 100%;
+    height: 50px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 0px 15px;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.unread button, .actions button{
+    border-radius: 4px;
+    background-color: var(--box-color);
+    height: 36px;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+.unread button:hover img, .actions button:hover img{
+    scale: 1.05;
+}
+.unread img, .actions img{
+    width: 36px;
+    height: 36px;
+    transition: 200ms;
+}
+
+
+.notiDetails{
+    background-color: var(--box-inner-color);
+    border-radius: 4px;
+    padding: 14px;
+    transition: 400ms;
+}
+.notiDetails h3{
+    font-weight: 600;
+    margin: 0;
+}
+.notiDetails .options{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.notiDetails button{
+    margin: 0 !important;
+}
+
+@media screen and (max-width: 1150px) {
+    .item:nth-child(1) {
+        grid-column: span 3 / span 3;
+    }
+    .item:nth-child(2) {
+        grid-column: span 4 / span 4;
+        grid-column-start: 4;
+    }
+}
+
+@media screen and (max-width: 1105px) {
+    .notiDetails .options form, .notiDetails .options button{
+        width: 100% !important;
+    }
+    .notiDetails .options{
+        margin-top: 5px !important;
+    }
+}
+@media screen and (max-width: 800px) {
+    .container{
+        display: block;
+    }
+    .item:nth-child(1) {
+        margin-bottom: 20px;
+    }
+    .notiBox{
+        max-height: 40dvh;
+    }
 }

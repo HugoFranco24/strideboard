@@ -22,6 +22,7 @@ img {
     --box-input-border: hsl(0, 0%, 82%);
     --box-input-bg-hover: hsl(0, 0%, 98%);
     --box-shadow-color: #d1d5db;
+    --box-shadow-color-2: rgba(0, 0, 0, 0.1);
     /*box end*/
 
     /*icon color change*/
@@ -42,11 +43,12 @@ img {
     /*box*/
     --box-color: #1d2025;
     --box-inner-color: hsl(218, 11%, 17%);
-    --box-inner-color-hover: hsl(218, 11%, 19%);
+    --box-inner-color-hover: hsl(218, 11%, 18%);
 
     --box-input-border: hsl(0, 0%, 30%);
     --box-input-bg-hover: #2f333a;
     --box-shadow-color: hsl(0, 0%, 20%);
+    --box-shadow-color-2: rgba(0, 0, 0, 0.5);
     /*box end*/
 
     /*icon color change*/
@@ -212,4 +214,36 @@ img.icon{
         max-width: 100%;
         min-width: 100%;
     }
+}
+
+:root{
+    --fc-event-border-color: var(--box-input-border);
+    --fc-button-bg-color: #113F59;
+    --fc-button-border-color: #113F59;
+
+    --fc-button-hover-bg-color: hsl(202, 68%, 16%);
+    --fc-button-hover-border-color: hsl(202, 68%, 16%);
+
+    --fc-button-active-bg-color: hsl(202, 68%, 12%);
+    --fc-button-active-border-color: hsl(202, 68%, 12%);
+    --fc-border-color: hsl(0, 0%, 75%);
+}
+.dark_theme{
+    --fc-border-color: hsl(0, 0%, 30%);
+}
+
+.calendarMore{
+    cursor: pointer; 
+    height: 100%; 
+    vertical-align: middle;
+    padding: 0px 2px 0px 4px;
+}
+.calendarMore img{
+    width: 14px;
+    height: 14px;
+    scale: 1.25;
+    transition: 100ms;
+}
+.calendarMore:hover img{
+    scale: 1.1;
 }

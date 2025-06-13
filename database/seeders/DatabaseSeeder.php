@@ -43,27 +43,29 @@ class DatabaseSeeder extends Seeder
 
 
         $projects_users = [
-            ['project_id' => 1, 'user_id' => 7, 'user_type' => 2],
-            ['project_id' => 2, 'user_id' => 1, 'user_type' => 2],
-            ['project_id' => 2, 'user_id' => 4, 'user_type' => 1],
-            ['project_id' => 2, 'user_id' => 5, 'user_type' => 1],
-            ['project_id' => 2, 'user_id' => 6, 'user_type' => 0],
-            ['project_id' => 3, 'user_id' => 3, 'user_type' => 2],
-            ['project_id' => 3, 'user_id' => 2, 'user_type' => 1],
-            ['project_id' => 3, 'user_id' => 1, 'user_type' => 0],
+            ['project_id' => 1, 'user_id' => 7, 'user_type' => 2, 'active' => 1],
+            ['project_id' => 2, 'user_id' => 1, 'user_type' => 2, 'active' => 1],
+            ['project_id' => 2, 'user_id' => 4, 'user_type' => 1, 'active' => 1],
+            ['project_id' => 2, 'user_id' => 5, 'user_type' => 1, 'active' => 1],
+            ['project_id' => 2, 'user_id' => 6, 'user_type' => 0, 'active' => 1],
+            ['project_id' => 3, 'user_id' => 3, 'user_type' => 2, 'active' => 1],
+            ['project_id' => 3, 'user_id' => 2, 'user_type' => 1, 'active' => 1],
+            ['project_id' => 3, 'user_id' => 1, 'user_type' => 0, 'active' => 1],
         ];
         foreach($projects_users as $project_user){
             ProjectUser::create($project_user);
         }
 
         $tasks = [];
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 18; $i++) {
             $start = Carbon::now()->addDays(rand(0, 30))->setTime(rand(8, 16), rand(0, 59));
             $end = (clone $start)->copy()->addDays(rand(1, 10))->setTime(rand(9, 18), rand(0, 59));
+    
+            $rand_project = rand(2,3);
 
             $tasks[] = [
-                'project_id' => rand(2,3),
-                'user_id' => rand(1,6),
+                'project_id' => $rand_project,
+                'user_id' => $rand_project == 2 ? [1, 4, 5, 6][rand(0, 3)] : rand(1,3),
                 'name' => Str::title(fake()->words(rand(2, 4), true)),
                 'description' => fake()->sentence(),
                 'start' => $start->toDateTime(),

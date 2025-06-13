@@ -86,7 +86,7 @@ input[type="file"]::-webkit-file-upload-button:hover {
     width: 40%;
     padding: 50px 10px;
     border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, var(--box-shadow-color) 0px 3px 6px;
+    box-shadow: var(--box-shadow-color-2) 0px 5px 15px;
     text-align: center;
     left: 50%;
     top: 50%;

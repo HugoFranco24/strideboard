@@ -8,6 +8,7 @@ use App\Models\Project;
 use App\Models\Task;
 use App\Models\ProjectUser;
 use OwenIt\Auditing\Models\Audit;
+use App\Http\Controllers\NotificationsController;
 
 class TasksController extends Controller 
 {
@@ -38,7 +39,6 @@ class TasksController extends Controller
         $my_tasks = $query->get();
 
         return view("pages.tasks.tasks", [
-            'user' => auth()->user(),
             'my_tasks' => $my_tasks,
             'projects' => auth()->user()->projects,
         ]);
@@ -51,9 +51,11 @@ class TasksController extends Controller
         ->load('users','tasks');
 
         //permitions check
-        $user = $project->users->where('id', auth()->id())->first();
+        $user = $project->users
+            ->filter(fn($user) => $user->id === auth()->id() && $user->pivot->active == true)
+            ->firstOrFail();
 
-        if (!$project->users->contains('id', auth()->id())) {
+        if (!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
             abort(code: 403);
         }  
         if($user->pivot->user_type < 1){
@@ -62,7 +64,6 @@ class TasksController extends Controller
         //permitions check end
 
         return view('pages.tasks.tasks-create', [
-            'user' => auth()->user(),
             'project' => $project,
         ]);
     }
@@ -73,9 +74,11 @@ class TasksController extends Controller
         ->load('users','tasks');
 
         //permitions check
-        $user = $project->users->where('id', auth()->id())->first();
+        $user = $project->users
+            ->filter(fn($user) => $user->id === auth()->id() && $user->pivot->active == true)
+            ->firstOrFail();
 
-        if (!$project->users->contains('id', auth()->id())) {
+        if (!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
             abort(code: 403);
         }  
         if($user->pivot->user_type < 1){
@@ -92,7 +95,7 @@ class TasksController extends Controller
             'user_id' => 'required|integer',
         ]);
 
-        new Task()->create([
+        Task::create([
             'project_id' => $project_id,
             'name' => $request->name,
             'description' => $request->description,
@@ -102,6 +105,7 @@ class TasksController extends Controller
             'priority' => $request->priority != null ? $request->priority : 1,
             'user_id' => $request->user_id,
         ]);
+
 
         return redirect(route('projects.overview', $project_id));
     }
@@ -114,9 +118,11 @@ class TasksController extends Controller
         ->load('users','tasks');
 
         //permitions check
-        $user = $project->users->where('id', auth()->id())->first();
+        $user = $project->users
+            ->filter(fn($user) => $user->id === auth()->id() && $user->pivot->active == true)
+            ->firstOrFail();
 
-        if (!$project->users->contains('id', auth()->id())) {
+        if (!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
             abort(403);
         }  
         if($user->pivot->user_type == 0 && $task->user_id != auth()->id()){
@@ -133,7 +139,7 @@ class TasksController extends Controller
             'user_id' => 'required|integer',
         ]);
 
-        $task->update([
+        $task::update([
             'name' => $request->name,
             'description' => $request->description,
             'start' => $request->start,
@@ -143,7 +149,24 @@ class TasksController extends Controller
             'user_id' => $request->user_id,
         ]);
 
-        return redirect(route('task.overview', $task_id))->with('status', 'Task Updated!');
+
+        $audits = Audit::where('auditable_id', $task->id)
+                ->orderBy('created_at')
+                ->get();
+
+        $project_user = ProjectUser::where('project_id', $project->id)
+                                    ->where('user_id', auth()->id())
+                                    ->firstOrFail();
+
+        return view('pages.tasks.overview', [
+            'task' => $task,
+            'project' => $project,
+            'audits' => $audits,
+            'users' => User::all(),
+            'project_user' => $project_user,
+            'url_previous' => $request->url_previous,
+            'status' => 'Task Updated!',
+        ]);
     }
 
     public function TaskDelete($task_id){
@@ -154,9 +177,11 @@ class TasksController extends Controller
         ->load('users','tasks');
     
         //permitions check
-        $user = $project->users->where('id', auth()->id())->first();
+        $user = $project->users
+            ->filter(fn($user) => $user->id === auth()->id() && $user->pivot->active == true)
+            ->firstOrFail();
 
-        if (!$project->users->contains('id', auth()->id())) {
+        if (!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
             abort(code: 403);
         }  
         if($user->pivot->user_type == 0 && $task->user_id != auth()->id()){
@@ -169,7 +194,7 @@ class TasksController extends Controller
         return redirect(route('projects.overview', $task->project_id . '#allTasks'));
     }
 
-    public function TaskOverview($task_id){
+    public function TaskOverview($task_id, Request $request){
 
         $task = Task::where('id', $task_id)->first();
 
@@ -180,7 +205,7 @@ class TasksController extends Controller
         $project = Project::with('users', 'tasks')->find($task->project_id);
 
         //permitions check
-        if (!$project->users->contains('id', auth()->id())) {
+        if (!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
             abort(code: 403);
         }
         //permitions check end
@@ -192,14 +217,19 @@ class TasksController extends Controller
         $project_user = ProjectUser::where('project_id', $project->id)
                                     ->where('user_id', auth()->id())
                                     ->firstOrFail();
+
+        if(url()->previous() != '/dashboard/tasks/overview/' . $task->id){
+            $url_previous = url()->previous();
+        }
     
         return view('pages.tasks.overview', [
             'task' => $task,
             'project' => $project,
-            'user' => auth()->user(),
             'audits' => $audits,
             'users' => User::all(),
             'project_user' => $project_user,
+            'url_previous' => $url_previous,
+            'status' => null,
         ]);
     }
 }
