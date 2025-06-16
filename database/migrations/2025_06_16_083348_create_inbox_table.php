@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('notifications', function (Blueprint $table) {
+        Schema::create('inbox', function (Blueprint $table) {
             $table->id();
             $table->foreignId('receiver_id')->onDelete('cascade');
             $table->foreignId('actor_id');
             $table->string('type');
-            $table->string('table');
-            $table->text('message');
-            $table->string('reference_id')->nullable();
+            $table->string('task_name')->nullable();
+            $table->string('project_name')->nullable();
+            $table->unsignedBigInteger('reference_id')->nullable();
             $table->boolean('is_read')->default(false);
             $table->timestamps();
         });
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('notifications');
+        Schema::dropIfExists('inbox');
     }
 };

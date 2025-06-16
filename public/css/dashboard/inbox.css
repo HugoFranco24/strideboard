@@ -9,6 +9,9 @@
     
 .item:nth-child(1) {
     grid-column: span 2 / span 2;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* important */
 }
 .item:nth-child(2) {
     grid-column: span 5 / span 5;
@@ -27,28 +30,40 @@ h3{
     box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, var(--box-shadow-color) 0px 0px 0px 1px inset;
 }
 
-.unread{
-    background-color: var(--box-inner-color);
-    border-radius: 4px;
-    min-height: 60px;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
+.filters{
+    margin-bottom: 5px;
 }
-.unread h4{
-    margin: 0;
-    font-weight: 600;
-    font-size: 20px;
+.markRead{
+    margin-top: 5px;
+}
+.filters button, .markRead button{
+    display: flex;
+    width: 100%;
+    text-align: start;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 16px;
+    padding: 5px 8px;
+    gap: 4px;
+    background-color: var(--box-inner-color);
+    border: 1px solid var(--box-input-border);
+    border-radius: 4px;
+    color: var(--text-color);
+}
+.filters button:hover, .markRead button:hover{
+    background-color: var(--box-inner-color-hover);
+}
+.filters img, .markRead img{
+    width: 20px;
+    height: 20px;
 }
 
 .notiBox{
     width: 100%;
-    max-height: 72dvh;
     overflow-y: auto;
     overflow-x: visible;
-    scrollbar-width:none;
+    scrollbar-width: none;
+    flex: 1;
 }
 .notiBox a{
     text-decoration: none;
@@ -61,7 +76,7 @@ h3{
     padding: 14px;
     cursor: pointer;
     transition: 400ms;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     color: var(--text-color);
 }
 .noti:hover, .notiDetails:hover{
@@ -69,6 +84,7 @@ h3{
 }
 .noti h3{
     margin: 0;
+    font-weight: 600;
 }
 .noti p{
     margin: 5px 0px 0px;
@@ -82,12 +98,15 @@ h3{
     right: 8px;
     top: 8px;
 }
+.notiBox form:last-child .noti{
+    margin-bottom: 0px;
+}
 
 .actions{
     background-color: var(--box-inner-color);
     width: 100%;
     height: 50px;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     border-radius: 4px;
     display: flex;
     justify-content: start;
@@ -96,8 +115,7 @@ h3{
     gap: 10px;
     justify-content: space-between;
 }
-
-.unread button, .actions button{
+.actions button{
     border-radius: 4px;
     background-color: var(--box-color);
     height: 36px;
@@ -105,10 +123,10 @@ h3{
     cursor: pointer;
     padding: 0;
 }
-.unread button:hover img, .actions button:hover img{
+.actions button:hover img{
     scale: 1.05;
 }
-.unread img, .actions img{
+.actions img{
     width: 36px;
     height: 36px;
     transition: 200ms;
@@ -129,9 +147,35 @@ h3{
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    margin-top: 20px;
 }
 .notiDetails button{
     margin: 0 !important;
+}
+
+.title{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding: 10px;
+    border: 2px solid var(--box-input-border);
+    border-radius: 4px 4px 0px 0px;
+    gap: 10px;
+}
+.title img{
+    width: 125px;
+    height: 125px;
+    border-radius: 4px;
+}
+.title h3{
+    font-size: 20px;
+    margin: 0;
+}
+.content{
+    padding: 20px 14px;
+    border: 2px solid var(--box-input-border);
+    border-top: none;
+    border-radius: 0px 0px 4px 4px;
 }
 
 @media screen and (max-width: 1150px) {

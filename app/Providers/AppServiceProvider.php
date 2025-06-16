@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Inbox;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
-use App\Models\Notification;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,8 +23,8 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('layouts.main', function ($view) {
             $user = auth()->user();
-            $notifications = Notification::where('receiver_id', auth()->id())->get();
-            $view->with(compact('user', 'notifications'));
+            $inbox = Inbox::where('receiver_id', auth()->id())->get();
+            $view->with(compact('user', 'inbox'));
         });
     }
 }

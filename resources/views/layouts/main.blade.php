@@ -27,7 +27,7 @@
                 links.classList.add('links_colapse');
                 top_menu.style.margin = "0px 0px 0px 68px";
                 top_menu.style.transition = "500ms";
-                main.style.padding = "110px 30px 30px 108px";
+                main.style.padding = "110px 30px 30px 104px";
                 main.style.transition = "500ms";
                 sepC.style.visibility = "visible";
                 newState = 'collapsed';
@@ -42,7 +42,7 @@
                 links.classList.remove('links_colapse');
                 top_menu.style.margin = "0px 0px 0px 265px";
                 top_menu.style.transition = "500ms";
-                main.style.padding = "110px 30px 30px 300px";
+                main.style.padding = "110px 30px 30px 296px";
                 main.style.transition = "500ms";
                 sepC.style.visibility = "hidden";
                 newState = 'not_collapsed';
@@ -90,7 +90,7 @@
                 icons8.style.display = "none";
                 links.classList.add('links_colapse');
                 top_menu.style.margin = "0px 0px 0px 68px";
-                main.style.padding = "110px 30px 30px 108px";
+                main.style.padding = "110px 30px 30px 104px";
                 sepC.style.visibility = "visible";
             } else {
                 menu.style.width = "265px";
@@ -100,7 +100,7 @@
                 icons8.style.display = "block";
                 links.classList.remove('links_colapse');
                 top_menu.style.margin = "0px 0px 0px 265px";
-                main.style.padding = "110px 30px 30px 300px";
+                main.style.padding = "110px 30px 30px 296px";
                 sepC.style.visibility = "hidden";
             }
         }
@@ -207,7 +207,7 @@
             <a href="/dashboard/calendar" title="Calendar"><img src="{{ asset('Images/Icons/Menu/Calendar.png') }}" alt=""><span>Calendar</span></a>
             <div class="sepC" id="sepC"></div>
             <span class="sep">Settings</span>
-            <a href="/dashboard/notifications" title="Notifications"><img src="{{ asset('Images/Icons/Menu/Notifications.png') }}" alt="" /><span>Notifications</span></a>
+            <a href="/dashboard/inbox" title="Inbox"><img src="{{ asset('Images/Icons/Menu/Inbox.png') }}" alt="" /><span>Inbox</span></a>
             <a href="/dashboard/my-profile" title="Profile"><img src="{{ asset('Images/Icons/Menu/Profile.png') }}" alt=""/><span>My Profile</span></a>
             <a href="/dashboard/settings" title="Settings"><img src="{{ asset('Images/Icons/Menu/Settings.png') }}" alt=""/><span>Settings</span></a>
         </div>
@@ -223,7 +223,7 @@
             </div>
 
             <div class="user" onclick="toggleProfile()">
-                <img src="{{ asset($user->pfp ?? 'Images/Pfp/pfp_default.png') }}" alt="" class="pfp">
+                <img src="{{ asset($user->pfp) }}" alt="" class="pfp">
                 <div style="display: block; align-items: center">
                     <p class="SQL" style="font-weight:700; font-size: 15px;">{{ $user->name }}</p>
                     <p class="SQL" style="font-size:13px;">{{ $user->email }}</p>

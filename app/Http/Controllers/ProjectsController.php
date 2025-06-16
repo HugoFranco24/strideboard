@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Notification;
+use App\Models\Inbox;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Project;
@@ -98,12 +98,27 @@ class ProjectsController extends Controller {
             'color' => 'hex_color|required',
         ]);
 
-        Project::findOrFail($id)->update([
+        $project->update([
             'name' => $request->name,
             'business' => $request->business,
             'due_date' => $request->due_date,
             'color' => $request->color,
         ]);
+
+        $receivers = ProjectUser::where('project_id', $project->id)
+        ->where('active', true)
+        ->whereNot('user_id', auth()->id())
+        ->get();
+
+        foreach($receivers as $reciever){
+            Inbox::create([
+                'receiver_id' => $reciever->user_id,
+                'actor_id' => auth()->id(),
+                'type' => 'updated_project',
+                'project_name' => $project->name,
+                'reference_id' => $project->id,
+            ]);
+        }
 
         return redirect(route('projects.overview', $id));
     }
@@ -127,12 +142,27 @@ class ProjectsController extends Controller {
             abort(403);
         }
 
+        $receivers = ProjectUser::where('project_id', $project->id)
+        ->where('active', true)
+        ->whereNot('user_id', auth()->id())
+        ->get();
+
+        foreach($receivers as $reciever){
+            Inbox::create([
+                'receiver_id' => $reciever->user_id,
+                'actor_id' => auth()->id(),
+                'type' => 'deleted_project',
+                'project_name' => $project->name,
+            ]);
+        }
+
         foreach($project->tasks as $task){
             $task->delete();
         }
         foreach($projects_users as $p_user){
             $p_user->delete();
         }
+
         $project->delete();
 
         return redirect(route('dashboard.projects'));
@@ -206,12 +236,11 @@ class ProjectsController extends Controller {
             'active' => false,
         ]);
 
-        Notification::create([
+        Inbox::create([
             'receiver_id' => $user_id,
             'actor_id' => auth()->id(),
             'type' => 'invited',
-            'table' => 'project',
-            'message' => $project->name,
+            'project_name' => $project->name,
             'reference_id' => $project_user->id,
         ]);
 
@@ -249,12 +278,12 @@ class ProjectsController extends Controller {
             'user_type'=> $request->user_type
         ]);
 
-        Notification::create([
+        Inbox::create([
             'receiver_id' => $user_id,
             'actor_id' => auth()->id(),
             'type' => 'changed_role',
-            'table' => 'project',
-            'message' => $project->name,
+            'project_name' => $project->name,
+            'reference_id' => $project->id,
         ]);
 
         return redirect(route('projects.overview', $project_id));    
@@ -304,12 +333,11 @@ class ProjectsController extends Controller {
         }
         //end deleting tasks where the user was
 
-        Notification::create([
+        Inbox::create([
             'receiver_id' => $user_id,
             'actor_id' => auth()->id(),
             'type' => 'removed',
-            'table' => 'project',
-            'message' => $project->name,
+            'project_name' => $project->name,
         ]);
         
         $project_user->delete();
@@ -328,17 +356,16 @@ class ProjectsController extends Controller {
         $pu = ProjectUser::where('id', $id)->firstOrFail();
         
         $noti_users = ProjectUser::where('project_id', $pu->project_id)
-                            ->where('user_type', [2, 1])->get();
+                            ->whereIn('user_type', [2, 1])->get();
 
         $project = Project::where('id', $pu->project_id)->firstOrFail();
 
         foreach($noti_users as $nu){
-            Notification::create([
-                'receiver_id' => $nu->id,
+            Inbox::create([
+                'receiver_id' => $nu->user_id,
                 'actor_id' => $pu->user_id,
                 'type' => 'accepted',
-                'table' => 'project',
-                'message' => $project->name,
+                'project_name' => $project->name,
             ]);
         }
 
@@ -352,17 +379,16 @@ class ProjectsController extends Controller {
         $pu = ProjectUser::where('id', $id)->firstOrFail();
         
         $noti_users = ProjectUser::where('project_id', $pu->project_id)
-                            ->where('user_type', [2, 1]);
+                            ->whereIn('user_type', [2, 1]);
 
         $project = Project::where('id', $pu->project_id)->firstOrFail();
 
         foreach($noti_users as $nu){
-            Notification::create([
-                'receiver_id' => $nu->id,
+            Inbox::create([
+                'receiver_id' => $nu->user_id,
                 'actor_id' => $pu->user_id,
                 'type' => 'accepted',
-                'table' => 'project',
-                'message' => $project->name,
+                'project_name' => $project->name,
             ]);
         }
 

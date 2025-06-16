@@ -96,14 +96,13 @@ class ProfileController extends Controller
 
     public function uploadImg(Request $request): RedirectResponse
     {
-
         $request->validate([
             'pfp' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $user = $request->user();
 
-        if ($user->pfp && file_exists(public_path($user->pfp))) {
+        if ($user->pfp && $user->pfp !== 'Images/Pfp/pfp_default.png' && file_exists(public_path($user->pfp))) {
             unlink(public_path($user->pfp));
         }
 

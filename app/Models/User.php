@@ -21,6 +21,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'pfp',
         'name',
         'email',
         'password',
@@ -63,8 +64,8 @@ class User extends Authenticatable
         return $this->hasMany(Task::class);
     }
 
-    public function notifications()
+    public function inbox()
     {
-        return $this->hasMany(Notification::class);
+        return $this->hasMany(Inbox::class);
     }
 }

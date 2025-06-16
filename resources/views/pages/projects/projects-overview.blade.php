@@ -102,7 +102,7 @@
                 <table class="members">
                     @foreach ($project->users as $pu)
                         <tr>
-                            <td><img src="{{ asset($pu->pfp ?? 'Images/Pfp/pfp_default.png') }}" alt="" class="pfp"></td>
+                            <td><img src="{{ asset($pu->pfp) }}" alt="" class="pfp"></td>
                             <td class="SQL" style="max-width: 175px"><a href="{{ route('profile.overview', $pu->id) }}" class="username">{{ $pu->name }}</a></td>
                             <td class="SQL" style="max-width: 175px">{{ $pu->email }}</td>
                             <td>

@@ -190,7 +190,7 @@
                     <div class="audit">
                         <div class="Uinfo">
                             <div style="display: flex; align-items: center;">
-                                <img src="{{ asset($user->pfp ?? 'Images/Pfp/pfp_default.png') }}" alt="">
+                                <img src="{{ asset($user->pfp) }}" alt="">
                                 @if ($auditUser)
                                     <p><a href="{{ route('profile.overview', $user->id) }}" class="username">{{ $user->name }}</a> <span>{{ $a->event }}</span> this Task on <span>{{ \Carbon\Carbon::parse($a->updated_at)->format('F d, Y \a\t H:i') }}</span></p>                            
                                 @else

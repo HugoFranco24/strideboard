@@ -36,6 +36,7 @@ class RegisteredUserController extends Controller
         ]);
 
         $user = User::create([
+            'pfp' => 'Images/Pfp/pfp_default.png',
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),

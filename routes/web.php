@@ -8,7 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\TasksController;
 use App\Http\Controllers\CalendarController;
-use App\Http\Controllers\NotificationsController;
+use App\Http\Controllers\InboxController;
 use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
@@ -30,7 +30,6 @@ Route::middleware('auth')->group(function () {
     //region Dashboard
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     //end Dashboard
-
 
     //region Project
     Route::get('/dashboard/projects', [ProjectsController::class, 'projects'])->name('dashboard.projects');
@@ -66,14 +65,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/dashboard/calendar/task/resize-date/{task_id}', [CalendarController::class, 'resizeDate']);
     //end Calendar
     
-    //region Notifications
-    Route::get('/dashboard/notifications', [NotificationsController::class, 'notifications'])->name('dashboard.notifications');
-    Route::get('/dashboard/notifications/{id}', [NotificationsController::class, 'open'])->name('notification.open');
-    Route::post('/dashboard/notifications/mark-read/{id}', [NotificationsController::class, 'markRead'])->name('notification.mark-read');
-    Route::post('/dashboard/notifications/mark-unread/{id}', [NotificationsController::class, 'markUnread'])->name('notification.mark-unread');
-    Route::delete('/dashboard/notifications/delete/{id}', [NotificationsController::class, 'delete'])->name('notification.delete');
-    Route::post('/dashboard/notifications/mark-all-read', [NotificationsController::class, 'markAllRead'])->name('notification.mark-all-read');
-    //end Notifications
+    //region Inbox
+    Route::get('/dashboard/inbox', [InboxController::class, 'inbox'])->name('dashboard.inbox');
+    Route::get('/dashboard/inbox/{id}', [InboxController::class, 'open'])->name('inbox.open');
+    Route::post('/dashboard/inbox/mark-read/{id}', [InboxController::class, 'markRead'])->name('inbox.mark-read');
+    Route::post('/dashboard/inbox/mark-unread/{id}', [InboxController::class, 'markUnread'])->name('inbox.mark-unread');
+    Route::delete('/dashboard/inbox/delete/{id}', [InboxController::class, 'delete'])->name('inbox.delete');
+    Route::post('/dashboard/inbox/mark-all-read', [InboxController::class, 'markAllRead'])->name('inbox.mark-all-read');
+    //end Inbox
 
     //region Settings
     Route::get('/dashboard/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');

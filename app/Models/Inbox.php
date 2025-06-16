@@ -3,13 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Task;
 
-class Notification extends Model
+class Inbox extends Model
 {
     protected $guarded = []; 
 
-    protected $table = "notifications";
+    protected $table = "inbox";
     
     //Relationships
     public function user()

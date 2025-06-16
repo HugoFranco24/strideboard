@@ -22,7 +22,7 @@
     <div class="box">
         <div class="top">
             <div class="left">
-                <img src="{{ asset(auth()->user()->pfp ?? 'Images/Pfp/pfp_default.png') }}" alt="" width="150px" height="150px" class="pfp">
+                <img style="border-radius: 4px" src="{{ asset(auth()->user()->pfp) }}" alt="" width="150px" height="150px" class="pfp">
                 <div style="display: block; align-items: center">
                     <h3 class="SQL" style="margin: 30px 0px 0px 10px; font-size: 22px; font-weight:600; transform:translateY(-100%)">{{ auth()->user()->name }}</h3>
                     <p class="SQL" style=" margin: 0px 10px 0px 10px; transform:translateY(-100%); color: var(--text-color);">{{ auth()->user()->email }}</p>
