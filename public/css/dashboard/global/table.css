@@ -155,9 +155,9 @@
 
 
 .filters{
-    width: calc(100% - 40px);
+    width: 100%;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 10px;
 }
 .filters .filter-item{
@@ -167,6 +167,11 @@
     width: 100% !important;
     max-width: 100% !important;
     min-width: 100% !important;
+}
+@media screen and (max-width: 850px) {
+    .filters .filter-item{
+        width: 50%;
+    }
 }
 /**/
 /*

@@ -46,7 +46,7 @@
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                right: window.innerWidth < 600 ? '' : 'dayGridMonth,timeGridWeek,timeGridDay'
             },
             initialView: 'dayGridMonth',
             timeZone: 'UTC',
@@ -56,12 +56,16 @@
             // Event Load
             eventContent: function(info) {
                 var eventTitle = info.event.title;
-                var textColor = checkTextColor(info.event.backgroundColor);
+                var textColor = window.innerWidth < 600 ? null : checkTextColor(info.event.backgroundColor);
                 var eventElement = document.createElement('div');
-                if(textColor == '#1A1A1A'){
-                    eventElement.innerHTML = '<a class="calendarMore" href="/dashboard/tasks/overview/' + info.event.id + '"><img src="{{ asset('Images/Icons/Actions/More.svg') }}"/></a> ' + eventTitle;
+                if(window.innerWidth < 600){
+                    eventElement.innerHTML = '<a class="calendarMore" href="/dashboard/tasks/overview/' + info.event.id + '"><img class="icon" src="{{ asset('Images/Icons/Actions/More.svg') }}"/></a> ' + eventTitle;
                 }else{
-                    eventElement.innerHTML = '<a class="calendarMore" href="/dashboard/tasks/overview/' + info.event.id + '"><img src="{{ asset('Images/Icons/Actions/MoreWhite.svg') }}"/></a> ' + eventTitle;
+                    if(textColor == '#1A1A1A'){
+                    eventElement.innerHTML = '<a class="calendarMore" href="/dashboard/tasks/overview/' + info.event.id + '"><img src="{{ asset('Images/Icons/Actions/More.svg') }}"/></a> ' + eventTitle;
+                    }else{
+                        eventElement.innerHTML = '<a class="calendarMore" href="/dashboard/tasks/overview/' + info.event.id + '"><img src="{{ asset('Images/Icons/Actions/MoreWhite.svg') }}"/></a> ' + eventTitle;
+                    }
                 }
                 eventElement.style.color = textColor;
                 eventElement.style.padding = '2px';    
@@ -110,5 +114,10 @@
         });
 
         calendar.render();
+
+        document.addEventListener('DOMContentLoaded', function () {
+            let newView = window.innerWidth < 600 ? 'listWeek' : 'dayGridMonth';
+            calendar.changeView(newView);
+        });
     </script>
 @endsection

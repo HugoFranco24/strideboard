@@ -22,15 +22,15 @@
     <div class="box">
         <div class="top">
             <div class="left">
-                <img style="border-radius: 4px" src="{{ asset(auth()->user()->pfp) }}" alt="" width="150px" height="150px" class="pfp">
+                <img style="border-radius: 4px; margin: 0px 10px 20px 0px" src="{{ asset(auth()->user()->pfp) }}" alt="" width="150px" height="150px" class="pfp">
                 <div style="display: block; align-items: center">
-                    <h3 class="SQL" style="margin: 30px 0px 0px 10px; font-size: 22px; font-weight:600; transform:translateY(-100%)">{{ auth()->user()->name }}</h3>
-                    <p class="SQL" style=" margin: 0px 10px 0px 10px; transform:translateY(-100%); color: var(--text-color);">{{ auth()->user()->email }}</p>
+                    <h3 class="SQL" style="margin: 30px 0px 0px 0px; font-size: 22px; font-weight:600; transform:translateY(-100%); max-width: 180px;">{{ auth()->user()->name }}</h3>
+                    <p class="SQL" style=" margin: 0px 10px 0px 0px; transform:translateY(-100%); color: var(--text-color); max-width: 250px;">{{ auth()->user()->email }}</p>
                 </div>
             </div>
         </div>
 
-        <h2 style="margin-top: 40px">Details</h2>
+        <h2 style="margin-top: 20px">Details</h2>
         <p>Joined on {{ \Carbon\Carbon::parse(auth()->user()->created_at)->format('d F Y \a\t H:i') }}</p>
         @if (auth()->user()->email_verified_at != '')
             <p>Verified</p>

@@ -103,6 +103,12 @@ img {
 .box label{
     font-size: 18px;
 }
+@media screen and (max-width: 540px){
+    .box{
+        padding: 20px 20px;
+    }
+}
+
 input[type='text'], 
 input[type='email'], 
 input[type='password'],
@@ -226,12 +232,15 @@ img.icon{
 
     --fc-button-active-bg-color: hsl(202, 68%, 12%);
     --fc-button-active-border-color: hsl(202, 68%, 12%);
+    --fc-neutral-bg-color: transparent;
+    
     --fc-border-color: hsl(0, 0%, 75%);
+    --fc-page-bg-color: var(--box-inner-color);
+    --fc-list-event-hover-bg-color: transparent;
 }
 .dark_theme{
     --fc-border-color: hsl(0, 0%, 30%);
 }
-
 .calendarMore{
     cursor: pointer; 
     height: 100%; 

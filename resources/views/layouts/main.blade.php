@@ -62,6 +62,18 @@
                 arrowP.classList.remove('rotated');
             }
         }
+
+        function MobileMenuMore() {
+            var more = document.getElementById('mobileMore');
+
+            console.log('aqui');
+
+            if (more.style.bottom == '-100px') {
+                more.style.bottom = '80px';
+            } else {
+                more.style.bottom = '-100px';
+            }
+        }
         
         function applyMenuState(state) {
             const menu = document.getElementById("nav");
@@ -73,6 +85,7 @@
             const top_menu = document.getElementById("top-menu");
             const main = document.getElementById("main_content");
             const sepC = document.getElementById("sepC");
+            const flex = document.getElementById("flex");
 
 
             if (window.innerWidth <= 900) {
@@ -81,28 +94,42 @@
             }else{
                 img.style.display = "block";
             }
-
-            if (state === 'collapsed') {
-                menu.style.width = "68px";
-                img.style.left = "8px";
-                open.style.opacity = "1";
-                close.style.opacity = "0";
-                icons8.style.display = "none";
-                links.classList.add('links_colapse');
-                top_menu.style.margin = "0px 0px 0px 68px";
-                main.style.padding = "110px 30px 30px 104px";
-                sepC.style.visibility = "visible";
-            } else {
-                menu.style.width = "265px";
-                img.style.left = "198px";
-                open.style.opacity = "0";
-                close.style.opacity = "1";
-                icons8.style.display = "block";
-                links.classList.remove('links_colapse');
-                top_menu.style.margin = "0px 0px 0px 265px";
-                main.style.padding = "110px 30px 30px 296px";
-                sepC.style.visibility = "hidden";
+            
+            if(window.innerWidth > 600){
+                menu.style.display = 'flex';
+                flex.style.margin = "0px 30px 0px 30px";
+                if (state === 'collapsed') {
+                    menu.style.width = "68px";
+                    img.style.left = "8px";
+                    open.style.opacity = "1";
+                    close.style.opacity = "0";
+                    icons8.style.display = "none";
+                    links.classList.add('links_collapse');
+                    top_menu.style.margin = "0px 0px 0px 68px";
+                    if(window.innerWidth <= 700){ //se a tela for menor ou igual a 700
+                        main.style.padding = "110px 10px 30px 84px";
+                    }else{
+                        main.style.padding = "110px 30px 30px 104px";
+                    }
+                    sepC.style.visibility = "visible";
+                } else {
+                    menu.style.width = "265px";
+                    img.style.left = "198px";
+                    open.style.opacity = "0";
+                    close.style.opacity = "1";
+                    icons8.style.display = "block";
+                    links.classList.remove('links_collapse');
+                    top_menu.style.margin = "0px 0px 0px 265px";
+                    main.style.padding = "110px 30px 30px 296px";
+                    sepC.style.visibility = "hidden";
+                }
+            }else{ //se a tela for menor ou igual a 540
+                menu.style.display = 'none';
+                main.style.padding = "110px 10px 30px 10px";
+                top_menu.style.margin = "0px 0px 0px 0px";
+                flex.style.margin = "0px 10px 0px 10px";
             }
+            
         }
 
         function applyTheme(theme) {
@@ -246,7 +273,7 @@
     </nav>
 
     <div class="top-menu" id="top-menu">
-        <div class="flex">
+        <div class="flex" id="flex">
             <div style="display: flex; align-items: center; gap: 14px;">
                 @yield('go-back')
                 <h1 style="margin: 0px">@yield('body-title')</h1>
@@ -274,6 +301,46 @@
             @csrf
             <button type="submit" class="signOut" style="border-radius: 0px 0px 6px 6px">Sign Out</button>
         </form>
+    </div>
+
+    <div class="menuMobile">
+        <a href="/dashboard/tasks">
+            <img src="{{ asset('Images/Icons/Menu/Tasks.png') }}" alt="Tasks">
+            <span>Tasks</span>
+        </a>
+        <a href="/dashboard/projects">
+            <img src="{{ asset('Images/Icons/Menu/Projects.png') }}" alt="Projects">
+            <span>Projects</span>
+        </a>
+        <a href="/dashboard">
+            <img src="{{ asset('Images/Icons/Menu/Dashboard.png') }}" alt="Dashboard">
+            <span>Dashboard</span>
+        </a>
+        <a href="/dashboard/calendar">
+            <img src="{{ asset('Images/Icons/Menu/Calendar.png') }}" alt="Calendar">
+            <span>Calendar</span>
+        </a>
+        <a onclick="MobileMenuMore()">
+            <img src="{{ asset('Images/Icons/Menu/More.png') }}" alt="More">
+            <span>More</span>
+        </a>
+    </div>
+
+    <div class="menuMobileMore" id="mobileMore" style="bottom: -100px">
+        <a href="/dashboard/inbox">
+            <img src="{{ asset('Images/Icons/Menu/Inbox.png') }}" alt="More">
+            <span>Inbox</span>
+        </a>
+        <div class="space"></div>
+        <a href="/dashboard/my-profile">
+            <img src="{{ asset('Images/Icons/Menu/Profile.png') }}" alt="More">
+            <span>My Profile</span>
+        </a>
+        <div class="space"></div>
+        <a href="/dashboard/settings">
+            <img src="{{ asset('Images/Icons/Menu/Settings.png') }}" alt="More">
+            <span>Settings</span>
+        </a>
     </div>
 
     <div class="main_content" id="main_content">
