@@ -40,6 +40,12 @@
                                     @case('left')
                                         <h3>A user left a project you're in.</h3>
                                         @break
+                                    @case('accepted')
+                                        <h3>Your project invite was accepted.</h3>
+                                        @break
+                                    @case('rejected')
+                                        <h3>Your project invite was rejected.</h3>
+                                        @break
                                     @case('created_task')
                                         <h3>A user created a task in a project you're in.</h3>
                                         @break
@@ -128,7 +134,13 @@
                                     <p>Your role was changed in project.</p>
                                     @break
                                 @case('left')
-                                    <p>A user left a project you're in.</p>
+                                    <p>As left a project you're in.</p>
+                                    @break
+                                @case('accepted')
+                                    <p>As accepted your project invite.</p>
+                                    @break
+                                @case('rejected')
+                                    <p>As rejected your project invite.</p>
                                     @break
                                 @case('created_task')
                                     <p>As created a task in a project you're in.</p>
@@ -176,6 +188,15 @@
                             @case('left')
                                 <h3>The user "{{ $opened_noti->user->name }}" as left the project "{{ $opened_noti->project_name }}".</h3>
                             @break
+                            @case('accepted')
+                                <h3>The user "{{ $opened_noti->user->name }}" as accepted your invite to join the project "{{ $opened_noti->project_name }}".</h3>
+                                <div class="options">
+                                    <a href="{{ route('projects.overview', $opened_noti->reference_id) }}"><button class="btn_default">Check It Out</button></a>
+                                </div>
+                            @break
+                            @case('rejected')
+                                <h3>The user "{{ $opened_noti->user->name }}" as rejected your invite to join the project "{{ $opened_noti->project_name }}".</h3>
+                            @break
                             @case('created_task')
                                 <h3>The user "{{ $opened_noti->user->name }}" as created the task "{{ $opened_noti->task_name }}" in the project "{{ $opened_noti->project_name }}".</h3>
                                 <div class="options">
@@ -189,7 +210,7 @@
                                 </div>
                             @break
                             @case('deleted_task')
-                                <h3>The user "{{ $opened_noti->user->name }}" as updated the task "{{ $opened_noti->task_name }}" in the project "{{ $opened_noti->project_name }}".</h3>
+                                <h3>The user "{{ $opened_noti->user->name }}" as deleted the task "{{ $opened_noti->task_name }}" in the project "{{ $opened_noti->project_name }}".</h3>
                             @break
                             @case('updated_project')
                                 <h3>The project "{{ $opened_noti->project_name }}" by the user {{ $opened_noti_user[1] }}.</h3>

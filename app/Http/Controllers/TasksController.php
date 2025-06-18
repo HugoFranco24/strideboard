@@ -9,10 +9,10 @@ use App\Models\Task;
 use App\Models\ProjectUser;
 use App\Models\Inbox;
 use OwenIt\Auditing\Models\Audit;
-use App\Http\Controllers\NotificationsController;
+use App\Services\TaskNotifier;
 
 class TasksController extends Controller 
-{
+{   
     public function tasks(Request $request)
     {
         $query = Task::leftJoin('projects', 'tasks.project_id', '=', 'projects.id')
@@ -107,22 +107,9 @@ class TasksController extends Controller
             'user_id' => $request->user_id,
         ]);
 
-        //create message
-        $receivers = ProjectUser::where('project_id', $project->id)
-                    ->where('user_id', $task->user_id)
-                    ->whereIn('user_type', [1, 2])
-                    ->whereNot('user_id', auth()->id())
-                    ->get();
-
-        foreach($receivers as $reciever){
-            Inbox::create([
-                'receiver_id' => $reciever->user_id,
-                'actor_id' => auth()->id(),
-                'type' => 'created_task',
-                'task_name' => $task->name,
-                'reference_id' => $task->id,
-            ]);
-        }
+        //notify users with service
+        $notifier = new TaskNotifier($project, $task);
+        $notifier->notify('created_task', $task, $project);
 
         return redirect(route('projects.overview', $project_id));
     }
@@ -156,7 +143,7 @@ class TasksController extends Controller
             'user_id' => 'required|integer',
         ]);
 
-        $task::update([
+        $task->update([
             'name' => $request->name,
             'description' => $request->description,
             'start' => $request->start,
@@ -167,22 +154,9 @@ class TasksController extends Controller
         ]);
 
 
-        //create message
-        $receivers = ProjectUser::where('project_id', $project->id)
-                    ->where('user_id', $task->user_id)
-                    ->whereIn('user_type', [1, 2])
-                    ->whereNot('user_id', auth()->id())
-                    ->get();
-
-        foreach($receivers as $reciever){
-            Inbox::create([
-                'receiver_id' => $reciever->user_id,
-                'actor_id' => auth()->id(),
-                'type' => 'updated_task',
-                'task_name' => $task->name,
-                'reference_id' => $task->id,
-            ]);
-        }
+        //notify users with service
+        $notifier = new TaskNotifier($project, $task);
+        $notifier->notify('updated_task', $task, $project);
 
 
         $audits = Audit::where('auditable_id', $task->id)
@@ -222,22 +196,10 @@ class TasksController extends Controller
         if($user->pivot->user_type == 0 && $task->user_id != auth()->id()){
             abort(403);
         }
-        //permitions check end
 
-        $receivers = ProjectUser::where('project_id', $project->id)
-                    ->where('user_id', $task->user_id)
-                    ->whereIn('user_type', [1, 2])
-                    ->whereNotIn('user_id', auth()->id())
-                    ->get();
-
-        foreach($receivers as $reciever){
-            Inbox::create([
-                'receiver_id' => $reciever->user_id,
-                'actor_id' => auth()->id(),
-                'type' => 'deleted_task',
-                'task_name' => $task->name,
-            ]);
-        }
+        //notify users with service
+        $notifier = new TaskNotifier($project, $task);
+        $notifier->notify( 'deleted_task', $task, $project);
 
         $task->delete();
 

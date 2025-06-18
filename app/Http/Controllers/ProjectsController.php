@@ -333,13 +333,30 @@ class ProjectsController extends Controller {
         }
         //end deleting tasks where the user was
 
-        Inbox::create([
-            'receiver_id' => $user_id,
-            'actor_id' => auth()->id(),
-            'type' => 'removed',
-            'project_name' => $project->name,
-        ]);
-        
+        if($user->id != $project_user->user_id){
+            Inbox::create([
+                'receiver_id' => $user_id,
+                'actor_id' => auth()->id(),
+                'type' => 'removed',
+                'project_name' => $project->name,
+            ]);
+        }else{
+            $noti_users = ProjectUser::where('project_id', $project_user->project_id)
+                            ->where('active', true)
+                            ->whereIn('user_type', [2, 1])
+                            ->whereNot('user_id', auth()->id())
+                            ->get();
+
+            foreach($noti_users as $nu){
+                Inbox::create([
+                    'receiver_id' => $nu->user_id,
+                    'actor_id' => $project_user->user_id,
+                    'type' => 'left',
+                    'project_name' => $project->name,
+                ]);
+            }
+        }
+
         $project_user->delete();
 
         if($user->id != $project_user->user_id){
@@ -366,6 +383,7 @@ class ProjectsController extends Controller {
                 'actor_id' => $pu->user_id,
                 'type' => 'accepted',
                 'project_name' => $project->name,
+                'reference_id' => $project->id,
             ]);
         }
 
@@ -387,7 +405,7 @@ class ProjectsController extends Controller {
             Inbox::create([
                 'receiver_id' => $nu->user_id,
                 'actor_id' => $pu->user_id,
-                'type' => 'accepted',
+                'type' => 'rejected',
                 'project_name' => $project->name,
             ]);
         }

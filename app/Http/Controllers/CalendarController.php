@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Inbox;
-use App\Models\ProjectUser;
+use App\Models\Project;
 use App\Models\Task;
+use App\Services\TaskNotifier;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -34,6 +35,8 @@ class CalendarController extends Controller {
 
         $task = Task::findOrFail($task_id);
 
+        $project = Project::where('id', $task->project_id)->firstOrFail()->load('users', 'tasks');
+
         if($request->input('start_date')){
             $task->update([
                 'start' => Carbon::parse($request->input('start_date'))->setTimezone('UTC'),
@@ -45,21 +48,9 @@ class CalendarController extends Controller {
             ]);
         }
 
-        $receivers = ProjectUser::where('project_id', $task->project_id)
-            ->where('user_id', $task->user_id)
-            ->whereIn('user_type', [1, 2])
-            ->whereNot('user_id', auth()->id())
-            ->get();
-
-        foreach($receivers as $reciever){
-            Inbox::create([
-                'receiver_id' => $reciever->user_id,
-                'actor_id' => auth()->id(),
-                'type' => 'updated_task',
-                'task_name' => $task->name,
-                'reference_id' => $task->id,
-            ]);
-        }
+        //notify users with service
+        $notifier = new TaskNotifier($project, $task);
+        $notifier->notify( 'updated_task', $task, $project);
 
         return response()->json(['message' => 'Task Updated.']);
     }

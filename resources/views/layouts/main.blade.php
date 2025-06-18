@@ -24,7 +24,7 @@
                 open.style.opacity = "1";
                 close.style.opacity = "0";
                 icons8.style.display = "none";
-                links.classList.add('links_colapse');
+                links.classList.add('links_collapse');
                 top_menu.style.margin = "0px 0px 0px 68px";
                 top_menu.style.transition = "500ms";
                 main.style.padding = "110px 30px 30px 104px";
@@ -39,7 +39,7 @@
                 open.style.opacity = "0";
                 close.style.opacity = "1";
                 icons8.style.display = "block";
-                links.classList.remove('links_colapse');
+                links.classList.remove('links_collapse');
                 top_menu.style.margin = "0px 0px 0px 265px";
                 top_menu.style.transition = "500ms";
                 main.style.padding = "110px 30px 30px 296px";
@@ -201,15 +201,45 @@
     <nav id="nav" style="width: 265px;">
         <div class="links" id="links">
             <span class="sep">Manage</span>
-            <a href="/dashboard" title="Dashboard"><img src="{{ asset('Images/Icons/Menu/Dashboard.png') }}" alt=""><span>Dashboard</span></a>
-            <a href="/dashboard/projects" title="Projects"><img src="{{ asset('Images/Icons/Menu/Projects.png') }}" alt=""><span>Projects</span></a>
-            <a href="/dashboard/tasks" title="Tasks"><img src="{{ asset('Images/Icons/Menu/Tasks.png') }}" alt=""/><span>Tasks</span></a>
-            <a href="/dashboard/calendar" title="Calendar"><img src="{{ asset('Images/Icons/Menu/Calendar.png') }}" alt=""><span>Calendar</span></a>
+            <a href="/dashboard" title="Dashboard">
+                <img src="{{ asset('Images/Icons/Menu/Dashboard.png') }}" alt="">
+                <span>Dashboard</span>
+            </a>
+            <a href="/dashboard/projects" title="Projects">
+                <img src="{{ asset('Images/Icons/Menu/Projects.png') }}" alt="">
+                <span>Projects</span>
+            </a>
+            <a href="/dashboard/tasks" title="Tasks">
+                <img src="{{ asset('Images/Icons/Menu/Tasks.png') }}" alt=""/>
+                <span>Tasks</span>
+            </a>
+            <a href="/dashboard/calendar" title="Calendar">
+                <img src="{{ asset('Images/Icons/Menu/Calendar.png') }}" alt="">
+                <span>Calendar</span>
+            </a>
+
             <div class="sepC" id="sepC"></div>
+
             <span class="sep">Settings</span>
-            <a href="/dashboard/inbox" title="Inbox"><img src="{{ asset('Images/Icons/Menu/Inbox.png') }}" alt="" /><span>Inbox</span></a>
-            <a href="/dashboard/my-profile" title="Profile"><img src="{{ asset('Images/Icons/Menu/Profile.png') }}" alt=""/><span>My Profile</span></a>
-            <a href="/dashboard/settings" title="Settings"><img src="{{ asset('Images/Icons/Menu/Settings.png') }}" alt=""/><span>Settings</span></a>
+            <a href="/dashboard/inbox" title="Inbox" style="position: relative">
+                @if ($inbox != 0)
+                    @if ($inbox > 9)
+                        <span class="inboxNumber" style="width: 20px">9+</span>
+                    @else
+                        <span class="inboxNumber" style="width: 14px">{{ $inbox }}</span>       
+                    @endif
+                @endif
+                <img src="{{ asset('Images/Icons/Menu/Inbox.png') }}" alt="" />
+                <span>Inbox</span>
+            </a>
+            <a href="/dashboard/my-profile" title="Profile">
+                <img src="{{ asset('Images/Icons/Menu/Profile.png') }}" alt=""/>
+                <span>My Profile</span>
+            </a>
+            <a href="/dashboard/settings" title="Settings">
+                <img src="{{ asset('Images/Icons/Menu/Settings.png') }}" alt=""/>
+                <span>Settings</span>
+            </a>
         </div>
 
         <p><span id="icons8">Icons by -> </span> <a href="https://icons8.com/" target="_blank">Icons8</a></p>

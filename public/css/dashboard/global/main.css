@@ -57,7 +57,7 @@ nav{
     z-index: 99;
 }
 
-.links, .links_colapse{
+.links, .links_collapse{
     width: 100%;
     transition: 300ms;
     max-height: 70vh;
@@ -65,7 +65,7 @@ nav{
     overflow-x:hidden;
 }
 
-.links a, .links_colapse a {
+.links a, .links_collapse a {
     display: flex;
     align-items: center;
     font-size: 24px;
@@ -78,20 +78,25 @@ nav{
     height: 52px;
     box-sizing: border-box;
 }
-.links a:hover, .links_colapse a:hover{
+.links a:hover, .links_collapse a:hover{
     background-color: hsl(202, 68%, 16%);
 }
-.links img, .links_colapse img {
+.links img, .links_collapse img {
     padding-left: 15px;
     height: 32px;
     width: 32px;
 }
-.links_colapse span{
-    visibility: hidden;
-}
 .links a span, .links_colapse a span {
     margin-left: 30px;
+    text-wrap-mode: nowrap;
 }
+.links_collapse span{
+    visibility: hidden;
+}
+.links_collapse .inboxNumber{
+    visibility: visible;
+}
+
 .sep{
     display: block;
     color: white;
@@ -108,6 +113,21 @@ nav{
     visibility: hidden;
     padding: 20px 0px;
     border-bottom: 1px solid white;
+}
+
+nav .inboxNumber{
+    position: absolute;
+    background-color: #59abe6;
+    color: white;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 600;
+    height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 10px;
+    left: 10px;
 }
 nav p{
     display: flex;
