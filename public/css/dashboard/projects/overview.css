@@ -69,17 +69,28 @@
 }
 .btns{
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
-}
-.btns a{
     margin-top: 20px;
 }
-.btns button{
-    width: 80%;
-    min-width: 150px;
-    margin-top: 0px;
+.btns a, .btns form{
+    min-width: 180px;
 }
-
+.btns button{
+    margin-top: 0px !important;
+    min-width: 100% !important;
+    width: 100% !important;
+}
+@media screen and (max-width: 700px) {
+    .btns a, .btns form{
+        width: 100%;
+    }
+}
+@media screen and (max-width: 385px) {
+    .btns a, .btns form{
+        width: 100%;
+    }
+}
 
 /*Collabs in Project
 /*

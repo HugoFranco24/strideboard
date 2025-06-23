@@ -66,8 +66,6 @@
         function MobileMenuMore() {
             var more = document.getElementById('mobileMore');
 
-            console.log('aqui');
-
             if (more.style.bottom == '-100px') {
                 more.style.bottom = '80px';
             } else {
@@ -125,7 +123,7 @@
                 }
             }else{ //se a tela for menor ou igual a 540
                 menu.style.display = 'none';
-                main.style.padding = "110px 10px 30px 10px";
+                main.style.padding = "110px 10px 100px 10px";
                 top_menu.style.margin = "0px 0px 0px 0px";
                 flex.style.margin = "0px 10px 0px 10px";
             }

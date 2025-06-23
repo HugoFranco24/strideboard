@@ -9,6 +9,11 @@
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/dashboard/global/table.css') }}">
+    <style>
+        .box{
+            max-height: calc(100dvh - 140px);
+        }
+    </style>
 @endsection
 
 @section('body')

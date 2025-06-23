@@ -1,5 +1,10 @@
+.projects-wrapper{
+    max-height: calc(100dvh - 342px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
 .project{
-    position: relative; /* isso é obrigatório */
+    position: relative;
     background-color: var(--box-inner-color);
     border-radius: 4px;
     padding: 12px 20px;

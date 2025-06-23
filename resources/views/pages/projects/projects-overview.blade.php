@@ -34,7 +34,7 @@
             <p class="SQL"><span>Due Date:</span> {{ \Carbon\Carbon::parse($project->due_date)->format('F d, Y') }}</p>
             <div style="display: flex">
                 <span>Project Color:   {{$project->color}} -></span>
-                <div style="background-color: {{ $project->color }}; width: 40px;"></div>
+                <div style="background-color: {{ $project->color }}; width: 40px; border-radius: 2px;"></div>
             </div>
             <br>
             <div class="btns">
@@ -193,7 +193,7 @@
             <input type="hidden" value="{{ $stoped }}" id="stoped">
             <input type="hidden" value="{{ $to_do }}" id="to_do">
             <h2>Tasks</h2>
-            @if (!isset($task))
+            @if ($total > 0)
                 <p><span>My Tasks: {{ $my_tasks->count() }}</span></p>
                 <p><span>Late: </span> {{ $late->count() }}</p>
                 <p><span>Urgent: </span> {{ $urgent->count() }}</p>
@@ -201,16 +201,18 @@
             @else
                 <br><br>
                 <h2 style="font-weight: 600">No Tasks</h2>
-                <br><br>
+                <br>
             @endif
             
             
-            <div class="btns">
+            <div class="btns" style="margin-top: 40px">
                 @if ($authUserType != 0)
                     <a href="/dashboard/projects/overview/{{$project->id}}/create-task"><button type="button" class="btn_default">Create Task</button></a>
                 @endif
                 
-                <a href="#allTasks"><button class="btn_default">View All Tasks</button></a>
+                @if ($total > 0)
+                    <a href="#allTasks"><button class="btn_default">View All Tasks</button></a>
+                @endif
             </div>  
         </div>
         @if ($total > 0)

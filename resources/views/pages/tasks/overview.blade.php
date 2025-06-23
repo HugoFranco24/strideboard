@@ -182,112 +182,114 @@
                 @php
                     $auditCount = 0;
                 @endphp
-                @foreach ($audits as $a)
-                    @php
-                        $auditUser = $users->firstWhere('id', $a->user_id);
-                        $auditCount += 1
-                    @endphp
-                    <div class="audit">
-                        <div class="Uinfo">
-                            <div style="display: flex; align-items: center;">
-                                <img src="{{ asset($auditUser->pfp) ?? asset('Images/Pfp/pfp_default.png') }}" alt="">
-                                @if ($auditUser)
-                                    <p><a href="{{ route('profile.overview', $auditUser->id) }}" class="username">{{ $auditUser->name }}</a> <span>{{ $a->event }}</span> this Task on <span>{{ \Carbon\Carbon::parse($a->updated_at)->format('F d, Y \a\t H:i') }}</span></p>                            
-                                @else
-                                    <p>Deleted User <span>{{ $a->event }}</span> this Task on <span>{{ \Carbon\Carbon::parse($a->updated_at)->format('F d, Y \a\t H:i') }}</span></p>                          
+                <div class="audit-wrapper">
+                    @foreach ($audits as $a)
+                        @php
+                            $auditUser = $users->firstWhere('id', $a->user_id);
+                            $auditCount += 1
+                        @endphp
+                        <div class="audit">
+                            <div class="Uinfo">
+                                <div style="display: flex; align-items: center;">
+                                    <img src="{{ asset($auditUser->pfp) ?? asset('Images/Pfp/pfp_default.png') }}" alt="">
+                                    @if ($auditUser)
+                                        <p><a href="{{ route('profile.overview', $auditUser->id) }}" class="username">{{ $auditUser->name }}</a> <span>{{ $a->event }}</span> this Task on <span>{{ \Carbon\Carbon::parse($a->updated_at)->format('F d, Y \a\t H:i') }}</span></p>                            
+                                    @else
+                                        <p>Deleted User <span>{{ $a->event }}</span> this Task on <span>{{ \Carbon\Carbon::parse($a->updated_at)->format('F d, Y \a\t H:i') }}</span></p>                          
+                                    @endif
+                                </div>
+                                <div style="display: flex;">
+                                    <button onclick="details(this, {{ $auditCount }})">Details</button>
+                                </div>
+                            </div>
+                            <div class="details" id="details{{ $auditCount }}">
+                                <p>Changes Made</p>
+                                @if ($a->event == 'updated')
+                                    <table style="margin-bottom: 50px">
+                                        <tr>
+                                            <th style="border-right: 1px solid #ddd">Collumn</th>
+                                            <th>Old Value</th>
+                                        </tr>
+                                        @foreach ($a->old_values as $key => $value)
+                                            <tr>
+                                                @if ($key == 'state')
+                                                    <td style="border-right: 1px solid #ddd; text-transform: capitalize;">Status</td>
+                                                    @if ($value == '0')
+                                                        <td>To Do</td>
+                                                    @elseif ($value == '1')
+                                                        <td>Stoped</td>
+                                                    @elseif ($value == '2')
+                                                        <td>In Progress</td>
+                                                    @else
+                                                        <td>Done</td>
+                                                    @endif
+                                                @elseif ($key == 'priority')
+                                                    <td style="border-right: 1px solid #ddd; text-transform: capitalize;">{{$key}}</td>
+                                                    @if ($value == '0')
+                                                        <td>Low</td>
+                                                    @elseif ($value == '1')
+                                                        <td>Normal</td>
+                                                    @elseif ($value == '2')
+                                                        <td>High</td>
+                                                    @else
+                                                        <td>Urgent</td>
+                                                    @endif
+                                                @elseif ($key == 'user_id')
+                                                    <td style="border-right: 1px solid #ddd; text-transform: capitalize;">Collaborator</td>
+                                                    <td>{{ $project->users->firstWhere('id', $value)?->name }}</td>
+                                                @else
+                                                    <td style="border-right: 1px solid #ddd; text-transform: capitalize;">{{$key}}</td>
+                                                    <td>{{$value}}</td>
+                                                @endif   
+                                            </tr>
+                                        @endforeach
+                                    </table>
                                 @endif
-                            </div>
-                            <div style="display: flex;">
-                                <button onclick="details(this, {{ $auditCount }})">Details</button>
-                            </div>
-                        </div>
-                        <div class="details" id="details{{ $auditCount }}">
-                            <p>Changes Made</p>
-                            @if ($a->event == 'updated')
-                                <table style="margin-bottom: 50px">
+                                <table>
                                     <tr>
                                         <th style="border-right: 1px solid #ddd">Collumn</th>
-                                        <th>Old Value</th>
+                                        <th>New Value</th>
                                     </tr>
-                                    @foreach ($a->old_values as $key => $value)
+                                    @foreach ($a->new_values as $key => $value)
                                         <tr>
-                                            @if ($key == 'state')
-                                                <td style="border-right: 1px solid #ddd; text-transform: capitalize;">Status</td>
-                                                @if ($value == '0')
-                                                    <td>To Do</td>
-                                                @elseif ($value == '1')
-                                                    <td>Stoped</td>
-                                                @elseif ($value == '2')
-                                                    <td>In Progress</td>
+                                            @if ($key != 'project_id' && $key != 'id')
+                                                @if ($key == 'state')
+                                                    <td style="border-right: 1px solid #ddd; text-transform: capitalize;">Status</td>
+                                                    @if ($value == '0')
+                                                        <td>To Do</td>
+                                                    @elseif ($value == '1')
+                                                        <td>Stoped</td>
+                                                    @elseif ($value == '2')
+                                                        <td>In Progress</td>
+                                                    @else
+                                                        <td>Done</td>
+                                                    @endif
+                                                @elseif ($key == 'priority')
+                                                    <td style="border-right: 1px solid #ddd; text-transform: capitalize;">{{$key}}</td>
+                                                    @if ($value == '0')
+                                                        <td>Low</td>
+                                                    @elseif ($value == '1')
+                                                        <td>Normal</td>
+                                                    @elseif ($value == '2')
+                                                        <td>High</td>
+                                                    @else
+                                                        <td>Urgent</td>
+                                                    @endif
+                                                @elseif ($key == 'user_id')
+                                                    <td style="border-right: 1px solid #ddd; text-transform: capitalize;">Collaborator</td>
+                                                    <td>{{ $project->users->firstWhere('id', $value)?->name }}</td>
                                                 @else
-                                                    <td>Done</td>
+                                                    <td style="border-right: 1px solid #ddd; text-transform: capitalize;">{{$key}}</td>
+                                                    <td>{{$value}}</td>
                                                 @endif
-                                            @elseif ($key == 'priority')
-                                                <td style="border-right: 1px solid #ddd; text-transform: capitalize;">{{$key}}</td>
-                                                @if ($value == '0')
-                                                    <td>Low</td>
-                                                @elseif ($value == '1')
-                                                    <td>Normal</td>
-                                                @elseif ($value == '2')
-                                                    <td>High</td>
-                                                @else
-                                                    <td>Urgent</td>
-                                                @endif
-                                            @elseif ($key == 'user_id')
-                                                <td style="border-right: 1px solid #ddd; text-transform: capitalize;">Collaborator</td>
-                                                <td>{{ $project->users->firstWhere('id', $value)?->name }}</td>
-                                            @else
-                                                <td style="border-right: 1px solid #ddd; text-transform: capitalize;">{{$key}}</td>
-                                                <td>{{$value}}</td>
-                                            @endif   
+                                            @endif    
                                         </tr>
                                     @endforeach
                                 </table>
-                            @endif
-                            <table>
-                                <tr>
-                                    <th style="border-right: 1px solid #ddd">Collumn</th>
-                                    <th>New Value</th>
-                                </tr>
-                                @foreach ($a->new_values as $key => $value)
-                                    <tr>
-                                        @if ($key != 'project_id' && $key != 'id')
-                                            @if ($key == 'state')
-                                                <td style="border-right: 1px solid #ddd; text-transform: capitalize;">Status</td>
-                                                @if ($value == '0')
-                                                    <td>To Do</td>
-                                                @elseif ($value == '1')
-                                                    <td>Stoped</td>
-                                                @elseif ($value == '2')
-                                                    <td>In Progress</td>
-                                                @else
-                                                    <td>Done</td>
-                                                @endif
-                                            @elseif ($key == 'priority')
-                                                <td style="border-right: 1px solid #ddd; text-transform: capitalize;">{{$key}}</td>
-                                                @if ($value == '0')
-                                                    <td>Low</td>
-                                                @elseif ($value == '1')
-                                                    <td>Normal</td>
-                                                @elseif ($value == '2')
-                                                    <td>High</td>
-                                                @else
-                                                    <td>Urgent</td>
-                                                @endif
-                                            @elseif ($key == 'user_id')
-                                                <td style="border-right: 1px solid #ddd; text-transform: capitalize;">Collaborator</td>
-                                                <td>{{ $project->users->firstWhere('id', $value)?->name }}</td>
-                                            @else
-                                                <td style="border-right: 1px solid #ddd; text-transform: capitalize;">{{$key}}</td>
-                                                <td>{{$value}}</td>
-                                            @endif
-                                        @endif    
-                                    </tr>
-                                @endforeach
-                            </table>
+                            </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>

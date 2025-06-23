@@ -289,7 +289,6 @@ nav {
     height: 80px;
     margin: 0px 0px 0px 300px;
     z-index: 98;
-
 }
 
 .flex{
@@ -379,6 +378,11 @@ nav {
     width: 100%;
     background-color: hsl(0, 0%, 55%);
     margin: 1px 0px;
+}
+@media screen and (max-width: 400px) {
+    .top-menu .user p{
+        display: none;
+    }
 }
 /*#endregion*/
 

@@ -4,7 +4,6 @@
     grid-template-rows: repeat(1, 1fr);
     gap: 14px;
     max-height: 970px;
-    margin-bottom: 20px;
 }
 .box:nth-child(1){
     grid-column: span 3 / span 3;
@@ -12,8 +11,8 @@
 .box:nth-child(2){
     grid-column: span 2 / span 2;
     grid-column-start: 4;
-    overflow-y: auto;
-    scrollbar-width: thin;
+    overflow-y: hidden;
+    margin-bottom: 30px;
 }
 input[type='text'],
 input[type='date'],
@@ -51,11 +50,23 @@ textarea
 
 @media screen and (max-width: 1350px) {
     .container{
-        
         display: block;
+        max-height: fit-content;
+    }
+    .box:nth-child(2){
+        margin-bottom: 0px;
+        max-height: 600px;
+    }
+    .audit-wrapper{
+        max-height: 360px !important;
     }
 }
 
+.audit-wrapper{
+    max-height: calc(100% - 58px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
 .audit{
     position: relative;
     background-color: var(--box-inner-color);

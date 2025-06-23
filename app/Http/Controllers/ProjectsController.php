@@ -125,20 +125,19 @@ class ProjectsController extends Controller {
 
     public function projectsDelete($id)
     {
-        $project = Project::findorFail($id)
+        $project = Project::findOrFail($id)
         ->load('users','tasks');
+        
+        $projects_users = ProjectUser::where('project_id', $id)->get();
 
-        $projects_users = ProjectUser::where('project_id', $id);
-
-        $user = $project->users
-            ->where('id', auth()->id())
-            ->where('active', true)
-            ->firstOrFail();
-
-        if(!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
+        $user = $projects_users->where('user_id', auth()->id())
+                ->where('active', true)
+                ->firstOrFail();
+        
+        if(!$project->users->firstWhere('id', auth()->id())?->pivot->active){
             abort(code: 403);
         }  
-        if($user->pivot->user_type != 2){
+        if($user->user_type != 2){
             abort(403);
         }
 
