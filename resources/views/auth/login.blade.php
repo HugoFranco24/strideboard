@@ -40,7 +40,7 @@ Login
                 <a href="{{ route('password.request') }}">Forgot your password?</a>
             @endif
 
-            <input type="submit" value="Log In" class="submit">
+            <button type="submit" class="submit">Sign In</button>
         </div>
     </form>
 </x-guest-layout>

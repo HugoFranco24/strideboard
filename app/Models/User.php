@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,7 +10,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Project;
 
-class User extends Authenticatable
+use App\Notifications\CustomVerifyEmail;
+use App\Notifications\CustomResetPassword;
+
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -49,6 +52,18 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    //emails
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new CustomVerifyEmail());
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new CustomResetPassword($token));
+    }
+    //end emails
 
     //Relationships
     public function projects(): BelongsToMany

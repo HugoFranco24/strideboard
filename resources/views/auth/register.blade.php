@@ -49,7 +49,7 @@
         <div class="options">
             <a href="{{ route('login') }}">Already have an Account</a>
 
-            <input type="submit" class="submit" value="Register">
+            <button type="submit" class="submit">Register</button>
         </div>
     </form>
 </x-guest-layout>

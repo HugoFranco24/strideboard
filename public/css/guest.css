@@ -54,34 +54,40 @@ body{
     background-color: #fafafa;
 }
 
-
+.box .options{
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+}
 .box .options .submit{
-    width: 34%;
-    height: 40px;
     background-color: #113F59;
     color: white;
     border: none;
-    font-size: 20px;
+    font-size: 16px;
+    padding: 10px 14px;
     transition: 200ms;
     cursor: pointer;
     border-radius: 4px;
+    min-width: 140px;
 }
 .box .options .submit:hover{
     background-color: hsl(202, 68%, 16%);
     outline: none;
 }
-.box .options{
-    margin-top: 10px;
-    text-align: end;
+.box .options .logout{
+    color: #cc0000;
 }
-.box .options a{
-    font-size: 16px;
-    color: black;
-    margin-right: 10px; 
+.box .options .logout, .box .options a{
+    all: unset;
     text-decoration: underline;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 16px;
 }
-.box .options a:hover{
-    color: #333333;
+.box .options .logout:hover, .box .options a:hover{
+    text-decoration: none;
 }
 
 .remember{
@@ -131,9 +137,6 @@ ul{
     .main{
         width: 80%;
     }
-    .box .options .submit{
-        width: 50%;
-    }
 }
 @media (max-width: 600px) {
     .box .options{
@@ -143,5 +146,6 @@ ul{
     .box .options .submit
     {
         width: 100%;
+        margin-top: 10px;
     } 
 }
