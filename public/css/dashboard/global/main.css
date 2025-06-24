@@ -210,7 +210,7 @@ nav {
     width: 180px;
     text-align: center;
     transition: 400ms;
-    z-index: 9;
+    z-index: 98;
     border-radius: 4px;
 }
 .menuMobileMore a{
@@ -353,7 +353,7 @@ nav {
     width: 200px;
     text-align: center;
     transition: 400ms;
-    z-index: 9;
+    z-index: 97;
 }
 .profile-toggle a{
     text-decoration: none;

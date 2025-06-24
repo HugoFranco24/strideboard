@@ -8,15 +8,15 @@ use App\Models\Project;
 use App\Models\Task;
 use App\Models\ProjectsUser;
 use App\Models\ProjectsTask;
+use Illuminate\Http\Request;
+use Carbon\Carbon;
+use App\Services\InboxFilter;
 
 class InboxController extends Controller
 {
-    public function inbox(){
+    public function inbox(Request $request){
 
-        $inbox = Inbox::where('receiver_id', auth()->id())
-                    ->orderByDesc('created_at')
-                    ->with('user')
-                    ->get();
+        $inbox = InboxFilter::filterQuery($request)->get();
 
         return view('pages.inbox', [
             'inbox' => $inbox,
@@ -24,12 +24,9 @@ class InboxController extends Controller
         ]);
     }
 
-    public function open($id){
+    public function open($id, Request $request){
 
-        $inbox = Inbox::where('receiver_id', auth()->id())
-                    ->orderByDesc('created_at')
-                    ->with('user')
-                    ->get();
+        $inbox = InboxFilter::filterQuery($request)->get();
 
         $opened_noti = Inbox::where('id', $id)->with('user')->first();
 
@@ -39,34 +36,33 @@ class InboxController extends Controller
         ]);
     }
 
-    public function markRead($id){
+    public function markRead(Request $request, $id)
+    {
+        Inbox::where('id', $id)->update(['is_read' => true]);
 
-        Inbox::where('id', $id)
-        ->update(['is_read' => true]);
-
-        return redirect(route('inbox.open', $id));
+        return redirect()->route('inbox.open', array_merge(['id' => $id], $request->query()));
     }
 
-    public function markUnread($id){
+    public function markUnread(Request $request, $id)
+    {
+        Inbox::where('id', $id)->update(['is_read' => false]);
 
-        Inbox::where('id', $id)
-        ->update(['is_read' => false]);
-
-        return redirect(route('inbox.open', $id));
+        return redirect()->route('inbox.open', array_merge(['id' => $id], $request->query()));
     }
 
-    public function delete($id){
-
+    public function delete(Request $request, $id)
+    {
         Inbox::where('id', $id)->delete();
 
-        return redirect(route('dashboard.inbox'));
+        return redirect()->route('dashboard.inbox', $request->query());
     }
 
-    public function markAllRead(){
+    public function markAllRead(Request $request){
 
-        Inbox::where('receiver_id', auth()->id())
-        ->update(['is_read' => true]);
+        $inbox = InboxFilter::filterQuery($request);
 
-        return redirect(route('dashboard.inbox'));
+        $inbox->update(['is_read' => true]);
+
+        return redirect()->route('dashboard.inbox', $request->query());
     }
 }

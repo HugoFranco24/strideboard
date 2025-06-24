@@ -23,6 +23,7 @@ h3{
 }
 
 .item{
+    position: relative;
     background-color: var(--box-color);
     color: var(--text-color);
     padding: 20px 20px;
@@ -57,6 +58,95 @@ h3{
     width: 20px;
     height: 20px;
 }
+
+.filtersbox{
+    position: absolute;
+    background-color: var(--box-inner-color);
+    z-index: 20;
+    width: calc(100% - 30px);
+    height: calc(100% - 30px);
+    border-radius: 4px;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    padding: 10px;
+}
+.filtersbox form{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.filtersbox .top div:nth-child(1){
+    padding: 0px 0px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--box-input-border);
+}
+.filtersbox h2{
+    margin: 0px 0px 0px 5px;
+    font-size: 30px;
+}
+.filtersbox .close{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin-right: 5px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    background-color: var(--clearF-bg);
+}
+.filtersbox .close:hover{
+    background-color: var(--clearF-bg-hover);
+}
+.filtersbox .close img{
+    width: 26px;
+    height: 26px;
+}
+
+.filtersbox .top div:nth-child(2) select{
+    min-width: 100%;
+    max-width: 100%;
+}
+.filtersbox .bot div:nth-child(1){
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    border-top: 2px solid var(--box-input-border);
+}
+.filtersbox .bot div:nth-child(1) button{
+    margin-top: 5px !important;
+    width: 100%;
+    height: 36px;
+    font-weight: 500;
+}
+
+:root{
+    --clearF-bg: hsl(0, 0%, 80%);
+    --clearF-bg-hover: hsl(0, 0%, 76%);
+}
+.dark_theme{
+    --clearF-bg: hsl(218, 12%, 10%);
+    --clearF-bg-hover: hsl(218, 12%, 12%);
+}
+.filtersbox .clearF{
+    font-size: 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    background-color: var(--clearF-bg);
+    color: var(--text-color);
+}
+.filtersbox .clearF:hover{
+    background-color: var(--clearF-bg-hover);
+}
+
 
 .notiBox{
     width: 100%;
@@ -132,7 +222,6 @@ h3{
     transition: 200ms;
 }
 
-
 .notiDetails{
     background-color: var(--box-inner-color);
     border-radius: 4px;
@@ -153,8 +242,9 @@ h3{
     margin: 0 !important;
 }
 
-.title{
+.notiDetails .title{
     display: flex;
+    flex-wrap: wrap;
     width: 100%;
     align-items: center;
     padding: 10px;
@@ -162,16 +252,16 @@ h3{
     border-radius: 4px 4px 0px 0px;
     gap: 10px;
 }
-.title img{
+.notiDetails .title img{
     width: 125px;
     height: 125px;
     border-radius: 4px;
 }
-.title h3{
+.notiDetails .title h3{
     font-size: 20px;
     margin: 0;
 }
-.content{
+.notiDetails .content{
     padding: 20px 14px;
     border: 2px solid var(--box-input-border);
     border-top: none;
@@ -199,11 +289,13 @@ h3{
 @media screen and (max-width: 800px) {
     .container{
         display: block;
+        height: auto;
     }
     .item:nth-child(1) {
         margin-bottom: 20px;
+        display: block;
     }
     .notiBox{
-        max-height: 40dvh;
+        height: 34dvh;
     }
 }

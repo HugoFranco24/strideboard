@@ -12,19 +12,64 @@
     <link rel="stylesheet" href="{{ asset('css/dashboard/inbox.css') }}">
 @endsection
 
-
 @section('body')
     <div class="container">
         <div class="item">
+            <div class="filters">
+                <button onclick="toggleFilter()"><img class="icon" src="{{ asset('Images/Icons/Actions/Filter.png')  }}">Filters</button>
+            </div>
+            <div id="filtersbox" class="filtersbox" style="display: none;">
+                <form action="{{ route('dashboard.inbox') }}">
+                    <div class="top">
+                        <div>
+                            <h2>Filters</h2>
+                            <button class="close" onclick="toggleFilter()" type="button"><img class="icon" src="{{ asset('Images/Icons/Actions/Close.png') }}" alt=""></button>
+                        </div>
+                    
+                        <div>
+                            <label for="status" style="font-size: 20px">Status</label><br>
+                            <input style="margin-top: 5px;" type="checkbox" name="unread" id="unread" {{ request('unread') == true ? 'checked' : ''}}>
+                            <label for="unread" style="font-size: 15px; margin-bottom: 10px;">Unread</label>
+                            <br>
+                            <label for="subject" style="font-size: 20px">Subject</label><br>
+                            <select name="subject" id="subject">
+                                <option value="no_filter">No Filter</option>
+                                <option value="created_task" {{ request('subject') == 'created_task' ? 'selected' : ''}}>Created Task</option>
+                                <option value="updated_task" {{ request('subject') == 'updated_task' ? 'selected' : ''}}>Updated Task</option>
+                                <option value="deleted_task" {{ request('subject') == 'deleted_task' ? 'selected' : ''}}>Deleted Task</option>
+                                <option value="invited" {{ request('subject') == 'invited' ? 'selected' : ''}}>Invited to Project</option>
+                                <option value="removed" {{ request('subject') == 'removed' ? 'selected' : ''}}>Removed from Project</option>
+                                <option value="changed_role" {{ request('subject') == 'changed_role' ? 'selected' : ''}}>Role Change</option>
+                                <option value="updated_project" {{ request('subject') == 'updated_project' ? 'selected' : ''}}>Updated Project</option>
+                                <option value="deleted_project" {{ request('subject') == 'deleted_project' ? 'selected' : ''}}>Deleted Project</option>
+                                <option value="accepted" {{ request('subject') == 'accepted' ? 'selected' : ''}}>Invite Accepted</option>
+                                <option value="rejected" {{ request('subject') == 'rejected' ? 'selected' : ''}}>Invite Rejected</option>
+                                <option value="left" {{ request('subject') == 'left' ? 'selected' : ''}}>User Left Project</option>
+                            </select>
+                            <br>
+                            <label for="date" style="font-size: 20px">Date Recieved</label><br>
+                            <select name="date" id="date">
+                                <option value="no_filter">No Filter</option>
+                                <option value="today" {{ request('date') == 'today' ? 'selected' : ''}}>Today</option>
+                                <option value="week" {{ request('date') == 'week' ? 'selected' : ''}}>This Week</option>
+                                <option value="month" {{ request('date') == 'month' ? 'selected' : ''}}>This Month</option>
+                            </select>                    
+                        </div>
+                    </div>
+                    <div class="bot">
+                        <div>
+                            <a href="/dashboard/inbox"><button type="button" class="clearF">Clear All Filters</button></a>
+                            <button type="submit" class="btn_default">Filter</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
             @if ($inbox->count() == 0)
                 <p>No inbox items to read.</p>
             @else
-                <div class="filters">
-                    <button onclick="openFilter()"><img class="icon" src="{{ asset('Images/Icons/Actions/Filter.png')  }}">Filters</button>
-                </div>
                 <div class="notiBox">
                     @foreach ($inbox as $i)
-                        <form action="{{ route('inbox.mark-read', $i->id) }}" method="post">
+                        <form action="{{ route('inbox.mark-read', ['id' => $i->id] + request()->query()) }}" method="post">
                             @csrf
                             <div class="noti" onclick="this.closest('form').submit()">
                                 @switch($i->type)
@@ -71,8 +116,17 @@
                     @endforeach
                 </div>
                 <div class="markRead">
-                    <form action="{{ route('inbox.mark-all-read') }}" method="POST">
+                    <form action="{{ route('inbox.mark-all-read', request()->query()) }}" method="POST">
                         @csrf
+                        @if (request()->has('unread'))
+                            <input type="hidden" name="unread" value="true">
+                        @endif
+                        @if (request()->has('subject'))
+                            <input type="hidden" name="subject" value="{{ request('subject') }}">
+                        @endif
+                        @if (request()->has('date'))
+                            <input type="hidden" name="date" value="{{ request('date') }}">
+                        @endif
                         <button title="Mark All As Read"><img class="icon" src="{{ asset('Images/Icons/Actions/MarkAllRead.png') }}" alt="">Mark All as Read</button></a>
                     </form>
                 </div>
@@ -95,17 +149,17 @@
                 <div class="actions">
                     <div style="display: flex; gap: 6px;">
                         @if ($opened_noti->is_read == false)
-                            <form action="{{ route('inbox.mark-read', $opened_noti->id) }}" method="post">
+                            <form action="{{ route('inbox.mark-read', ['id' => $opened_noti->id] + request()->query()) }}" method="post">
                                 @csrf
                                 <button title="Mark as Read"><img class="icon" src="{{ asset('Images/Icons/Actions/MarkRead.png') }}" alt=""></button>
                             </form>
                         @else
-                            <form action="{{ route('inbox.mark-unread', $opened_noti->id) }}" method="post">
+                            <form action="{{ route('inbox.mark-unread', ['id' => $opened_noti->id] + request()->query()) }}" method="post">
                                 @csrf
                                 <button title="Mark as Unread"><img class="icon" src="{{ asset('Images/Icons/Actions/MarkUnread.png') }}" alt=""></button>
                             </form>
                         @endif
-                        <form action="{{ route('inbox.delete', $opened_noti->id) }}" method="post">
+                        <form action="{{ route('inbox.delete', ['id' => $opened_noti->id] + request()->query()) }}" method="post">
                             @csrf
                             @method('delete')
                             <button title="Delete Message"><img class="icon" src="{{ asset('Images/Icons/Actions/MessageDelete.png') }}" alt=""></button>
@@ -227,4 +281,18 @@
             @endif
         </div>
     </div>
+@endsection
+
+@section('custom_vue')
+    <script>
+        function toggleFilter(){
+            var filterBox = document.getElementById('filtersbox');
+
+            if(filterBox.style.display == 'none'){
+                filterBox.style.display = 'block';
+            }else{
+                filterBox.style.display = 'none';
+            }
+        }
+    </script>
 @endsection

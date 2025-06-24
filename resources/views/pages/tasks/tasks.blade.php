@@ -48,7 +48,7 @@
         </form>
 
         @if ($my_tasks->isEmpty())
-            <p>No owned tasks. Try changing the filters, if it's still not showing any tasks, you might have none.</p>
+            <p>No tasks found. Try changing the filters, if it's still not showing any tasks, you might have none.</p>
         @else
             <div class="dtable">
                 <div class="dtable-wrapper">
