@@ -2,10 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
+use Illuminate\Http\Request;
+
 class DashboardController extends Controller {
 
-    public function dashboard(){
-        return view("pages.dashboard");
+    public function dashboard(Request $request){
+        
+        $query = auth()->user()->projects;
+
+        if($request->filled('project')){
+            $project_id = $request->project;
+
+            $project = $query->find($project_id)->load(['tasks', 'users']);
+        }else{
+            $project = $query->first()->load(['tasks', 'users']);
+        }
+        
+        return view("pages.dashboard",[
+            'projects' => auth()->user()->projects,
+            'vProject' => $project,
+        ]);
     }
 
     public function settings(){

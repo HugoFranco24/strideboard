@@ -46,8 +46,7 @@
                 main.style.transition = "500ms";
                 sepC.style.visibility = "hidden";
                 newState = 'not_collapsed';
-            }
-            
+            }     
         }
 
         function toggleProfile() {

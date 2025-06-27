@@ -45,6 +45,8 @@
                                 <option value="accepted" {{ request('subject') == 'accepted' ? 'selected' : ''}}>Invite Accepted</option>
                                 <option value="rejected" {{ request('subject') == 'rejected' ? 'selected' : ''}}>Invite Rejected</option>
                                 <option value="left" {{ request('subject') == 'left' ? 'selected' : ''}}>User Left Project</option>
+                                <option value="late_task" {{ request('subject') == 'late_task' ? 'selected' : ''}}>Late Task</option>
+                                <option value="late_project" {{ request('subject') == 'late_project' ? 'selected' : ''}}>Late Project</option>
                             </select>
                             <br>
                             <label for="date" style="font-size: 20px">Date Recieved</label><br>
@@ -65,7 +67,10 @@
                 </form>
             </div>
             @if ($inbox->count() == 0)
-                <p>No inbox items to read.</p>
+                <div class="notiBox">
+                    <p>No inbox items to read.</p>
+                </div>
+                <br><br>
             @else
                 <div class="notiBox">
                     @foreach ($inbox as $i)
@@ -106,6 +111,12 @@
                                     @case('deleted_project')
                                         <h3>A user deleted a project you were in.</h3>
                                         @break
+                                    @case('late_task')
+                                        <h3>A Task as Passed the Due Date!</h3>
+                                        @break
+                                    @case('late_project')
+                                        <h3>A Project as Passed the Due Date!</h3>
+                                        @break
                                 @endswitch
                                 <p>{{ \Carbon\Carbon::parse($i->created_at)->translatedFormat('l, F jS Y \a\t H:i') }}</p>
                                 @if ($i->is_read == false)
@@ -138,7 +149,10 @@
             @else
                 @php
                     $opened_noti_user = [2];
-                    if($opened_noti->user == null){
+                    if($opened_noti->actor_id == 0){
+                        $opened_noti_user[0] = "Images/Logos/StrideBoard.png";
+                        $opened_noti_user[1] = "The System";
+                    }elseif($opened_noti->user == null){
                         $opened_noti_user[0] = "Images/Pfp/pfp_default.png";
                         $opened_noti_user[1] = "(Deleted User)";
                     }else{
@@ -166,14 +180,24 @@
                         </form>
                     </div>
                     <div>
-                        <a href="/dashboard/inbox"><button title="Close Message"><img class="icon" src="{{ asset('Images/Icons/Actions/Close.png') }}" alt=""></button></a>
+                        @csrf
+                        @if (request()->has('unread'))
+                            <input type="hidden" name="unread" value="true">
+                        @endif
+                        @if (request()->has('subject'))
+                            <input type="hidden" name="subject" value="{{ request('subject') }}">
+                        @endif
+                        @if (request()->has('date'))
+                            <input type="hidden" name="date" value="{{ request('date') }}">
+                        @endif
+                        <a href="{{ route('dashboard.inbox', request()->query()) }}"><button title="Close Message"><img class="icon" src="{{ asset('Images/Icons/Actions/Close.png') }}" alt=""></button></a>
                     </div>
                 </div>
 
                 <div class="notiDetails">
                     <div class="title">
                         <div style="align-items: center">
-                            <img src="{{asset( $opened_noti_user[0]) }}" alt="">
+                            <img src="{{ asset( $opened_noti_user[0]) }}" alt="">
                         </div>
                         <div>
                             <h3>{{ $opened_noti_user[1] }}</h3>
@@ -211,6 +235,12 @@
                                 @case('deleted_project')
                                     <p>As deleted a project you were in.</p>
                                     @break
+                                @case('late_task')
+                                    <p>As detected a late task in a project you're in.</p>
+                                    @break
+                                @case('late_project')
+                                    <p>As detected a late project you're in.</p>
+                                    @break   
                             @endswitch
                         </div>
                     </div>
@@ -231,40 +261,40 @@
                                 </div>
                             @break
                             @case('removed')
-                                <h3>You have been removed form the project "{{ $opened_noti->project_name }}" by {{ $opened_noti->user->name }}.</h3>
+                                <h3>You have been removed form the project "{{ $opened_noti->project_name }}" by {{ $opened_noti_user[1] }}.</h3>
                             @break
                             @case('changed_role')
-                                <h3>Your role was changed in the "{{ $opened_noti->project_name }}" project by {{ $opened_noti->user->name }}.</h3>
+                                <h3>Your role was changed in the "{{ $opened_noti->project_name }}" project by {{ $opened_noti_user[1] }}.</h3>
                                 <div class="options">
                                     <a href="{{ route('projects.overview', $opened_noti->reference_id) }}"><button class="btn_default">Check It Out</button></a>
                                 </div>
                             @break
                             @case('left')
-                                <h3>The user "{{ $opened_noti->user->name }}" as left the project "{{ $opened_noti->project_name }}".</h3>
+                                <h3>The user "{{ $opened_noti_user[1] }}" as left the project "{{ $opened_noti->project_name }}".</h3>
                             @break
                             @case('accepted')
-                                <h3>The user "{{ $opened_noti->user->name }}" as accepted your invite to join the project "{{ $opened_noti->project_name }}".</h3>
+                                <h3>The user "{{ $opened_noti_user[1] }}" as accepted your invite to join the project "{{ $opened_noti->project_name }}".</h3>
                                 <div class="options">
                                     <a href="{{ route('projects.overview', $opened_noti->reference_id) }}"><button class="btn_default">Check It Out</button></a>
                                 </div>
                             @break
                             @case('rejected')
-                                <h3>The user "{{ $opened_noti->user->name }}" as rejected your invite to join the project "{{ $opened_noti->project_name }}".</h3>
+                                <h3>The user "{{ $opened_noti_user[1] }}" as rejected your invite to join the project "{{ $opened_noti->project_name }}".</h3>
                             @break
                             @case('created_task')
-                                <h3>The user "{{ $opened_noti->user->name }}" as created the task "{{ $opened_noti->task_name }}" in the project "{{ $opened_noti->project_name }}".</h3>
+                                <h3>The user "{{ $opened_noti_user[1] }}" as created the task "{{ $opened_noti->task_name }}" in the project "{{ $opened_noti->project_name }}".</h3>
                                 <div class="options">
                                     <a href="{{ route('task.overview', $opened_noti->reference_id) }}"><button class="btn_default">Check It Out</button></a>
                                 </div>
                             @break
                             @case('updated_task')
-                                <h3>The user "{{ $opened_noti->user->name }}" as updated the task "{{ $opened_noti->task_name }}" in the project "{{ $opened_noti->project_name }}".</h3>
+                                <h3>The user "{{ $opened_noti_user[1] }}" as updated the task "{{ $opened_noti->task_name }}" in the project "{{ $opened_noti->project_name }}".</h3>
                                 <div class="options">
                                     <a href="{{ route('task.overview', $opened_noti->reference_id) }}"><button class="btn_default">Check It Out</button></a>
                                 </div>
                             @break
                             @case('deleted_task')
-                                <h3>The user "{{ $opened_noti->user->name }}" as deleted the task "{{ $opened_noti->task_name }}" in the project "{{ $opened_noti->project_name }}".</h3>
+                                <h3>The user "{{ $opened_noti_user[1] }}" as deleted the task "{{ $opened_noti->task_name }}" in the project "{{ $opened_noti->project_name }}".</h3>
                             @break
                             @case('updated_project')
                                 <h3>The project "{{ $opened_noti->project_name }}" by the user {{ $opened_noti_user[1] }}.</h3>
@@ -274,6 +304,18 @@
                             @break
                             @case('deleted_project')
                                 <h3>The project "{{ $opened_noti->project_name }}" by the user {{ $opened_noti_user[1] }}.</h3>
+                            @break
+                            @case('late_task')
+                                <h3>The due date of the task "{{ $opened_noti->task_name }}" on the project "{{ $opened_noti->project_name }}" as been passed.</h3>
+                                <div class="options">
+                                    <a href="{{ route('task.overview', $opened_noti->reference_id) }}"><button class="btn_default">Check It Out</button></a>
+                                </div>
+                            @break
+                            @case('late_project')
+                                <h3>The due date of the project "{{ $opened_noti->project_name }}" as been passed.</h3>
+                                <div class="options">
+                                    <a href="{{ route('projects.overview', $opened_noti->reference_id) }}"><button class="btn_default">Check It Out</button></a>
+                                </div>
                             @break
                         @endswitch
                     </div>

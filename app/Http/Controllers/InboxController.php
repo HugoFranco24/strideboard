@@ -38,21 +38,21 @@ class InboxController extends Controller
 
     public function markRead(Request $request, $id)
     {
-        Inbox::where('id', $id)->update(['is_read' => true]);
+        Inbox::where('id', $id)->first()->update(['is_read' => true]);
 
         return redirect()->route('inbox.open', array_merge(['id' => $id], $request->query()));
     }
 
     public function markUnread(Request $request, $id)
     {
-        Inbox::where('id', $id)->update(['is_read' => false]);
+        Inbox::where('id', $id)->first()->update(['is_read' => false]);
 
         return redirect()->route('inbox.open', array_merge(['id' => $id], $request->query()));
     }
 
     public function delete(Request $request, $id)
     {
-        Inbox::where('id', $id)->delete();
+        Inbox::where('id', $id)->first()->delete();
 
         return redirect()->route('dashboard.inbox', $request->query());
     }

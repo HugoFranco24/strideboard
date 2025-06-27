@@ -21,8 +21,7 @@ return new class extends Migration
             $table->date('end');
             $table->integer('state')->default(0);
             $table->integer('priority')->default(0);
-            $table->dateTime('started_at')->nullable();
-            $table->dateTime('ended_at')->nullable();
+            $table->boolean('late_notified')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

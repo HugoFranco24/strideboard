@@ -111,6 +111,13 @@ img {
     }
 }
 
+.lineSpace{
+    width: 100%;
+    height: 1px;
+    margin: 30px 0px;
+    background-color: var(--box-input-border);
+}
+
 input[type='text'], 
 input[type='email'], 
 input[type='password'],
@@ -193,21 +200,6 @@ textarea:focus
 img.icon{
     filter: var(--filter-icon);
 }
-
-/* @media (max-width: 1500px){
-    input[type='text'], 
-    input[type='email'], 
-    input[type='password'],
-    input[type='date'],
-    input[type='file'],
-    textarea,
-    select
-    {
-        width: 75%;
-        max-width: 75%;
-        min-width: 75%;
-    }
-} */
 
 @media (max-width: 1200px){
     input[type='text'], 

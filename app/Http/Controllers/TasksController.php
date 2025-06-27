@@ -130,7 +130,7 @@ class TasksController extends Controller
             abort(403);
         }  
         if($user->pivot->user_type == 0 && $task->user_id != auth()->id()){
-            abort(403 );
+            abort(403);
         }
         //permitions check end
 

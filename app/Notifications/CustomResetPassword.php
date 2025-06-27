@@ -4,8 +4,9 @@ namespace App\Notifications;
 
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class CustomResetPassword extends Notification
+class CustomResetPassword extends Notification implements ShouldQueue
 {
     public $token;
 

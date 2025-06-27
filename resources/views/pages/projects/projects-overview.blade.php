@@ -296,8 +296,8 @@
                         <div class="title">
                             <h2>URGENT</h2>
                         </div>
-                        @if ($urgent->count() > 0)
-                            @foreach ($urgent as $u)
+                        @if($urgent->count() > 0)
+                            @foreach($urgent as $u)
                                 <div class="task-card">
                                     <div style="margin: 10px 10px 5px">
                                         <h3>{{$u->name}}</h3>

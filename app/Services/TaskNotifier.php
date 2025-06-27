@@ -28,7 +28,7 @@ class TaskNotifier
         foreach ($this->notifiableUsers as $receiver) {
             Inbox::create([
                 'receiver_id'   => $receiver->user_id,
-                'actor_id'      => auth()->id(),
+                'actor_id'      => $type == 'late_task' ? 0 : auth()->id(),
                 'type'          => $type,
                 'task_name'     => $task->name,
                 'project_name'  => $project->name,
