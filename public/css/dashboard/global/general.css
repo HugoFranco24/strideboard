@@ -11,7 +11,7 @@ img {
 /*#region Themes */
 :root{
     --background-color: #ffffff;
-    --text-color: hsl(0, 0%, 10%);
+    --text-color: #1a1a1a;
 
     /* box */
     --box-color: hsl(0, 0%, 92%);

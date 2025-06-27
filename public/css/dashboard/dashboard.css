@@ -4,6 +4,7 @@
     grid-template-rows: repeat(1, 1fr);
     gap: 20px;
     justify-content: center;
+    color: var(--text-color);
 }
 .Info1 .item{
     width: calc(25% - 15px);
@@ -64,6 +65,12 @@
     min-width: auto;
     max-width: none;
     margin: 0;
+}
+.project .details div a{
+    color: #59abe6;
+}
+.project .details div a:hover{
+    text-decoration: none;
 }
 @media screen and (max-width: 600px) {
     .project .details div{

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\Task;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller {
@@ -22,6 +23,7 @@ class DashboardController extends Controller {
         return view("pages.dashboard",[
             'projects' => auth()->user()->projects,
             'vProject' => $project,
+            'tasks' => Task::where('user_id', auth()->id()),
         ]);
     }
 
