@@ -22,7 +22,11 @@
                         <div style="margin-left: 25px;">
                             <h4>{{ $p->name }}</h4>
                             <p>Business: {{ $p->business == '' ? 'Not Defined' : $p->business }}</p>
-                            <p>Due Date: {{ \Carbon\Carbon::parse($p->due_date)->format('F d, Y') }}</p>
+                            @if ($p->due_date < \Carbon\Carbon::today())
+                                <p style="display: flex; align-items: center;">Due Date: {{ \Carbon\Carbon::parse($p->due_date)->format('F d, Y') }} <img src="{{ asset('Images/Icons/Actions/Warning.png') }}" width="20" height="20" title="You Project Is Overdue!"/></p>
+                            @else
+                                <p>Due Date: {{ \Carbon\Carbon::parse($p->due_date)->format('F d, Y') }}</p>
+                            @endif
                         </div>
                     </div>
                 </a>
