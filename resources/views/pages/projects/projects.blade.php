@@ -98,7 +98,10 @@
                 </div>
             @endforeach
         </div>
-        <a href="{{ route('projects.create') }}"><button class="btn_default">Create Project</button></a>
+
+        @if ($page == 'projects')
+            <a href="{{ route('projects.create') }}"><button class="btn_default">Create Project</button></a>
+        @endif
     </div>
 @endsection
 

@@ -30,6 +30,10 @@ class InboxController extends Controller
 
         $opened_noti = Inbox::where('id', $id)->with('user')->first();
 
+        if($opened_noti->reciever_id != auth()->id()){
+            abort(403);
+        }
+
         return view('pages.inbox', [
             'inbox' => $inbox,
             'opened_noti' => $opened_noti,
@@ -38,21 +42,39 @@ class InboxController extends Controller
 
     public function markRead(Request $request, $id)
     {
-        Inbox::where('id', $id)->first()->update(['is_read' => true]);
+        $message = Inbox::where('id', $id)->first();
+
+        if($message->reciever_id != auth()->id()){
+            abort(403);
+        }
+
+        $message->update(['is_read' => true]);
 
         return redirect()->route('inbox.open', array_merge(['id' => $id], $request->query()));
     }
 
     public function markUnread(Request $request, $id)
     {
-        Inbox::where('id', $id)->first()->update(['is_read' => false]);
+        $message = Inbox::where('id', $id)->first();
+
+        if($message->reciever_id != auth()->id()){
+            abort(403);
+        }
+
+        $message->update(['is_read' => false]);
 
         return redirect()->route('inbox.open', array_merge(['id' => $id], $request->query()));
     }
 
     public function delete(Request $request, $id)
     {
-        Inbox::where('id', $id)->first()->delete();
+        $message = Inbox::where('id', $id)->first();
+
+        if($message->reciever_id != auth()->id()){
+            abort(403);
+        }
+
+        $message->delete();
 
         return redirect()->route('dashboard.inbox', $request->query());
     }

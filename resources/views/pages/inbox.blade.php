@@ -117,6 +117,12 @@
                                     @case('late_project')
                                         <h3>A Project as Passed the Due Date!</h3>
                                         @break
+                                    @case('marked_complete')
+                                        <h3>A Project as been Marked as Complete.</h3>
+                                        @break
+                                    @case('restored')
+                                        <h3>A Project as been Restored.</h3>
+                                        @break
                                 @endswitch
                                 <p>{{ \Carbon\Carbon::parse($i->created_at)->translatedFormat('l, F jS Y \a\t H:i') }}</p>
                                 @if ($i->is_read == false)
@@ -240,7 +246,13 @@
                                     @break
                                 @case('late_project')
                                     <p>As detected a late project you're in.</p>
-                                    @break   
+                                    @break
+                                @case('marked_complete')
+                                    <p>As marked a project your in as complete.</p>
+                                    @break
+                                @case('restored')
+                                    <p>As restored a project your in..</p>
+                                    @break
                             @endswitch
                         </div>
                     </div>
@@ -297,13 +309,13 @@
                                 <h3>The user "{{ $opened_noti_user[1] }}" as deleted the task "{{ $opened_noti->task_name }}" in the project "{{ $opened_noti->project_name }}".</h3>
                             @break
                             @case('updated_project')
-                                <h3>The project "{{ $opened_noti->project_name }}" by the user {{ $opened_noti_user[1] }}.</h3>
+                                <h3>The project "{{ $opened_noti->project_name }}" as been updated by {{ $opened_noti_user[1] }}.</h3>
                                 <div class="options">
                                     <a href="{{ route('projects.overview', $opened_noti->reference_id) }}"><button class="btn_default">Check It Out</button></a>
                                 </div>
                             @break
                             @case('deleted_project')
-                                <h3>The project "{{ $opened_noti->project_name }}" by the user {{ $opened_noti_user[1] }}.</h3>
+                                <h3>The project "{{ $opened_noti->project_name }}" as been deleted by {{ $opened_noti_user[1] }}.</h3>
                             @break
                             @case('late_task')
                                 <h3>The due date of the task "{{ $opened_noti->task_name }}" on the project "{{ $opened_noti->project_name }}" as been passed.</h3>
@@ -316,6 +328,12 @@
                                 <div class="options">
                                     <a href="{{ route('projects.overview', $opened_noti->reference_id) }}"><button class="btn_default">Check It Out</button></a>
                                 </div>
+                            @break
+                            @case('marked_complete')
+                                <h3>The project "{{ $opened_noti->project_name }}" as been marked as complete by {{ $opened_noti_user[1] }}, archiving it on the archived projects.</h3>
+                            @break
+                            @case('restored')
+                                <h3>The project "{{ $opened_noti->project_name }}" as been restored by {{ $opened_noti_user[1] }}.</h3>
                             @break
                         @endswitch
                     </div>

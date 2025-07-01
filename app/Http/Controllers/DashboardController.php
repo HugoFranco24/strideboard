@@ -10,7 +10,7 @@ class DashboardController extends Controller {
 
     public function dashboard(Request $request){
         
-        $query = auth()->user()->projects;
+        $query = auth()->user()->projects->where('archived', false);
 
         if($request->filled('project')){
             $project_id = $request->project;
@@ -19,11 +19,13 @@ class DashboardController extends Controller {
         }else{
             $project = $query->first()->load(['tasks', 'users']);
         }
-        
+
         return view("pages.dashboard",[
-            'projects' => auth()->user()->projects,
+            'projects' => auth()->user()->projects->where('archived', false),
             'vProject' => $project,
-            'tasks' => Task::where('user_id', auth()->id()),
+            'tasks' => Task::whereHas('project', function ($query) {
+                    $query->where('archived', false);
+                })->where('user_id', auth()->id())->get(),
         ]);
     }
 

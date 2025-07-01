@@ -415,6 +415,15 @@ class ProjectsController extends Controller {
             'archived' => !$project->archived,
         ]);
 
+        foreach($project->users->where('id', '!=', auth()->id())->where('active', true) as $pu){
+            Inbox::create([
+                'receiver_id' => $pu->id,
+                'actor_id' => auth()->id(),
+                'type' => $project->archived ? 'marked_complete' : 'restored',
+                'project_name' => $project->name,
+            ]);
+        }
+
         return redirect($project->archived ? route('projects.archived') : route('dashboard.projects'));
     }
 
