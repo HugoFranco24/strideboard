@@ -15,7 +15,8 @@ class ProjectsController extends Controller {
     public function projects()
     {
         return view('pages.projects.projects', [
-            'projects' => auth()->user()->projects->filter(fn($p) => $p->pivot->active == true),
+            'projects' => auth()->user()->projects->where('archived', false)->filter(fn($p) => $p->pivot->active == true),
+            'page' => 'projects',
         ]);
     }
 
@@ -66,6 +67,9 @@ class ProjectsController extends Controller {
         if($user->pivot->user_type == 0){
             abort(403);
         }
+        if($project->archived){
+            abort(404);
+        }
         //permitions check end
 
         return view('pages.projects.projects-create', [
@@ -89,6 +93,9 @@ class ProjectsController extends Controller {
         if($user->pivot->user_type == 0){
             abort(403);
         }
+        if($project->archived){
+            abort(404);
+        }
         //permitions check end
         
         $request->validate([
@@ -97,6 +104,12 @@ class ProjectsController extends Controller {
             'due_date' => 'required|date',
             'color' => 'hex_color|required',
         ]);
+
+        if($project->due_date != $request->due_date){
+            $project->update([
+                'late_notified' => false,
+            ]);
+        }
 
         $project->update([
             'name' => $request->name,
@@ -178,6 +191,9 @@ class ProjectsController extends Controller {
         //permitions check
         if (!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
             abort(code: 403); //ver se o utilizador está no projeto
+        }
+        if($project->archived){
+            abort(404);
         }     
         //permitions check end
 
@@ -226,6 +242,9 @@ class ProjectsController extends Controller {
         if($user->pivot->user_type == 0){
             abort(403);
         }
+        if($project->archived){
+            abort(404);
+        }
         //permitions check end
 
         $project_user = ProjectUser::create([
@@ -268,6 +287,9 @@ class ProjectsController extends Controller {
         if($user->pivot->user_type == $project_user->user_type && $user->id != $project_user->user_id){
             abort(403);
         }
+        if($project->archived){
+            abort(404);
+        }
 
         $request->validate([
             'user_type' => 'required',
@@ -296,6 +318,7 @@ class ProjectsController extends Controller {
         $project_user = ProjectUser::where('project_id', $project_id)
                                     ->where('user_id', $user_id)
                                     ->firstOrFail();
+
         $user = $project->users
             ->filter(fn($user) => $user->id === auth()->id() && $user->pivot->active == true)
             ->firstOrFail();
@@ -305,11 +328,16 @@ class ProjectsController extends Controller {
             abort(code: 403); //ver se o utilizador está no projeto
         }
         if($user->pivot->user_type == 0 && $user->id != $project_user->user_id){
-           
             abort(403);
         }
         if($user->pivot->user_type == 1 && $project_user->user_type == 1 && $user->id != $project_user->user_id){
             abort(403);
+        }
+        if($project_user->user_type == 2){
+            abort(403);
+        }
+        if($project->archived && $user->id != $project_user->id){
+            abort(404);
         }
         //permitions check end
 
@@ -365,6 +393,31 @@ class ProjectsController extends Controller {
         }
     }
 
+    //region Archiving
+    public function seeArchived(){
+        $projects = auth()->user()->projects->where('archived', true)->filter(fn($p) => $p->pivot->active == true);
+
+        return view('pages.projects.projects', [
+            'projects' => $projects,
+            'page' => 'completed',
+        ]);
+    }
+    public function archiveToggle($id){
+        $project = Project::findOrFail($id)->load(['users', 'tasks']);
+
+        $user = $project->users->firstWhere('id', auth()->id());
+
+        if($user->pivot->user_type != 2){
+            abort(403);
+        }
+
+        $project->update([
+            'archived' => !$project->archived,
+        ]);
+
+        return redirect($project->archived ? route('projects.archived') : route('dashboard.projects'));
+    }
+
     //region Invites
 
     public function acceptInvite($id){
@@ -375,6 +428,10 @@ class ProjectsController extends Controller {
                             ->whereIn('user_type', [2, 1])->get();
 
         $project = Project::where('id', $pu->project_id)->firstOrFail();
+
+        if($pu->user_id != auth()->id()){
+            abort(403);
+        }
 
         foreach($noti_users as $nu){
             Inbox::create([
@@ -399,6 +456,10 @@ class ProjectsController extends Controller {
                             ->whereIn('user_type', [2, 1]);
 
         $project = Project::where('id', $pu->project_id)->firstOrFail();
+
+        if($pu->user_id != auth()->id()){
+            abort(403);
+        }
 
         foreach($noti_users as $nu){
             Inbox::create([

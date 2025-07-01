@@ -207,6 +207,7 @@ img.icon{
     input[type='password'],
     input[type='date'],
     input[type='file'],
+    input[type='color'],
     textarea,
     select
     {

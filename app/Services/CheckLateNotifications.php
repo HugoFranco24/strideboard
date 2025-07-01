@@ -22,17 +22,20 @@ class CheckLateNotifications
         
         foreach ($lateTasks as $task) {
             $project = Project::findOrFail($task->project_id);
-            $notifier = new TaskNotifier($project, $task);
-            $notifier->notify('late_task', $task, $project);
+            if($project->archived == false){
+                $notifier = new TaskNotifier($project, $task);
+                $notifier->notify('late_task', $task, $project);
 
-            $task->late_notified = true;
-            $task->save();
+                $task->late_notified = true;
+                $task->save();
+            }
         }
         //end Check Late Tasks
 
         //region Check Late Projects
         $lateProjects = Project::where('due_date', '<', $today)
             ->where('late_notified', false)
+            ->where('archived', false)
             ->get();
 
         foreach ($lateProjects as $project) {

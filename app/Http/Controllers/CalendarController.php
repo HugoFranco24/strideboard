@@ -19,6 +19,7 @@ class CalendarController extends Controller {
     {
         $tasks = Task::leftJoin('projects', 'tasks.project_id', '=', 'projects.id')
                         ->where('user_id', auth()->id())
+                        ->where('projects.archived', false)
                         ->select(
                             'tasks.id as id',
                             'tasks.name as title',
@@ -37,20 +38,22 @@ class CalendarController extends Controller {
 
         $project = Project::where('id', $task->project_id)->firstOrFail()->load('users', 'tasks');
 
-        if($request->input('start_date')){
-            $task->update([
-                'start' => Carbon::parse($request->input('start_date'))->setTimezone('UTC'),
-                'end' => Carbon::parse($request->input('end_date'))->setTimezone('UTC'),
-            ]);
-        }else{
-            $task->update([
-                'end' => Carbon::parse($request->input('end_date'))->setTimezone('UTC'),
-            ]);
-        }
+        if(!$project->archived){
+            if($request->input('start_date')){
+                $task->update([
+                    'start' => Carbon::parse($request->input('start_date'))->setTimezone('UTC'),
+                    'end' => Carbon::parse($request->input('end_date'))->setTimezone('UTC'),
+                ]);
+            }else{
+                $task->update([
+                    'end' => Carbon::parse($request->input('end_date'))->setTimezone('UTC'),
+                ]);
+            }
 
-        //notify users with service
-        $notifier = new TaskNotifier($project, $task);
-        $notifier->notify( 'updated_task', $task, $project);
+            //notify users with service
+            $notifier = new TaskNotifier($project, $task);
+            $notifier->notify( 'updated_task', $task, $project);
+        }
 
         return response()->json(['message' => 'Task Updated.']);
     }

@@ -1,6 +1,5 @@
 <?php
 
-
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\DashboardController;
@@ -9,13 +8,6 @@ use App\Http\Controllers\TasksController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\InboxController;
 use App\Http\Controllers\ProfileController;
-
-use App\Http\Controllers\Auth\EmailVerificationPromptController;
-use App\Http\Controllers\Auth\VerifyEmailController;
-use App\Http\Controllers\Auth\EmailVerificationNotificationController;
-
-use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Auth\NewPasswordController;
 
 Route::get('/', function () {
     return view('home');
@@ -44,6 +36,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard/projects/edit/{project_id}', [ProjectsController::class, 'projectsEdit'])->name('projects.edit');
     Route::put('/dashboard/projects/edit/{project_id}/update', [ProjectsController::class, 'projectsUpdate'])->name('projects.update');
     Route::delete('/dashboard/projects/delete/{project_id}', [ProjectsController::class, 'projectsDelete'])->name('projects.delete');
+
+    Route::get('/dashboard/projects/archived', [ProjectsController::class, 'seeArchived'])->name('projects.archived');
+    Route::put('/dashboard/projects/archive-toggle/{id}', [ProjectsController::class, 'archiveToggle'])->name('project.archive-toggle');
     
     Route::get('/dashboard/projects/overview/{project_id}', [ProjectsController::class, 'projectOverview'])->name('projects.overview');
     

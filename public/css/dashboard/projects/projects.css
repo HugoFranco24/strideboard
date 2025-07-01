@@ -1,3 +1,35 @@
+.project-count-archive{
+    display: flex; 
+    flex-wrap: wrap; 
+    align-items: center; 
+    gap: 20px; 
+    margin: 0px 0px 28px;
+}
+.project-count-archive a{
+    text-decoration: none;
+}
+.project-count-archive button{
+    display: flex; 
+    align-items: center;
+    justify-content: left;
+    gap: 10px;
+    padding: 4px 20px 4px 6px;
+    font-size: 15px;
+    background-color: var(--box-inner-color);
+    color: var(--text-color);
+    border-radius: 4px;
+    border: 1px solid var(--box-input-border);
+    cursor: pointer;
+}
+.project-count-archive button img{
+    width: 26px;
+    height: 26px;
+}
+.project-count-archive button:hover{
+    background-color: var(--box-inner-color-hover);
+}
+
+
 .projects-wrapper{
     max-height: calc(100dvh - 342px);
     overflow-y: auto;
@@ -32,4 +64,66 @@
     width: 30px;
     border-radius: 4px 0 0 4px;
     background-color: var(--project-bar-color);
+}
+
+.project_box{
+    position: relative;
+}
+
+.project_menu_container {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+.project_toggle {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+.project_toggle:hover img {
+    scale: 1.1;
+}
+.project_toggle img{
+    width: 20px;
+    height: 20px;
+    transition: 100ms;
+}
+.project_options {
+    position: absolute;
+    bottom: 0px;
+    right: 36px;
+    background: var(--box-inner-color);
+    border-radius: 4px;
+    border-width: 1px 1px 1px 1px;
+    border-style: solid;
+    border-color: hsl(0, 0%, 50%);
+    z-index: 100;
+}
+.project_options a {
+    color: var(--text-color);
+    text-decoration: none;
+}
+.project_options button {
+    display: flex; 
+    align-items: center;
+    justify-content: right;
+    gap: 10px;
+    padding: 7px 12px 7px 24px;
+    text-decoration: none;
+    color: var(--text-color);
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: right;
+    cursor: pointer;
+    border-radius: 4px 4px 0px 0px;
+    border-bottom: 1px solid hsl(0, 0%, 50%);
+    font-size: 15px;
+}
+.project_options button img{
+    width: 24px;
+    height: 24px;
+}
+.project_options button:hover {
+    background-color: var(--box-inner-color-hover);
 }

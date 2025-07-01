@@ -17,6 +17,7 @@ class TasksController extends Controller
     {
         $query = Task::leftJoin('projects', 'tasks.project_id', '=', 'projects.id')
                         ->where('user_id', auth()->id())
+                        ->where('projects.archived', false)
                         ->select(
                             'tasks.*',
                             'projects.name as project_name'
@@ -45,7 +46,6 @@ class TasksController extends Controller
         ]);
     }
 
-
     public function TaskCreate($project_id)
     {
         $project = Project::findorFail($project_id)
@@ -61,6 +61,9 @@ class TasksController extends Controller
         }  
         if($user->pivot->user_type < 1){
             abort(403);
+        }
+        if($project->archived){
+            abort(404);
         }
         //permitions check end
 
@@ -84,6 +87,9 @@ class TasksController extends Controller
         }  
         if($user->pivot->user_type < 1){
             abort(403);
+        }
+        if($project->archived){
+            abort(404);
         }
         //permitions check end
         
@@ -132,6 +138,9 @@ class TasksController extends Controller
         if($user->pivot->user_type == 0 && $task->user_id != auth()->id()){
             abort(403);
         }
+        if($project->archived){
+            abort(404);
+        }
         //permitions check end
 
         $request->validate([
@@ -142,6 +151,12 @@ class TasksController extends Controller
             'priority' => 'between:0,3',
             'user_id' => 'required|integer',
         ]);
+
+        if($task->end != $request->end){
+            $task->update([
+                'notified' => false,
+            ]);
+        }
 
         $task->update([
             'name' => $request->name,
@@ -196,6 +211,9 @@ class TasksController extends Controller
         if($user->pivot->user_type == 0 && $task->user_id != auth()->id()){
             abort(403);
         }
+        if($project->archived){
+            abort(404);
+        }
 
         //notify users with service
         $notifier = new TaskNotifier($project, $task);
@@ -219,6 +237,9 @@ class TasksController extends Controller
         //permitions check
         if (!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
             abort(code: 403);
+        }
+        if($project->archived){
+            abort(404);
         }
         //permitions check end
 

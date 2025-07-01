@@ -4,7 +4,7 @@
 @endsection
 
 @section('go-back')
-    <a class="goBack" href="{{ route('dashboard.projects') }}">
+    <a class="goBack" onclick="history.back()">
         <img class="icon" width="35" height="35" src="{{ asset('Images/Icons/Menu/Go-back.png') }}" alt="undo" title="Go Back"/>
     </a>
 @endsection
@@ -25,10 +25,17 @@
 @endsection
 
 @section('body')
-    <div id="app" v-cloak>
+<div id="app" v-cloak>
     <div class="container" style="grid-template-rows: repeat({{ isset($task) ? 11 : 4 }}, 1fr)">
         <div class="item">
-            <h2>Project Details</h2>
+            <div class="project_header">
+                <h2 style="margin: 0">Project Details</h2>
+                <form method="POST" action="{{ route('project.archive-toggle', $project->id) }}">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" title="{{ $project->archived ? 'Restore Project' : 'Mark Project as Complete' }}"><img class="icon" src="{{ $project->archived ? asset('Images/Icons/Actions/RestoreProject.png') : asset('Images/Icons/Actions/CompleteProject.png') }}" alt=""></button>
+                </form>
+            </div>
             <p class="SQL"><span>Project Name:</span> {{ $project->name }}</p>
             <p class="SQL"><span>Business:</span> {{ $project->business == '' ? 'Not Defined' : $project->business }}</p>
             <p class="SQL"><span>Due Date:</span> {{ \Carbon\Carbon::parse($project->due_date)->format('F d, Y') }}</p>

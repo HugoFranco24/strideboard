@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('business')->nullable();
             $table->date('due_date');
             $table->string('color', 7)->nullable();
+            $table->boolean('archived')->default(false);
             $table->boolean('late_notified')->default(false);
             $table->timestamps();
         });

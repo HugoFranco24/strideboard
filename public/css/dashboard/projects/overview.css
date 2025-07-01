@@ -5,7 +5,6 @@
 .container {
     display: grid;
     grid-template-columns: repeat(9, 1fr);
-    /* grid-template-rows: repeat(11, 1fr); */
     gap: 14px;
     margin-bottom: 30px;
 }
@@ -74,7 +73,7 @@
     margin-top: 20px;
 }
 .btns a, .btns form{
-    min-width: 180px;
+    width: calc(50% - 10px);
 }
 .btns button{
     margin-top: 0px !important;
@@ -90,6 +89,28 @@
     .btns a, .btns form{
         width: 100%;
     }
+}
+
+.project_header{
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin: 5px 0px 30px;
+}
+.project_header button{
+    border-radius: 4px;
+    background-color: var(--box-inner-color);
+    border: none;
+    transition: 200ms;
+    padding: 3px 4px 1px;
+    cursor: pointer;
+}
+.project_header button:hover{
+    background-color: var(--box-inner-color-hover);
+}
+.project_header img{
+    width: 32px;
+    height: 32px;
 }
 
 /*Collabs in Project
@@ -167,8 +188,15 @@
 /*
 /**/
 .kanban-board {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: 6px;
+}
+@media screen and (max-width: 1000px) {
+    .kanban-board {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+    }
 }
 .column {
     flex: 1;
