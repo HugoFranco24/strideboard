@@ -251,6 +251,8 @@ class TasksController extends Controller
                                     ->where('user_id', auth()->id())
                                     ->firstOrFail();
 
+        $url_previous = null;
+
         if(url()->previous() != '/dashboard/tasks/overview/' . $task->id){
             $url_previous = url()->previous();
         }

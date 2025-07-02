@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('layouts.main', function ($view) {
             $user = auth()->user();
-            $inbox = Inbox::where('receiver_id', auth()->id())->where('is_read', false)->get()->count();
+            $inbox = Inbox::where('receiver_id', auth()->id())->where('is_read', false)->count();
             $view->with(compact('user', 'inbox'));
         });
     }
