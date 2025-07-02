@@ -1,6 +1,7 @@
 html{
     scroll-snap-type: y mandatory;
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 body{
     background-color: white;
@@ -17,6 +18,7 @@ nav{
     position: fixed;
     height: 75px;
     width: 100%;
+    box-sizing: border-box;
     background-color: white;
     top: 0;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
@@ -192,14 +194,13 @@ h3{
 /**/
 .background{
     background-color: hsl(0, 0%, 90%);
-    border-radius: 0% 100% 100% 0% / 100% 0% 100% 0% ;
+    border-radius: 0% 100% 100% 0% / 0% 0% 60% 0% ;
     position: absolute;
     top: 0;
-    left: 0;
-    width: 110dvw;
+    left: 0dvw; 
+    width: 100dvw;
     height: 80%;
     z-index: 8;
-    /* max-width: 2200px; */
     max-height: 900px;
 }
 /**/
