@@ -40,18 +40,23 @@
     <div class="project box" style="margin-top: 30px" id="project">
         <div class="details">
             <div>
-                <h2>Project:</h2>
-                <form action="">
-                    <select name="project" id="project" onchange="this.form.submit();">
-                        @foreach ($projects as $p)
-                            <option value="{{ $p->id }}" {{ $p->id == $vProject->id ? 'selected' : ''}}>{{ $p->name }}</option>
-                        @endforeach
-                    </select>
-                </form>
-                <a href="dashboard/projects/overview/{{ $vProject->id }}">Go to Project</a>
+                @if ($vProject)
+                    <h2>Project:</h2>
+                    <form action="">
+                        <select name="project" id="project" onchange="this.form.submit();">
+                            @foreach ($projects as $p)
+                                <option value="{{ $p->id }}" {{ $p->id == $vProject->id ? 'selected' : ''}}>{{ $p->name }}</option>
+                            @endforeach
+                        </select>
+                    </form>
+                
+                    <a href="dashboard/projects/overview/{{ $vProject->id }}">Go to Project</a>
+                @else
+                    <h2>No active projects.</h2>
+                @endif
             </div>       
         </div>
-        @if ($vProject->tasks->count() != 0)
+        @if ($vProject && $vProject->tasks->count() != 0)
             <div class="dtable">
                 <div class="dtable-wrapper" style="max-height: 400px">
                     <table id="allTasks">

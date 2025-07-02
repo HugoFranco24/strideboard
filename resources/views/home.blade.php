@@ -45,7 +45,7 @@
                 <a href="#faq" onclick="toggleMenu()">FAQ</a>
              </div>
 
-             @guest
+            @guest
                 <div class="authN">
                     <a href="/login">Login</a>
                     <a href="/register">Get Started</a>

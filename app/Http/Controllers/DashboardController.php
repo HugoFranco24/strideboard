@@ -10,14 +10,16 @@ class DashboardController extends Controller {
 
     public function dashboard(Request $request){
         
-        $query = auth()->user()->projects->where('archived', false);
+        $projects = auth()->user()
+        ->projects()
+        ->where('archived', false)
+        ->with(['tasks', 'users'])
+        ->get();
 
         if($request->filled('project')){
-            $project_id = $request->project;
-
-            $project = $query->find($project_id)->load(['tasks', 'users']);
-        }else{
-            $project = $query->first()->load(['tasks', 'users']);
+            $project = $projects->firstWhere('id', $request->project);
+        } else {
+            $project = $projects->first();
         }
 
         return view("pages.dashboard",[

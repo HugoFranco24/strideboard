@@ -63,7 +63,11 @@
                                     </form>
                                 @endif
                                 @if ($p->pivot->user_type != 2)
-                                    <a href="{{ route('projects.delete-member', $p->id) }}"><button style="{{ $p->pivot->user_type == 0 ? 'border-bottom: none; border-radius: 4px;' : '' }}">Leave Project <img class="icon" src="{{ asset('Images/Icons/Actions/LeaveProject.png') }}" alt=""></button></a>
+                                    <form method="POST" action="{{ route('projects.delete-member', [$p->id, auth()->id()]) }}" onsubmit="return confirm('Are you sure you want to leave this project?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" style="{{ $p->pivot->user_type == 0 ? 'border-bottom: none; border-radius: 4px;' : '' }}">Leave <img class="icon" src="{{ asset('Images/Icons/Actions/LeaveProject.png') }}" alt=""></button>
+                                    </form>
                                 @endif
                                 @if ($p->pivot->user_type != 0)
                                     <a href="{{ route('projects.edit', $p->id) }}"><button style="border-bottom: none; border-radius: 4px;">Edit <img class="icon" src="{{ asset('Images/Icons/Actions/Edit.png') }}" alt=""></button></a>
@@ -90,7 +94,11 @@
                                     </form>
                                 @endif
                                 @if ($p->pivot->user_type != 2)
-                                    <a href="{{ route('projects.delete-member', [$p->id, auth()->id()]) }}"><button style="border-bottom: none; border-radius: 4px;">Leave <img class="icon" src="{{ asset('Images/Icons/Actions/LeaveProject.png') }}" alt=""></button></a>
+                                    <form method="POST" action="{{ route('projects.delete-member', [$p->id, auth()->id()]) }}" onsubmit="return confirm('Are you sure you want to leave this project?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" style="{{ $p->pivot->user_type == 0 ? 'border-bottom: none; border-radius: 4px;' : '' }}">Leave <img class="icon" src="{{ asset('Images/Icons/Actions/LeaveProject.png') }}" alt=""></button>
+                                    </form>
                                 @endif
                             </div>
                         </div>

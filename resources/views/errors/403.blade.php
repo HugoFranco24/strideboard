@@ -13,5 +13,5 @@
 @section('desc')
     <h2>Forbidden, Trying to be sneaky? - 403</h2>
     <p>You do not have the permissions for this restricted area!</p>
-    <p>I'm going to call the police if you don't leave now!</p>
+    <p>Go back before someone catches you!</p>
 @endsection

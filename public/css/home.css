@@ -482,6 +482,21 @@ h3{
 .heroSec1.loaded, .heroSec2.loaded {
     opacity: 1;
 }
+
+@media screen and (max-width: 400px) {
+    .heroSec2{
+        padding: 30px 0px;
+    }
+}
+@media screen and (max-width: 320px) {
+    .heroSec2 .item{
+        margin: 0px;
+    }
+    .heroSec2 .item .box{
+        width: 100%;
+        box-sizing: content-box;
+    }
+}
 /**/
 /*
 /*Hero Section End*/
