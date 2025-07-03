@@ -10,10 +10,12 @@ use App\Models\ProjectUser;
 use App\Models\Inbox;
 use OwenIt\Auditing\Models\Audit;
 use App\Services\TaskNotifier;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class TasksController extends Controller 
 {   
-    public function tasks(Request $request)
+    public function tasks(Request $request): View
     {
         $query = Task::leftJoin('projects', 'tasks.project_id', '=', 'projects.id')
                         ->where('user_id', auth()->id())
@@ -46,10 +48,10 @@ class TasksController extends Controller
         ]);
     }
 
-    public function TaskCreate($project_id)
+    public function TaskCreate(int $project_id): View
     {
         $project = Project::findorFail($project_id)
-        ->load('users','tasks');
+        ->load(['users','tasks']);
 
         //permitions check
         $user = $project->users
@@ -72,10 +74,10 @@ class TasksController extends Controller
         ]);
     }
 
-    public function TaskAdd(Request $request, $project_id)
+    public function TaskAdd(Request $request, int $project_id): RedirectResponse
     {
         $project = Project::findorFail($project_id)
-        ->load('users','tasks');
+        ->load(['users','tasks']);
 
         //permitions check
         $user = $project->users
@@ -120,12 +122,12 @@ class TasksController extends Controller
         return redirect(route('projects.overview', $project_id));
     }
 
-    public function TaskUpdate(Request $request, $project_id, $task_id){
+    public function TaskUpdate(Request $request, int $project_id, int $task_id): View{
 
         $task = Task::findOrFail($task_id);
 
         $project = Project::findorFail($project_id)
-        ->load('users','tasks');
+        ->load(['users','tasks']);
 
         //permitions check
         $user = $project->users
@@ -193,12 +195,12 @@ class TasksController extends Controller
         ]);
     }
 
-    public function TaskDelete($task_id){
+    public function TaskDelete(int $task_id): RedirectResponse{
 
         $task = Task::findOrFail($task_id);
 
         $project = Project::findorFail($task->project_id)
-        ->load('users','tasks');
+        ->load(['users','tasks']);
     
         //permitions check
         $user = $project->users
@@ -224,7 +226,7 @@ class TasksController extends Controller
         return redirect(route('projects.overview', $task->project_id . '#allTasks'));
     }
 
-    public function TaskOverview($task_id, Request $request){
+    public function TaskOverview(int $task_id): RedirectResponse|View{
 
         $task = Task::where('id', $task_id)->first();
 
@@ -250,6 +252,8 @@ class TasksController extends Controller
         $project_user = ProjectUser::where('project_id', $project->id)
                                     ->where('user_id', auth()->id())
                                     ->firstOrFail();
+
+        $url_previous = null;
 
         if(url()->previous() != '/dashboard/tasks/overview/' . $task->id){
             $url_previous = url()->previous();

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Inbox extends Model
 {
@@ -11,7 +12,7 @@ class Inbox extends Model
     protected $table = "inbox";
     
     //Relationships
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'actor_id');
     }

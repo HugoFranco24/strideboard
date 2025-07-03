@@ -8,14 +8,16 @@ use App\Models\Task;
 use App\Services\TaskNotifier;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
 
 class CalendarController extends Controller {
 
-    public function calendar(){
+    public function calendar(): View{
         return view('pages.calendar');
     }
 
-    public function getTasks()
+    public function getTasks(): JsonResponse
     {
         $tasks = Task::leftJoin('projects', 'tasks.project_id', '=', 'projects.id')
                         ->where('user_id', auth()->id())
@@ -32,7 +34,7 @@ class CalendarController extends Controller {
         return response()->json($tasks);
     }
 
-    public function updateDate($task_id, Request $request){
+    public function updateDate(int $task_id, Request $request): JsonResponse{
 
         $task = Task::findOrFail($task_id);
 

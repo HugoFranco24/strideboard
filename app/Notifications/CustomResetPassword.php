@@ -8,19 +8,24 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 class CustomResetPassword extends Notification implements ShouldQueue
 {
-    public $token;
+    public string $token;
 
-    public function __construct($token)
+    public function __construct(string $token)
     {
         $this->token = $token;
     }
 
-    public function via($notifiable)
+    /**
+     * Get the notification's delivery channels.
+     *
+     * @return array<int, string>
+     */
+    public function via(object $notifiable): array
     {
         return ['mail'];
     }
 
-    public function toMail($notifiable)
+    public function toMail(object $notifiable): MailMessage
     {
         $resetUrl = url(route('password.reset', [
             'token' => $this->token,

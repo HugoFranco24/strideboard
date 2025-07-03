@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class DashboardController extends Controller {
 
-    public function dashboard(Request $request){
+    public function dashboard(Request $request): View{
         
         $projects = auth()->user()
         ->projects()
@@ -31,7 +32,7 @@ class DashboardController extends Controller {
         ]);
     }
 
-    public function settings(){
+    public function settings(): View{
         return view("pages.settings");
     }
 }
