@@ -199,43 +199,78 @@
 
                 <div class="hiw" id="hiw">
                     <h1>How it Works</h1>
-                    <div class="container">
-                        <div class="item">
-                            <div class="itemIn">
-                                <h2>Dashboard</h2>
-                                <p>Overview of ongoing projects, key metrics (e.g., tasks completed, deadlines), and quick access to start a new project.</p>
-                                <img src="{{ asset('Images/Home/HeroSec.gif') }}" alt="" width="auto" height="60px">
+
+                    <div class="steps-container">
+                        <div class="step">
+                            <div class="step-header">
+                                <div class="icon"><img src="https://img.icons8.com/fluency-systems-regular/100/113F59/add-user-male--v1.png"></div>
+                                <h3>1. Create an Account</h3>
                             </div>
+                            <p>Sign up easily with your email and start managing your projects right away.</p>
                         </div>
-                        <div class="item">
-                            <div class="itemIn">
-                                <div>
-                                    <h2>Team Updates</h2>
-                                    <p>Recent activity from team members, announcements, or a live feed of task progress.</p>
-                                </div>
-                                <div>
-                                    <h2>Resource Allocation</h2>
-                                    <p>Status of resources (e.g., team members, tools) and their availability.</p>
-                                </div>
+
+                        <div class="step">
+                            <div class="step-header">
+                                <div class="icon"><img src="https://img.icons8.com/fluency-systems-regular/100/113F59/todo-list.png"></div>
+                                <h3>2. Create and Assign Tasks</h3>
                             </div>
+                            <p>Organize your projects by creating tasks and assigning team members easily.</p>
                         </div>
-                        <div class="item">
-                            <div class="itemIn">
-                                <h2>Task Calendar</h2>
-                                <p>Upcoming deadlines, milestones, or a mini calendar for scheduling.</p>
+
+                        <div class="step">
+                            <div class="step-header">
+                                <div class="icon"><img src="https://img.icons8.com/fluency-systems-regular/100/113F59/graph--v1.png"></div>
+                                <h3>3. Track Progress</h3>
                             </div>
+                            <p>Monitor project status in real-time and ensure timely delivery.</p>
                         </div>
-                        <div class="item">
-                            <div class="itemIn">
-                                <h2>Quick Actions</h2>
-                                <p>Buttons for common tasks (e.g., add task, assign user, view reports).</p>
+
+                        <div class="step">
+                            <div class="step-header">
+                                <div class="icon"><img src="https://img.icons8.com/fluency-systems-regular/100/113F59/groups--v1.png"></div>
+                                <h3>4. Collaborate with Team</h3>
                             </div>
+                            <p>Chat, share files, and work together in one centralized platform.</p>
                         </div>
-                        <div class="item">
-                            <div class="itemIn">
-                                <h2>Performance Analytics</h2>
-                                <p>Key performance indicators (e.g., project completion rates, time tracking) or a summary of recent achievements.</p>
+
+                        <div class="step">
+                            <div class="step-header">
+                                <div class="icon"><img src="https://img.icons8.com/fluency-systems-regular/100/113F59/overtime.png"></div>
+                                <h3>5. Set Deadlines & Reminders</h3>
                             </div>
+                            <p>Keep your team on track with due dates and automated reminders.</p>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-header">
+                                <div class="icon"><img src="https://img.icons8.com/fluency-systems-regular/100/113F59/chart-bar.png"></div>
+                                <h3>6. Generate Reports & Insights</h3>
+                            </div>
+                            <p>Analyze project performance with easy-to-read reports and dashboards.</p>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-header">
+                                <div class="icon"><img src="https://img.icons8.com/fluency-systems-regular/100/113F59/high-priority.png"></div>
+                                <h3>7. Prioritize Tasks</h3>
+                            </div>
+                            <p>Organize your workload by setting task priorities to focus on what matters most.</p>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-header">
+                                <div class="icon"><img src="https://img.icons8.com/fluency-systems-regular/100/113F59/layers.png"></div>
+                                <h3>8. Manage Multiple Projects</h3>
+                            </div>
+                            <p>Switch between projects effortlessly to keep all your work organized.</p>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-header">
+                                <div class="icon"><img src="https://img.icons8.com/fluency-systems-regular/100/113F59/do-not-disturb-2.png"></div>
+                                <h3>9. Customize Your Experience</h3>
+                            </div>
+                            <p>Switch between light/dark mode and use a collapsible menu for easy navigation.</p>
                         </div>
                     </div>
                 </div>

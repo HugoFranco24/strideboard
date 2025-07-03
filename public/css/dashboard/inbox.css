@@ -294,6 +294,7 @@ h3{
     .item:nth-child(1) {
         margin-bottom: 20px;
         display: block;
+        height: 440px;
     }
     .notiBox{
         height: 34dvh;
