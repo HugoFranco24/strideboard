@@ -23,7 +23,7 @@ class TaskNotifier
             ->get();
     }
 
-    public function notify($type, Task $task, Project $project)
+    public function notify($type, Task $task, Project $project): void
     {   
         foreach ($this->notifiableUsers as $receiver) {
             Inbox::create([

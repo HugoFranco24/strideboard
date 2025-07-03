@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
-use Illuminate\Support\Facades\DB;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\ProjectUser;
@@ -97,7 +96,9 @@ class ProfileController extends Controller
     public function uploadImg(Request $request): RedirectResponse
     {
         $request->validate([
-            'pfp' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'pfp' => 'required|image|mimes:jpeg,png,jpg,gif|dimensions:ratio=1/1|max:2048',
+        ],[
+            'pfp.dimensions' => 'The pfp field must be a square.',
         ]);
 
         $user = $request->user();
@@ -114,7 +115,7 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit')->with('status', 'Profile Picture Updated!');
     }
 
-    public function overview($user_id){ //check profile of someone
+    public function overview(int $user_id): RedirectResponse|View{ //check profile of someone
 
         $OVuser = User::where('id', $user_id)->firstorFail();
 
@@ -122,14 +123,14 @@ class ProfileController extends Controller
             return redirect(route('profile.edit'));
         }
 
-        $commonProjects = $OVuser->projects()
+        $communProjects = $OVuser->projects()
                                 ->whereHas('users', function ($q) {
                                     $q->where('user_id', auth()->id());
                                 })->get();
 
         return view('pages.profile.overview', [
             'OVuser' => $OVuser,
-            'commonProjects' => $commonProjects,
+            'communProjects' => $communProjects,
         ]);
     }
 }

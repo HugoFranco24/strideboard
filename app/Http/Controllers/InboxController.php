@@ -11,10 +11,12 @@ use App\Models\ProjectsTask;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Services\InboxFilter;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class InboxController extends Controller
 {
-    public function inbox(Request $request){
+    public function inbox(Request $request): View{
 
         $inbox = InboxFilter::filterQuery($request)->get();
 
@@ -24,7 +26,7 @@ class InboxController extends Controller
         ]);
     }
 
-    public function open($id, Request $request){
+    public function open(Request $request, int $id): View{
 
         $inbox = InboxFilter::filterQuery($request)->get();
 
@@ -40,7 +42,7 @@ class InboxController extends Controller
         ]);
     }
 
-    public function markRead(Request $request, $id)
+    public function markRead(Request $request, int $id): RedirectResponse
     {
         $opened_noti = Inbox::where('id', $id)->first();
 
@@ -53,7 +55,7 @@ class InboxController extends Controller
         return redirect()->route('inbox.open', array_merge(['id' => $id], $request->query()));
     }
 
-    public function markUnread(Request $request, $id)
+    public function markUnread(Request $request, int $id): RedirectResponse
     {
         $opened_noti = Inbox::where('id', $id)->first();
 
@@ -66,7 +68,7 @@ class InboxController extends Controller
         return redirect()->route('inbox.open', array_merge(['id' => $id], $request->query()));
     }
 
-    public function delete(Request $request, $id)
+    public function delete(Request $request, int $id): RedirectResponse
     {
         $opened_noti = Inbox::where('id', $id)->first();
 
@@ -79,7 +81,7 @@ class InboxController extends Controller
         return redirect()->route('dashboard.inbox', $request->query());
     }
 
-    public function markAllRead(Request $request){
+    public function markAllRead(Request $request): RedirectResponse{
 
         $inbox = InboxFilter::filterQuery($request);
 

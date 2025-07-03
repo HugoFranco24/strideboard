@@ -40,8 +40,8 @@
             @else
                 <p>Not Verified</p>
             @endif
-            <p>Projects in Common: {{$commonProjects->count() == 0 ? 'None' : ''}}</p>
-            @foreach ($commonProjects as $p)
+            <p>Projects in Commun: {{$communProjects->count() == 0 ? 'None' : ''}}</p>
+            @foreach ($communProjects as $p)
                 <a href="/dashboard/projects/overview/{{ $p->id }}" title="Overview" class="overview">
                     <div class="project" style="--project-bar-color: {{ $p->color }}">
                         <div style="margin-left: 25px;">

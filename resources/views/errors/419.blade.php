@@ -12,6 +12,6 @@
 @endsection
 @section('desc')
     <h2>Page Expired - 419</h2>
-    <p>You were gone too long and this page gave up on loading.</p>
-    <p>Just go back and pretend this never happend</p>
+    <p>You were gone for too long and we panicked</p>
+    <p>Your session expired while we were having abandonment issues.</p>
 @endsection

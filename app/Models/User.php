@@ -9,7 +9,6 @@ use Illuminate\Notifications\Notifiable;
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
 use App\Notifications\CustomVerifyEmail;
 use App\Notifications\CustomResetPassword;
 

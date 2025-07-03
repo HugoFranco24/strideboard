@@ -9,10 +9,12 @@ use App\Models\Project;
 use App\Models\ProjectUser;
 use App\Models\Task;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class ProjectsController extends Controller {
 
-    public function projects()
+    public function projects(): View
     {
         return view('pages.projects.projects', [
             'projects' => auth()->user()->projects->where('archived', false)->filter(fn($p) => $p->pivot->active == true),
@@ -20,12 +22,12 @@ class ProjectsController extends Controller {
         ]);
     }
 
-    public function projectsCreate()
+    public function projectsCreate(): View
     {
         return view('pages.projects.projects-create');
     }
 
-    public function projectsCreateAdd(Request $request)
+    public function projectsCreateAdd(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -51,10 +53,10 @@ class ProjectsController extends Controller {
         return redirect(route('projects.overview', $project->id));
     }
 
-    public function projectsEdit($id)
+    public function projectsEdit(int $id): View
     {   
         $project = Project::findorFail($id)
-        ->load('users','tasks');
+        ->load(['users','tasks']);
 
         //permitions check
         $user = $project->users
@@ -77,10 +79,10 @@ class ProjectsController extends Controller {
         ]);
     }
 
-    public function projectsUpdate(Request $request, $id)
+    public function projectsUpdate(Request $request, int $id): RedirectResponse
     {   
         $project = Project::findorFail($id)
-        ->load('users','tasks');
+        ->load(['users','tasks']);
 
         //permitions check
         $user = $project->users
@@ -136,10 +138,10 @@ class ProjectsController extends Controller {
         return redirect(route('projects.overview', $id));
     }
 
-    public function projectsDelete($id)
+    public function projectsDelete(int $id): RedirectResponse
     {
         $project = Project::findOrFail($id)
-        ->load('users','tasks');
+        ->load(['users','tasks']);
         
         $projects_users = ProjectUser::where('project_id', $id)->get();
 
@@ -180,9 +182,9 @@ class ProjectsController extends Controller {
         return redirect(route('dashboard.projects'));
     }
 
-    public function projectOverview($id)
+    public function projectOverview(int $id): RedirectResponse|View
     {   
-        $project = Project::with('users', 'tasks')->findOrFail($id);
+        $project = Project::with('users', 'tasks')->find($id);
 
         if (!$project) {
             return redirect()->route('dashboard.projects');
@@ -217,8 +219,8 @@ class ProjectsController extends Controller {
         return view('pages.projects.projects-overview', [
             'project' => $project,
             'user_all' => $user_all,
-            'authUserType' => $project->users->filter(fn(User $u) => $u->id == auth()->id())->first()->pivot->user_type,
-            'owner' => $project->users->filter(fn(User $u) => $u->pivot->user_type == 2)->first(),
+            'authUserType' => $project->users->filter(fn($u) => $u->id == auth()->id())->first()->pivot->user_type,
+            'owner' => $project->users->filter(fn($u) => $u->pivot->user_type == 2)->first(),
             'my_tasks' => $my_tasks,
             'late' => $late,
             'urgent' => $urgent,
@@ -226,10 +228,10 @@ class ProjectsController extends Controller {
         ]);
     }
 
-    public function addMember($project_id, $user_id)
+    public function addMember(int $project_id, int $user_id): RedirectResponse
     {
         $project = Project::findorFail($project_id)
-        ->load('users','tasks');
+        ->load(['users','tasks']);
 
         //permitions check
         $user = $project->users
@@ -265,10 +267,10 @@ class ProjectsController extends Controller {
         return redirect(route('projects.overview', $project_id));
     }
 
-    public function updateMember(Request $request, $project_id, $user_id){
+    public function updateMember(Request $request, int $project_id, int $user_id): RedirectResponse{
 
         $project = Project::findorFail($project_id)
-        ->load('users','tasks');
+        ->load(['users','tasks']);
 
         $project_user = ProjectUser::where('project_id', $project_id)
                                     ->where('user_id', $user_id)
@@ -310,10 +312,10 @@ class ProjectsController extends Controller {
         return redirect(route('projects.overview', $project_id));    
     }
 
-    public function deleteMember($project_id, $user_id)
+    public function deleteMember(int $project_id, int $user_id): RedirectResponse
     {
         $project = Project::findorFail($project_id)
-        ->load('users','tasks');
+        ->load(['users','tasks']);
 
         $project_user = ProjectUser::where('project_id', $project_id)
                                     ->where('user_id', $user_id)
@@ -394,7 +396,7 @@ class ProjectsController extends Controller {
     }
 
     //region Archiving
-    public function seeArchived(){
+    public function seeArchived(): View{
         $projects = auth()->user()->projects->where('archived', true)->filter(fn($p) => $p->pivot->active == true);
 
         return view('pages.projects.projects', [
@@ -402,7 +404,7 @@ class ProjectsController extends Controller {
             'page' => 'completed',
         ]);
     }
-    public function archiveToggle($id){
+    public function archiveToggle(int $id): RedirectResponse{
         $project = Project::findOrFail($id)->load(['users', 'tasks']);
 
         $user = $project->users->firstWhere('id', auth()->id());
@@ -429,7 +431,7 @@ class ProjectsController extends Controller {
 
     //region Invites
 
-    public function acceptInvite($id){
+    public function acceptInvite(int $id): RedirectResponse{
 
         $pu = ProjectUser::where('id', $id)->firstOrFail();
         
@@ -457,12 +459,13 @@ class ProjectsController extends Controller {
         return redirect(route('projects.overview', $project->id));
     }
 
-    public function rejectInvite($id){
+    public function rejectInvite(int $id): RedirectResponse{
 
         $pu = ProjectUser::where('id', $id)->firstOrFail();
         
         $noti_users = ProjectUser::where('project_id', $pu->project_id)
-                            ->whereIn('user_type', [2, 1]);
+                            ->whereIn('user_type', [2, 1])
+                            ->get();
 
         $project = Project::where('id', $pu->project_id)->firstOrFail();
 

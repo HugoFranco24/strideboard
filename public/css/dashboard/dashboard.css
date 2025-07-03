@@ -24,7 +24,7 @@
     font-size: 36px;
     margin: 0;
 }
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1100px) {
     .Info1{
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(2, 1fr);
@@ -37,9 +37,6 @@
     }
 }
 
-.project{
-
-}
 .project .details{
     display: flex;
     justify-content: space-between;

@@ -5,10 +5,11 @@ namespace App\Services;
 use App\Models\Inbox;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 
 class InboxFilter
 {
-    public static function filterQuery(Request $request)
+    public static function filterQuery(Request $request): Builder
     {
         $query = Inbox::where('receiver_id', auth()->id())
                       ->orderByDesc('created_at')

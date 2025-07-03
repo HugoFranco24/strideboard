@@ -40,14 +40,14 @@ class CustomVerifyEmail extends Notification implements ShouldQueue
 
         return (new MailMessage)
             ->subject('Strideboard | Email Verification')
-            ->view('emails.custom-verify-email', [  // <--- your custom view
+            ->view('emails.custom-verify-email', [
                 'url' => $verificationUrl,
                 'user' => $notifiable
             ]);
 
     }
 
-    protected function verificationUrl($notifiable)
+    protected function verificationUrl(object $notifiable): string
     {
         return URL::temporarySignedRoute(
             'verification.verify',
