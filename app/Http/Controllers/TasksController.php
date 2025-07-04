@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Project;
 use App\Models\Task;
-use App\Models\ProjectUser;
-use App\Models\Inbox;
-use OwenIt\Auditing\Models\Audit;
-use App\Services\TaskNotifier;
+use App\Models\Project;
 use Illuminate\View\View;
+use App\Models\ProjectUser;
+use Illuminate\Http\Request;
+use App\Services\TaskNotifier;
+use OwenIt\Auditing\Models\Audit;
 use Illuminate\Http\RedirectResponse;
 
 class TasksController extends Controller 
@@ -18,19 +17,21 @@ class TasksController extends Controller
     public function tasks(Request $request): View
     {
         $query = Task::leftJoin('projects', 'tasks.project_id', '=', 'projects.id')
-                        ->where('user_id', auth()->id())
-                        ->where('projects.archived', false)
-                        ->select(
-                            'tasks.*',
-                            'projects.name as project_name'
-                        );
+            ->where('user_id', auth()->id())
+            ->where('projects.archived', false)
+            ->select(
+                'tasks.*',
+                'projects.name as project_name'
+            );
 
         if ($request->filled('filter') && $request->filter !== 'no_filter') {
             if ($request->filter === 'late') {
                 $query->where('tasks.end', '<', now())
-                    ->where('tasks.state', '!=', 3);
+                    ->where('tasks.state', '!=', 3);     
+
             } elseif ($request->filter === 'urgent') {
                 $query->where('tasks.priority', '=', 3);
+
             }elseif ($request->filter === 'done') {
                 $query->where('tasks.state', '=', 3);
             }
@@ -50,23 +51,14 @@ class TasksController extends Controller
 
     public function TaskCreate(int $project_id): View
     {
-        $project = Project::findorFail($project_id)
-        ->load(['users','tasks']);
+        $project = $this->permissionsCheck($project_id, true, [1, 2]);
 
         //permitions check
-        $user = $project->users
-            ->filter(fn($user) => $user->id === auth()->id() && $user->pivot->active == true)
+        $project->users()
+            ->where('users.id', auth()->id())
+            ->wherePivot('active', true)
+            ->wherePivot('user_type', '>=', 1)
             ->firstOrFail();
-
-        if (!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
-            abort(code: 403);
-        }  
-        if($user->pivot->user_type < 1){
-            abort(403);
-        }
-        if($project->archived){
-            abort(404);
-        }
         //permitions check end
 
         return view('pages.tasks.tasks-create', [
@@ -76,24 +68,7 @@ class TasksController extends Controller
 
     public function TaskAdd(Request $request, int $project_id): RedirectResponse
     {
-        $project = Project::findorFail($project_id)
-        ->load(['users','tasks']);
-
-        //permitions check
-        $user = $project->users
-            ->filter(fn($user) => $user->id === auth()->id() && $user->pivot->active == true)
-            ->firstOrFail();
-
-        if (!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
-            abort(code: 403);
-        }  
-        if($user->pivot->user_type < 1){
-            abort(403);
-        }
-        if($project->archived){
-            abort(404);
-        }
-        //permitions check end
+        $project = $this->permissionsCheck($project_id, true, [1, 2]);
         
         $request->validate([
             'name' => 'required|string|max:255',
@@ -126,24 +101,16 @@ class TasksController extends Controller
 
         $task = Task::findOrFail($task_id);
 
-        $project = Project::findorFail($project_id)
-        ->load(['users','tasks']);
+        $project = $this->permissionsCheck($project_id, true, [0, 1, 2]);
 
-        //permitions check
-        $user = $project->users
-            ->filter(fn($user) => $user->id === auth()->id() && $user->pivot->active == true)
+        $user = $project->users()
+            ->where('users.id', auth()->id())
+            ->wherePivot('active', true)
             ->firstOrFail();
 
-        if (!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
-            abort(403);
-        }  
-        if($user->pivot->user_type == 0 && $task->user_id != auth()->id()){
+        if ($user->pivot->user_type == 0 && $task->user_id != auth()->id()) {
             abort(403);
         }
-        if($project->archived){
-            abort(404);
-        }
-        //permitions check end
 
         $request->validate([
             'name' => 'required|string|max:255',
@@ -175,14 +142,13 @@ class TasksController extends Controller
         $notifier = new TaskNotifier($project, $task);
         $notifier->notify('updated_task', $task, $project);
 
-
         $audits = Audit::where('auditable_id', $task->id)
-                ->orderBy('created_at')
-                ->get();
+            ->orderBy('created_at')
+            ->get();
 
         $project_user = ProjectUser::where('project_id', $project->id)
-                                    ->where('user_id', auth()->id())
-                                    ->firstOrFail();
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
 
         return view('pages.tasks.overview', [
             'task' => $task,
@@ -199,22 +165,15 @@ class TasksController extends Controller
 
         $task = Task::findOrFail($task_id);
 
-        $project = Project::findorFail($task->project_id)
-        ->load(['users','tasks']);
-    
-        //permitions check
-        $user = $project->users
-            ->filter(fn($user) => $user->id === auth()->id() && $user->pivot->active == true)
+        $project = $this->permissionsCheck($task->project_id, true, [0, 1, 2]);
+
+        $user = $project->users()
+            ->where('users.id', auth()->id())
+            ->wherePivot('active', true)
             ->firstOrFail();
 
-        if (!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
-            abort(code: 403);
-        }  
         if($user->pivot->user_type == 0 && $task->user_id != auth()->id()){
             abort(403);
-        }
-        if($project->archived){
-            abort(404);
         }
 
         //notify users with service
@@ -228,22 +187,13 @@ class TasksController extends Controller
 
     public function TaskOverview(int $task_id): RedirectResponse|View{
 
-        $task = Task::where('id', $task_id)->first();
+        $task = Task::find($task_id);
 
         if(!$task){
             return redirect(route('dashboard.projects'));
         }
 
-        $project = Project::with('users', 'tasks')->find($task->project_id);
-
-        //permitions check
-        if (!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
-            abort(code: 403);
-        }
-        if($project->archived){
-            abort(404);
-        }
-        //permitions check end
+        $project = $this->permissionsCheck($task->project_id, true, [0, 1, 2]);
 
         $audits = Audit::where('auditable_id', $task->id)
                 ->orderBy('created_at')

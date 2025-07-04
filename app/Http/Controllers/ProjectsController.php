@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Inbox;
-use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Project;
-use App\Models\ProjectUser;
 use App\Models\Task;
-use Illuminate\Support\Facades\DB;
+use App\Models\Inbox;
+use App\Models\Project;
 use Illuminate\View\View;
+use App\Models\ProjectUser;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
 
-class ProjectsController extends Controller {
-
+class ProjectsController extends Controller 
+{
     public function projects(): View
     {
         return view('pages.projects.projects', [
@@ -31,7 +31,7 @@ class ProjectsController extends Controller {
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'business' => 'max:255',
+            'business' => 'nullable|max:255',
             'due_date' => 'required|date',
             'color' => 'hex_color|required',
         ]);
@@ -55,24 +55,7 @@ class ProjectsController extends Controller {
 
     public function projectsEdit(int $id): View
     {   
-        $project = Project::findorFail($id)
-        ->load(['users','tasks']);
-
-        //permitions check
-        $user = $project->users
-            ->filter(fn($user) => $user->id === auth()->id() && $user->pivot->active == true)
-            ->firstOrFail();
-
-        if (!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
-            abort(code: 403);
-        }  
-        if($user->pivot->user_type == 0){
-            abort(403);
-        }
-        if($project->archived){
-            abort(404);
-        }
-        //permitions check end
+        $project = $this->permissionsCheck($id);
 
         return view('pages.projects.projects-create', [
             'project' => $project,
@@ -80,25 +63,8 @@ class ProjectsController extends Controller {
     }
 
     public function projectsUpdate(Request $request, int $id): RedirectResponse
-    {   
-        $project = Project::findorFail($id)
-        ->load(['users','tasks']);
-
-        //permitions check
-        $user = $project->users
-            ->filter(fn($user) => $user->id === auth()->id() && $user->pivot->active == true)
-            ->firstOrFail();
-
-        if(!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
-            abort(code: 403);
-        }  
-        if($user->pivot->user_type == 0){
-            abort(403);
-        }
-        if($project->archived){
-            abort(404);
-        }
-        //permitions check end
+    {
+        $project = $this->permissionsCheck($id);
         
         $request->validate([
             'name' => 'required|string|max:255',
@@ -140,21 +106,9 @@ class ProjectsController extends Controller {
 
     public function projectsDelete(int $id): RedirectResponse
     {
-        $project = Project::findOrFail($id)
-        ->load(['users','tasks']);
+        $project = $this->permissionsCheck($id, true, [2]);
         
         $projects_users = ProjectUser::where('project_id', $id)->get();
-
-        $user = $projects_users->where('user_id', auth()->id())
-                ->where('active', true)
-                ->firstOrFail();
-        
-        if(!$project->users->firstWhere('id', auth()->id())?->pivot->active){
-            abort(code: 403);
-        }  
-        if($user->user_type != 2){
-            abort(403);
-        }
 
         $receivers = ProjectUser::where('project_id', $project->id)
         ->where('active', true)
@@ -170,13 +124,10 @@ class ProjectsController extends Controller {
             ]);
         }
 
-        foreach($project->tasks as $task){
-            $task->delete();
+        $project->tasks()->delete();
+        foreach($projects_users as $pu){
+            $pu->delete();
         }
-        foreach($projects_users as $p_user){
-            $p_user->delete();
-        }
-
         $project->delete();
 
         return redirect(route('dashboard.projects'));
@@ -184,20 +135,7 @@ class ProjectsController extends Controller {
 
     public function projectOverview(int $id): RedirectResponse|View
     {   
-        $project = Project::with('users', 'tasks')->find($id);
-
-        if (!$project) {
-            return redirect()->route('dashboard.projects');
-        }
-
-        //permitions check
-        if (!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
-            abort(code: 403); //ver se o utilizador está no projeto
-        }
-        if($project->archived){
-            abort(404);
-        }     
-        //permitions check end
+        $project = $this->permissionsCheck($id);
 
         //for kanban
         $my_tasks = $project->tasks
@@ -230,24 +168,7 @@ class ProjectsController extends Controller {
 
     public function addMember(int $project_id, int $user_id): RedirectResponse
     {
-        $project = Project::findorFail($project_id)
-        ->load(['users','tasks']);
-
-        //permitions check
-        $user = $project->users
-            ->filter(fn($user) => $user->id === auth()->id() && $user->pivot->active == true)
-            ->firstOrFail();
-
-        if (!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
-            abort(code: 403);
-        }  
-        if($user->pivot->user_type == 0){
-            abort(403);
-        }
-        if($project->archived){
-            abort(404);
-        }
-        //permitions check end
+        $project = $this->permissionsCheck($project_id);
 
         $project_user = ProjectUser::create([
             'project_id' => $project_id,
@@ -269,29 +190,22 @@ class ProjectsController extends Controller {
 
     public function updateMember(Request $request, int $project_id, int $user_id): RedirectResponse{
 
-        $project = Project::findorFail($project_id)
-        ->load(['users','tasks']);
+        $project = $this->permissionsCheck($project_id);
 
         $project_user = ProjectUser::where('project_id', $project_id)
                                     ->where('user_id', $user_id)
                                     ->firstOrFail();
 
-        $user = $project->users
-            ->filter(fn($user) => $user->id === auth()->id() && $user->pivot->active == true)
+        // Additional custom permission check, ensure current user can’t update same role type
+        $user = $project->users()
+            ->where('users.id', auth()->id())
+            ->wherePivot('active', true)
             ->firstOrFail();
 
-        if (!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
-            abort(code: 403); //ver se o utilizador está no projeto
-        }
-        if($user->pivot->user_type == 0 && $user->id != $project_user->user_id){
+        if ($user->pivot->user_type == 0 || $user->pivot->user_type == $project_user->user_type) {
             abort(403);
         }
-        if($user->pivot->user_type == $project_user->user_type && $user->id != $project_user->user_id){
-            abort(403);
-        }
-        if($project->archived){
-            abort(404);
-        }
+
 
         $request->validate([
             'user_type' => 'required',
@@ -314,36 +228,33 @@ class ProjectsController extends Controller {
 
     public function deleteMember(int $project_id, int $user_id): RedirectResponse
     {
-        $project = Project::findorFail($project_id)
-        ->load(['users','tasks']);
-
+        $project = Project::where('id', $project_id)
+            ->with(['users', 'tasks'])
+            ->firstOrFail();
+    
         $project_user = ProjectUser::where('project_id', $project_id)
-                                    ->where('user_id', $user_id)
-                                    ->firstOrFail();
-
-        $user = $project->users
-            ->filter(fn($user) => $user->id === auth()->id() && $user->pivot->active == true)
+            ->where('user_id', $user_id)
+            ->where('user_type', '!=', 2)
+            ->firstOrFail();
+        
+        
+        $user = $project->users()
+            ->where('users.id', auth()->id())
+            ->wherePivot('active', true)
             ->firstOrFail();
 
-        //permitions check
-        if (!$project->users->firstWhere('id', auth()->id())?->pivot->active) {
-            abort(code: 403); //ver se o utilizador está no projeto
-        }
-        if($user->pivot->user_type == 0 && $user->id != $project_user->user_id){
+        //these permitions can't be in the helper
+        if($user->user_type == 0 && $user->id != $project_user->user_id){
             abort(403);
         }
         if($user->pivot->user_type == 1 && $project_user->user_type == 1 && $user->id != $project_user->user_id){
             abort(403);
         }
-        if($project_user->user_type == 2){
-            abort(403);
-        }
-        if($project->archived && $user->id != $project_user->id){
+        if($project->archived && $user->id != $project_user->user_id){
             abort(404);
         }
-        //permitions check end
 
-        //deleting tasks where the user was
+
         $ownedTasks = Task::where('user_id', $project_user->user_id)->get();
 
         foreach ($ownedTasks as $task) {
@@ -360,7 +271,6 @@ class ProjectsController extends Controller {
                 $task->delete();
             }
         }
-        //end deleting tasks where the user was
 
         if($user->id != $project_user->user_id){
             Inbox::create([
@@ -397,7 +307,10 @@ class ProjectsController extends Controller {
 
     //region Archiving
     public function seeArchived(): View{
-        $projects = auth()->user()->projects->where('archived', true)->filter(fn($p) => $p->pivot->active == true);
+        $projects = auth()->user()->projects()
+            ->where('archived', true)
+            ->wherePivot('active', true)
+            ->get();
 
         return view('pages.projects.projects', [
             'projects' => $projects,
@@ -405,13 +318,7 @@ class ProjectsController extends Controller {
         ]);
     }
     public function archiveToggle(int $id): RedirectResponse{
-        $project = Project::findOrFail($id)->load(['users', 'tasks']);
-
-        $user = $project->users->firstWhere('id', auth()->id());
-
-        if($user->pivot->user_type != 2){
-            abort(403);
-        }
+        $project = $this->permissionsCheck($id, false, [2]);
 
         $project->update([
             'archived' => !$project->archived,

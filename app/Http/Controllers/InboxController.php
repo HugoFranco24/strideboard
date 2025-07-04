@@ -3,15 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Inbox;
-use App\Models\User;
-use App\Models\Project;
-use App\Models\Task;
-use App\Models\ProjectsUser;
-use App\Models\ProjectsTask;
-use Illuminate\Http\Request;
-use Carbon\Carbon;
-use App\Services\InboxFilter;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
+use App\Services\InboxFilter;
 use Illuminate\Http\RedirectResponse;
 
 class InboxController extends Controller

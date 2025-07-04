@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Project;
 use App\Models\Task;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller {
 
@@ -30,9 +29,5 @@ class DashboardController extends Controller {
                     $query->where('archived', false);
                 })->where('user_id', auth()->id())->get(),
         ]);
-    }
-
-    public function settings(): View{
-        return view("pages.settings");
     }
 }

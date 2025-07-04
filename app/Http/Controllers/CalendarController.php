@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Inbox;
-use App\Models\Project;
-use App\Models\Task;
-use App\Services\TaskNotifier;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Models\Task;
+use App\Models\Project;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
+use App\Services\TaskNotifier;
 use Illuminate\Http\JsonResponse;
 
 class CalendarController extends Controller {

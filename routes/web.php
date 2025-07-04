@@ -76,7 +76,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //end Inbox
 
     //region Settings
-    Route::get('/dashboard/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');
+    Route::get('/dashboard/settings', function () {
+        return view('pages.settings');
+    });
     //end Settigns
 });
 
