@@ -18,6 +18,10 @@ class CheckLateNotifications
         //region Check Late Tasks
         $lateTasks = Task::where('end', '<', $today)
             ->where('late_notified', false)
+            ->where('state', '!=', 3)
+            ->whereHas('project', function ($query) {
+                $query->where('archived', false);
+            })
             ->get();
         
         foreach ($lateTasks as $task) {

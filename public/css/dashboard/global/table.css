@@ -68,7 +68,7 @@
 .dtable .state[data-state="not_started"]:before {
     background-color: #7f8c8d;
 }
-.dtable .state[data-state="stoped"]:before {
+.dtable .state[data-state="stopped"]:before {
     background-color: #ae2727;
 }
 .dtable .state[data-state="in_progress"]:before {

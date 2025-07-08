@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('title')
-    Profile
+    My Profile
 @endsection
 
 @section('css')
@@ -8,7 +8,7 @@
 @endsection
 
 @section('body-title')
-    Profile
+    My Profile
 @endsection
 
 @section('body')

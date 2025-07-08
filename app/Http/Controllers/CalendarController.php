@@ -40,6 +40,9 @@ class CalendarController extends Controller {
         $project = Project::where('id', $task->project_id)->firstOrFail()->load('users', 'tasks');
 
         if(!$project->archived){
+            $task->update([
+                'late_notified' => false,
+            ]);
             if($request->input('start_date')){
                 $task->update([
                     'start' => Carbon::parse($request->input('start_date'))->setTimezone('UTC'),

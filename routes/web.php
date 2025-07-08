@@ -31,11 +31,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     //region Project
     Route::get('/dashboard/projects', [ProjectsController::class, 'projects'])->name('dashboard.projects');
-    Route::get('/dashboard/projects/create', [ProjectsController::class, 'projectsCreate'])->name('projects.create');
-    Route::post('/dashboard/projects/create/add', [ProjectsController::class, 'projectsCreateAdd'])->name('projects.add');
-    Route::get('/dashboard/projects/edit/{project_id}', [ProjectsController::class, 'projectsEdit'])->name('projects.edit');
-    Route::put('/dashboard/projects/edit/{project_id}/update', [ProjectsController::class, 'projectsUpdate'])->name('projects.update');
-    Route::delete('/dashboard/projects/delete/{project_id}', [ProjectsController::class, 'projectsDelete'])->name('projects.delete');
+    Route::get('/dashboard/projects/create', [ProjectsController::class, 'projectCreate'])->name('projects.create');
+    Route::post('/dashboard/projects/create/add', [ProjectsController::class, 'projectAdd'])->name('projects.add');
+    Route::get('/dashboard/projects/edit/{project_id}', [ProjectsController::class, 'projectEdit'])->name('projects.edit');
+    Route::put('/dashboard/projects/edit/{project_id}/update', [ProjectsController::class, 'projectUpdate'])->name('projects.update');
+    Route::delete('/dashboard/projects/delete/{project_id}', [ProjectsController::class, 'projectDelete'])->name('projects.delete');
 
     Route::get('/dashboard/projects/archived', [ProjectsController::class, 'seeArchived'])->name('projects.archived');
     Route::put('/dashboard/projects/archive-toggle/{id}', [ProjectsController::class, 'archiveToggle'])->name('project.archive-toggle');

@@ -177,7 +177,7 @@
         @php
             $doneT = 0;
             $in_progress = 0;
-            $stoped = 0;
+            $stopped = 0;
             $to_do = 0;
             $total = 0;
 
@@ -185,7 +185,7 @@
                 if($t->state == 0){
                     $to_do += 1;
                 }elseif($t->state == 1){
-                    $stoped += 1;
+                    $stopped += 1;
                 }elseif($t->state == 2){
                     $in_progress += 1;
                 }else{
@@ -197,7 +197,7 @@
         <div class="item">
             <input type="hidden" value="{{ $doneT }}" id="done">
             <input type="hidden" value="{{ $in_progress }}" id="in_progress">
-            <input type="hidden" value="{{ $stoped }}" id="stoped">
+            <input type="hidden" value="{{ $stopped }}" id="stopped">
             <input type="hidden" value="{{ $to_do }}" id="to_do">
             <h2>Tasks</h2>
             @if ($total > 0)
@@ -412,7 +412,7 @@
                                     @if ($t->state == 0)
                                         <td data-state="not_started" class="state"><span style="display: none">0</span>Not Started</td>
                                     @elseif ($t->state == 1)
-                                        <td data-state="stoped" class="state"><span style="display: none">1</span>Stoped</td>
+                                        <td data-state="stopped" class="state"><span style="display: none">1</span>Stopped</td>
                                     @elseif ($t->state == 2)
                                         <td data-state="in_progress" class="state"><span style="display: none">2</span>In Progress</td>
                                     @elseif ($t->state == 3)

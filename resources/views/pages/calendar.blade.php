@@ -46,7 +46,7 @@
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
-                right: window.innerWidth < 600 ? '' : 'dayGridMonth,timeGridWeek,timeGridDay'
+                right: window.innerWidth < 600 ? '' : 'dayGridMonth,timeGridWeek'
             },
             initialView: 'dayGridMonth',
             timeZone: 'UTC',

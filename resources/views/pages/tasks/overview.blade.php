@@ -217,7 +217,7 @@
                                                     @if ($value == '0')
                                                         <td>To Do</td>
                                                     @elseif ($value == '1')
-                                                        <td>Stoped</td>
+                                                        <td>Stopped</td>
                                                     @elseif ($value == '2')
                                                         <td>In Progress</td>
                                                     @else
@@ -258,7 +258,7 @@
                                                     @if ($value == '0')
                                                         <td>To Do</td>
                                                     @elseif ($value == '1')
-                                                        <td>Stoped</td>
+                                                        <td>Stopped</td>
                                                     @elseif ($value == '2')
                                                         <td>In Progress</td>
                                                     @else

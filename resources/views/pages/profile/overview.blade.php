@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('title')
-    Profile
+    Profile - {{ $OVuser->name }}
 @endsection
 
 @section('go-back')
@@ -15,7 +15,7 @@
 @endsection
 
 @section('body-title')
-    Profile
+    Profile Overview
 @endsection
 
 @section('body')

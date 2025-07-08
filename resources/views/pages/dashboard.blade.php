@@ -78,7 +78,7 @@
                                 @if ($t->state == 0)
                                     <td data-state="not_started" class="state"><span style="display: none">0</span>Not Started</td>
                                 @elseif ($t->state == 1)
-                                    <td data-state="stoped" class="state"><span style="display: none">1</span>Stoped</td>
+                                    <td data-state="stopped" class="state"><span style="display: none">1</span>Stopped</td>
                                 @elseif ($t->state == 2)
                                     <td data-state="in_progress" class="state"><span style="display: none">2</span>In Progress</td>
                                 @elseif ($t->state == 3)

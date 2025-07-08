@@ -16,18 +16,23 @@ class ProjectsController extends Controller
 {
     public function projects(): View
     {
+        $projects = auth()->user()->projects()
+            ->where('archived', false)
+            ->wherePivot('active', true)
+            ->get();
+
         return view('pages.projects.projects', [
-            'projects' => auth()->user()->projects->where('archived', false)->filter(fn($p) => $p->pivot->active == true),
+            'projects' => $projects,
             'page' => 'projects',
         ]);
     }
 
-    public function projectsCreate(): View
+    public function projectCreate(): View
     {
         return view('pages.projects.projects-create');
     }
 
-    public function projectsCreateAdd(Request $request): RedirectResponse
+    public function projectAdd(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -53,7 +58,7 @@ class ProjectsController extends Controller
         return redirect(route('projects.overview', $project->id));
     }
 
-    public function projectsEdit(int $id): View
+    public function projectEdit(int $id): View
     {   
         $project = $this->permissionsCheck($id);
 
@@ -62,7 +67,7 @@ class ProjectsController extends Controller
         ]);
     }
 
-    public function projectsUpdate(Request $request, int $id): RedirectResponse
+    public function projectUpdate(Request $request, int $id): RedirectResponse
     {
         $project = $this->permissionsCheck($id);
         
@@ -104,7 +109,7 @@ class ProjectsController extends Controller
         return redirect(route('projects.overview', $id));
     }
 
-    public function projectsDelete(int $id): RedirectResponse
+    public function projectDelete(int $id): RedirectResponse
     {
         $project = $this->permissionsCheck($id, true, [2]);
         
@@ -137,7 +142,7 @@ class ProjectsController extends Controller
     {   
         $project = $this->permissionsCheck($id);
 
-        //for kanban
+
         $my_tasks = $project->tasks
                 ->where('user_id', auth()->id());
         $late = $project->tasks
@@ -146,8 +151,8 @@ class ProjectsController extends Controller
                 ->where('priority', 3);
         $done = $project->tasks
                 ->where('state', 3);
-        //end for kanban
         
+
         $user_all = User::whereNotIn('id', DB::table('projects_users') //ver todos os users que nao estao ligado ao project
         ->select('user_id')
         ->where('project_id', $project->id))

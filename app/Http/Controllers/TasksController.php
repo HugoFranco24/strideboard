@@ -123,7 +123,7 @@ class TasksController extends Controller
 
         if($task->end != $request->end){
             $task->update([
-                'notified' => false,
+                'late_notified' => false,
             ]);
         }
 

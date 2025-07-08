@@ -56,20 +56,20 @@ window.onload = function () {
 
     //Tasks Chart
     const to_do = parseInt(document.getElementById('to_do').value);
-    const stoped = parseInt(document.getElementById('stoped').value);
+    const stopped = parseInt(document.getElementById('stopped').value);
     const in_progress = parseInt(document.getElementById('in_progress').value);
     const done = parseInt(document.getElementById('done').value);
 
     const getCSSVar = (varName) => getComputedStyle(document.documentElement).getPropertyValue(varName).trim(); //BUSCAR TEXT COLOR
     const textColor = getCSSVar('--text-color');
 
-    const taskChart = new Chart('taskChart', {
+    new Chart('taskChart', {
         type: 'doughnut',
         data: {
-            labels: ["To Do", "Stoped", "In Progress", "Done"],
+            labels: ["To Do", "Stopped", "In Progress", "Done"],
             datasets: [
                 {
-                    data: [to_do, stoped, in_progress, done],
+                    data: [to_do, stopped, in_progress, done],
                     backgroundColor: ['#ccc','#cf142b', '#f3c242', '#228B22'],
                     borderColor: 'transparent'
                 },
