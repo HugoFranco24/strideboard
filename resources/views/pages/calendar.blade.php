@@ -7,6 +7,10 @@
     Calendar
 @endsection
 
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/dashboard/calendar.css') }}">
+@endsection
+
 @section('custom_js')
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

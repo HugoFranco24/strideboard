@@ -1,0 +1,34 @@
+:root{
+    --fc-event-border-color: var(--box-input-border);
+    --fc-button-bg-color: #113F59;
+    --fc-button-border-color: #113F59;
+
+    --fc-button-hover-bg-color: hsl(202, 68%, 16%);
+    --fc-button-hover-border-color: hsl(202, 68%, 16%);
+
+    --fc-button-active-bg-color: hsl(202, 68%, 12%);
+    --fc-button-active-border-color: hsl(202, 68%, 12%);
+    --fc-neutral-bg-color: transparent;
+    
+    --fc-border-color: hsl(0, 0%, 75%);
+    --fc-page-bg-color: var(--box-inner-color);
+    --fc-list-event-hover-bg-color: transparent;
+}
+.dark_theme{
+    --fc-border-color: hsl(0, 0%, 30%);
+}
+.calendarMore{
+    cursor: pointer; 
+    height: 100%; 
+    vertical-align: middle;
+    padding: 0px 2px 0px 4px;
+}
+.calendarMore img{
+    width: 14px;
+    height: 14px;
+    scale: 1.25;
+    transition: 100ms;
+}
+.calendarMore:hover img{
+    scale: 1.1;
+}
