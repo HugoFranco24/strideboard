@@ -1,13 +1,14 @@
 <?php
 
+use App\Http\Middleware\AdminOnly;
 use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\TasksController;
-use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\InboxController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectsController;
+use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\DashboardController;
+
 
 Route::get('/', function () {
     return view('home');
@@ -81,5 +82,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
     //end Settigns
 });
+
+/*
+ *
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * */
+
+//region Admin
+Route::middleware(AdminOnly::class)->group(function () {
+
+});
+//end Admin
 
 require __DIR__ . '/auth.php';
