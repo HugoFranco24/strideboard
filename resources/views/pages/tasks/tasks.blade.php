@@ -100,7 +100,7 @@
                                         <a href="{{ route('task.overview',  $t->id) }}"><img class="icon" src="{{ asset('Images/Icons/Actions/More.svg') }}"></a>
                                         <form 
                                             action="{{ route('task.delete', $t->id) }}"
-                                            onsubmit="confirm('Are you sure you want to DELETE this task?')"
+                                            onsubmit="return confirm('Are you sure you want to DELETE this task?')"
                                             method="post"
                                         >
                                             @csrf

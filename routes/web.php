@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AdminProjectController;
+use App\Http\Controllers\Admin\AdminTaskController;
 use App\Http\Middleware\AdminOnly;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TasksController;
@@ -98,7 +101,33 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 //region Admin
 Route::middleware(AdminOnly::class)->group(function () {
+    Route::get('/admin-panel', function () {
+        return view('admin.admin-panel');
+    });
 
+    //users
+    Route::get('/admin-panel/users', [AdminUserController::class, 'index'])->name('admin.users.index');
+    Route::get('/admin-panel/users/create', [AdminUserController::class, 'create'])->name('admin.user.create');
+    Route::post('/admin-panel/users/store', [AdminUserController::class, 'store'])->name('admin.user.store');
+    Route::get('/admin-panel/users/edit/{id}', [AdminUserController::class, 'edit'])->name('admin.user.edit');
+    Route::put('/admin-panel/users/update/{id}', [AdminUserController::class, 'update'])->name('admin.user.update');
+    Route::delete('/admin-panel/users/delete/{id}', [AdminUserController::class, 'destroy'])->name('admin.user.destroy');
+
+    //projects
+    Route::get('/admin-panel/projects', [AdminProjectController::class, 'index'])->name('admin.projects.index');
+    Route::get('/admin-panel/projects/create', [AdminProjectController::class, 'create'])->name('admin.project.create');
+    Route::post('/admin-panel/projects/store', [AdminProjectController::class, 'store'])->name('admin.project.store');
+    Route::get('/admin-panel/projects/edit/{id}', [AdminProjectController::class, 'edit'])->name('admin.project.edit');
+    Route::put('/admin-panel/projects/update/{id}', [AdminProjectController::class, 'update'])->name('admin.project.update');
+    Route::delete('/admin-panel/projects/delete/{id}', [AdminProjectController::class, 'destroy'])->name('admin.project.destroy');  
+
+    //tasks
+    Route::get('/admin-panel/tasks', [AdminTaskController::class, 'index'])->name('admin.tasks.index');
+    Route::get('/admin-panel/tasks/create', [AdminTaskController::class, 'create'])->name('admin.task.create');
+    Route::post('/admin-panel/tasks/store', [AdminTaskController::class, 'store'])->name('admin.task.store');
+    Route::get('/admin-panel/tasks/edit/{id}', [AdminTaskController::class, 'edit'])->name('admin.task.edit');
+    Route::put('/admin-panel/tasks/update/{id}', [AdminTaskController::class, 'update'])->name('admin.task.update');
+    Route::delete('/admin-panel/tasks/delete/{id}', [AdminTaskController::class, 'destroy'])->name('admin.task.destroy');
 });
 //end Admin
 

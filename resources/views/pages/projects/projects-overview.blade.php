@@ -244,7 +244,7 @@
                                         @if ($authUserType >= 1 || $t->user_id == auth()->id())
                                             <form 
                                                 action="{{ route('task.delete', $t->id) }}"
-                                                onsubmit="confirm('Are you sure you want to DELETE this task?')"
+                                                onsubmit="return confirm('Are you sure you want to DELETE this task?')"
                                                 method="post"
                                             >
                                                 @csrf
@@ -281,7 +281,7 @@
                                         @if ($authUserType >= 1 || $l->user_id == auth()->id())
                                             <form 
                                                 action="{{ route('task.delete', $l->id) }}"
-                                                onsubmit="confirm('Are you sure you want to DELETE this task?')"
+                                                onsubmit="return confirm('Are you sure you want to DELETE this task?')"
                                                 method="post"
                                             >
                                                 @csrf
@@ -318,7 +318,7 @@
                                         @if ($authUserType >= 1 || $u->user_id == auth()->id())
                                             <form 
                                                 action="{{ route('task.delete', $u->id) }}"
-                                                onsubmit="confirm('Are you sure you want to DELETE this task?')"
+                                                onsubmit="return confirm('Are you sure you want to DELETE this task?')"
                                                 method="post"
                                             >
                                                 @csrf
@@ -356,7 +356,7 @@
                                         @if ($authUserType >= 1 || $d->user_id == auth()->id())
                                             <form 
                                                 action="{{ route('task.delete', $d->id) }}"
-                                                onsubmit="confirm('Are you sure you want to DELETE this task?')"
+                                                onsubmit="return confirm('Are you sure you want to DELETE this task?')"
                                                 method="post"
                                             >
                                                 @csrf
@@ -435,7 +435,7 @@
                                             @if ($authUserType >= 1 || $t->user_id == auth()->id())
                                                 <form 
                                                     action="{{ route('task.delete', $t->id) }}"
-                                                    onsubmit="confirm('Are you sure you want to DELETE this task?')"
+                                                    onsubmit="return confirm('Are you sure you want to DELETE this task?')"
                                                     method="post"
                                                 >
                                                     @csrf

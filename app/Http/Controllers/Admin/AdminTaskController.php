@@ -1,33 +1,43 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Task;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class AdminTaskController extends Controller {
 
-    public function dashboard(Request $request): View{
-        
-        $projects = auth()->user()
-        ->projects()
-        ->where('archived', false)
-        ->with(['tasks', 'users'])
-        ->get();
+    public function index(): View{
 
-        if($request->filled('project')){
-            $project = $projects->firstWhere('id', $request->project);
-        } else {
-            $project = $projects->first();
-        }
-
-        return view("pages.dashboard",[
-            'projects' => auth()->user()->projects->where('archived', false),
-            'vProject' => $project,
-            'tasks' => Task::whereHas('project', function ($query) {
-                    $query->where('archived', false);
-                })->where('user_id', auth()->id())->get(),
+        return view('admin.tasks.index', [
+            'tasks' => Task::all()->load(['project', 'user']),
         ]);
+    }
+
+    public function create(): View{
+        
+        return view('admin.tasks.index');
+    }
+
+    public function store(): View{
+        
+        return view('admin.tasks.index');
+    }
+
+    public function edit(): View{
+        
+        return view('admin.tasks.index');
+    }
+
+    public function update(): View{
+        
+        return view('admin.tasks.index');
+    }
+
+    public function destroy(): View{
+        
+        return view('admin.tasks.index');
     }
 }
