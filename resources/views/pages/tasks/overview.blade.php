@@ -186,6 +186,10 @@
                     @foreach ($audits as $a)
                         @php
                             $auditUser = $users->firstWhere('id', $a->user_id);
+                            if($auditUser->is_admin){
+                                $auditUser->pfp = 'Images/Logos/StrideBoard.png';
+                                $auditUser->name = 'The System';
+                            }
                             $auditCount += 1
                         @endphp
                         <div class="audit">
@@ -193,7 +197,14 @@
                                 <div style="display: flex; align-items: center;">
                                     <img src="{{ asset($auditUser->pfp) ?? asset('Images/Pfp/pfp_default.png') }}" alt="">
                                     @if ($auditUser)
-                                        <p><a href="{{ route('profile.overview', $auditUser->id) }}" class="username">{{ $auditUser->name }}</a> <span>{{ $a->event }}</span> this Task on <span>{{ \Carbon\Carbon::parse($a->updated_at)->format('F d, Y \a\t H:i') }}</span></p>                            
+                                        <p>
+                                        @if ($auditUser->is_admin)
+                                           {{ $auditUser->name }}
+                                        @else
+                                            <a href="{{ route('profile.overview', $auditUser->id) }}" class="username">{{ $auditUser->name }}</a>
+                                        @endif 
+                                            <span>{{ $a->event }}</span> this Task on <span>{{ \Carbon\Carbon::parse($a->updated_at)->format('F d, Y \a\t H:i') }}</span>
+                                        </p>                            
                                     @else
                                         <p>Deleted User <span>{{ $a->event }}</span> this Task on <span>{{ \Carbon\Carbon::parse($a->updated_at)->format('F d, Y \a\t H:i') }}</span></p>                          
                                     @endif

@@ -13,6 +13,7 @@ class DashboardController extends Controller {
         $projects = auth()->user()
         ->projects()
         ->where('archived', false)
+        ->wherePivot('active', true)
         ->with(['tasks', 'users'])
         ->get();
 

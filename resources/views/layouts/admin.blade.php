@@ -14,8 +14,8 @@
     </head>
     <body>
         <!-- Top Navigation -->
-        <nav class="bg-gray-900 text-white p-4 flex justify-between items-center fixed top-0 right-0 w-4/5" >
-            <button onclick="history.back()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-sm">Back</button>
+        <nav class="bg-gray-900 text-white py-4 px-7 flex justify-between items-center fixed top-0 right-0 w-4/5" >
+            <button onclick="history.back()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-sm cursor-pointer">Back</button>
             <div class="relative group">
                 <button class="flex items-center space-x-2 text-lg hover:text-gray-300 focus:outline-none">
                     <span>{{ auth()->user()->name ?? 'User' }}</span>

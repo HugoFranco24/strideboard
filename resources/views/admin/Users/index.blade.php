@@ -29,7 +29,7 @@
     </div>
     
     <div class="bg-white shadow-md rounded-lg overflow-hidden">
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto" style="max-height: 72dvh">
             <table class="w-full text-sm text-left text-gray-700 max-h-20">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>

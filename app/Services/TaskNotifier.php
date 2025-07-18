@@ -24,11 +24,16 @@ class TaskNotifier
     }
 
     public function notify($type, Task $task, Project $project): void
-    {   
+    {
+        $system = false;
+
+        if($type == 'late_task' || auth()->user()->is_admin == true){
+            $system = true;
+        }
         foreach ($this->notifiableUsers as $receiver) {
             Inbox::create([
                 'receiver_id'   => $receiver->user_id,
-                'actor_id'      => $type == 'late_task' ? 0 : auth()->id(),
+                'actor_id'      => $system == true ? 0 : auth()->id(),
                 'type'          => $type,
                 'task_name'     => $task->name,
                 'project_name'  => $project->name,
