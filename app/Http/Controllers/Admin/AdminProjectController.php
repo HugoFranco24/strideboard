@@ -105,9 +105,19 @@ class AdminProjectController extends Controller {
         return redirect(route('admin.project.overview', $id))->with('status', 'Project updated with success!');
     }
 
-    public function destroy(): View{
+    public function destroy(int $id): RedirectResponse{
         
-        return view('admin.projects.index');
+        $project = Project::with(['tasks', 'users'])->findOrFail($id);
+        
+        $projects_users = ProjectUser::where('project_id', $id)->get();
+
+        $project->tasks()->delete();
+        foreach($projects_users as $pu){
+            $pu->delete();
+        }
+        $project->delete();
+
+        return redirect(route('admin.projects.index'))->with('status', 'Project deleted with success');
     }
 
     public function overview(int $id): View{

@@ -115,12 +115,8 @@ Route::middleware(AdminOnly::class)->group(function () {
     Route::get('/admin-panel/projects/edit/{id}', [AdminProjectController::class, 'edit'])->name('admin.project.edit');
     Route::put('/admin-panel/projects/update/{id}', [AdminProjectController::class, 'update'])->name('admin.project.update');
     Route::delete('/admin-panel/projects/delete/{id}', [AdminProjectController::class, 'destroy'])->name('admin.project.destroy');  
-
     Route::get('admin-panel/projects/overview/{id}', [AdminProjectController::class, 'overview'])->name('admin.project.overview');
-    
-    
-    // Route::get('admin-panel/projects/overview/{project_id}/add-member', [AdminProjectController::class, 'overview'])->name('admin.project.overview');
-    
+        
     //members
     Route::get('admin-panel/projects/overview/{project_id}/create-member', [AdminMemberController::class, 'create'])->name('admin.member.create');
     Route::post('admin-panel/projects/overview/{project_id}/store-member', [AdminMemberController::class, 'store'])->name('admin.member.store');
