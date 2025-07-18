@@ -111,7 +111,7 @@ class ProjectsController extends Controller
 
     public function projectDelete(int $id): RedirectResponse
     {
-        $project = $this->permissionsCheck($id, true, [2]);
+        $project = $this->permissionsCheck($id, false, [2]);
         
         $projects_users = ProjectUser::where('project_id', $id)->get();
 
@@ -140,7 +140,7 @@ class ProjectsController extends Controller
 
     public function projectOverview(int $id): RedirectResponse|View
     {   
-        $project = $this->permissionsCheck($id);
+        $project = $this->permissionsCheck($id, true, [0, 1, 2]);
 
 
         $my_tasks = $project->tasks
@@ -233,6 +233,7 @@ class ProjectsController extends Controller
 
     public function deleteMember(int $project_id, int $user_id): RedirectResponse
     {
+        //this permitions can't be in the helper
         $project = Project::where('id', $project_id)
             ->with(['users', 'tasks'])
             ->firstOrFail();
@@ -248,7 +249,6 @@ class ProjectsController extends Controller
             ->wherePivot('active', true)
             ->firstOrFail();
 
-        //these permitions can't be in the helper
         if($user->user_type == 0 && $user->id != $project_user->user_id){
             abort(403);
         }

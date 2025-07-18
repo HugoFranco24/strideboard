@@ -111,11 +111,11 @@
             var profile_toggle = document.getElementById('profile-toggle');
             var arrowP = document.getElementById('arrowP');
 
-            if (profile_toggle.style.top == '-90px') {
+            if (profile_toggle.style.top == '-140px') {
                 profile_toggle.style.top = '90px';
                 arrowP.classList.add('rotated');
             } else {
-                profile_toggle.style.top = '-90px';
+                profile_toggle.style.top = '-140px';
                 arrowP.classList.remove('rotated');
             }
         }
@@ -283,9 +283,13 @@
         </div>
     </div>
 
-    <div class="profile-toggle" id="profile-toggle" style="top: -90px;">
+    <div class="profile-toggle" id="profile-toggle" style="top: -140px;">
         <a href="/"><button style="border-radius: 6px 6px 0px 0px">Home</button></a>
         <div class="space"></div>
+        @if (auth()->user()->is_admin)
+            <a href="/admin-panel"><button>Admin Panel</button></a>
+            <div class="space"></div>
+        @endif
         <a href="/dashboard/my-profile"><button>My Profile</button></a>
         <div class="space"></div>
         <a href="/dashboard/settings"><button>Settings</button></a>

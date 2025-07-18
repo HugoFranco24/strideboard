@@ -116,8 +116,8 @@ class TasksController extends Controller
             'name' => 'required|string|max:255',
             'start' => 'required|date|before:end',
             'end' => 'required|date',
-            'state' => 'between:0,3',
-            'priority' => 'between:0,3',
+            'state' => 'required|between:0,3',
+            'priority' => 'required|between:0,3',
             'user_id' => 'required|integer',
         ]);
 

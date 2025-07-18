@@ -19,13 +19,13 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $users = [
-            ['pfp' => 'Images/Pfp/pfp_default.png', 'name' => 'Hugo Franco', 'email' => 'franco.carreira.hugo@gmail.com', 'email_verified_at' => now()->toDateTime(), 'password' => Hash::make('123456789')],
-            ['pfp' => 'Images/Pfp/pfp_default.png', 'name' => 'Delfim Franco', 'email' => 'franco.carreira.delfim@gmail.com', 'email_verified_at' => now()->toDateTime(), 'password' => Hash::make('123456789')],
-            ['pfp' => 'Images/Pfp/pfp_default.png', 'name' => 'Fábio Franco', 'email' => 'franco.carreira.fabio@gmail.com', 'email_verified_at' => now()->toDateTime(), 'password' => Hash::make('123456789')],
-            ['pfp' => 'Images/Pfp/pfp_default.png', 'name' => 'Martim Borges', 'email' => 'martim.duarte.borges@gmail.com', 'email_verified_at' => now()->toDateTime(), 'password' => Hash::make('123456789')],
-            ['pfp' => 'Images/Pfp/pfp_default.png', 'name' => 'João Brás', 'email' => 'joao.antunes.bras@gmail.com', 'email_verified_at' => now()->toDateTime(), 'password' => Hash::make('123456789')],
-            ['pfp' => 'Images/Pfp/pfp_default.png', 'name' => 'Andrylls Carvalho', 'email' => 'andrylls112@gmail.com', 'email_verified_at' => now()->toDateTime(), 'password' => Hash::make('123456789')],
-            ['pfp' => 'Images/Pfp/pfp_default.png', 'name' => 'Strideboard', 'email' => 'strideboard.web@gmail.com', 'email_verified_at' => now()->toDateTime(), 'password' => Hash::make('123456789')],
+            ['pfp' => 'Images/Pfp/pfp_default.png', 'name' => 'Hugo Franco', 'email' => 'franco.carreira.hugo@gmail.com', 'email_verified_at' => now()->toDateTime(), 'password' => Hash::make('123456789'), 'is_admin' => 1],
+            ['pfp' => 'Images/Pfp/pfp_default.png', 'name' => 'Delfim Franco', 'email' => 'franco.carreira.delfim@gmail.com', 'email_verified_at' => now()->toDateTime(), 'password' => Hash::make('123456789'), 'is_admin' => 0],
+            ['pfp' => 'Images/Pfp/pfp_default.png', 'name' => 'Fábio Franco', 'email' => 'franco.carreira.fabio@gmail.com', 'email_verified_at' => now()->toDateTime(), 'password' => Hash::make('123456789'), 'is_admin' => 0],
+            ['pfp' => 'Images/Pfp/pfp_default.png', 'name' => 'Martim Borges', 'email' => 'martim.duarte.borges@gmail.com', 'email_verified_at' => now()->toDateTime(), 'password' => Hash::make('123456789'), 'is_admin' => 0],
+            ['pfp' => 'Images/Pfp/pfp_default.png', 'name' => 'João Brás', 'email' => 'joao.antunes.bras@gmail.com', 'email_verified_at' => now()->toDateTime(), 'password' => Hash::make('123456789'), 'is_admin' => 0],
+            ['pfp' => 'Images/Pfp/pfp_default.png', 'name' => 'Andrylls Carvalho', 'email' => 'andrylls112@gmail.com', 'email_verified_at' => now()->toDateTime(), 'password' => Hash::make('123456789'), 'is_admin' => 0],
+            ['pfp' => 'Images/Pfp/pfp_default.png', 'name' => 'Strideboard', 'email' => 'strideboard.web@gmail.com', 'email_verified_at' => now()->toDateTime(), 'password' => Hash::make('123456789'), 'is_admin' => 0],
         ];
         foreach ($users as $user) {
             User::create($user);

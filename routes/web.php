@@ -1,13 +1,18 @@
 <?php
 
+use App\Http\Middleware\AdminOnly;
 use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\TasksController;
-use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\InboxController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectsController;
+use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AdminTaskController;
+use App\Http\Controllers\Admin\AdminMemberController;
+use App\Http\Controllers\Admin\AdminProjectController;
+
 
 Route::get('/', function () {
     return view('home');
@@ -79,7 +84,58 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard/settings', function () {
         return view('pages.settings');
     });
-    //end Settigns
+    //end Settings
 });
+
+/*
+ *
+ * 
+ * 
+ * 
+*/
+
+//region Admin
+Route::middleware(AdminOnly::class)->group(function () {
+    Route::get('/admin-panel', function () {
+        return view('admin.admin-panel');
+    });
+
+    //users
+    Route::get('/admin-panel/users', [AdminUserController::class, 'index'])->name('admin.users.index');
+    Route::get('/admin-panel/users/create', [AdminUserController::class, 'create'])->name('admin.user.create');
+    Route::post('/admin-panel/users/store', [AdminUserController::class, 'store'])->name('admin.user.store');
+    Route::get('/admin-panel/users/edit/{id}', [AdminUserController::class, 'edit'])->name('admin.user.edit');
+    Route::put('/admin-panel/users/update/{id}', [AdminUserController::class, 'update'])->name('admin.user.update');
+    Route::delete('/admin-panel/users/delete/{id}', [AdminUserController::class, 'destroy'])->name('admin.user.destroy');
+
+    //projects
+    Route::get('/admin-panel/projects', [AdminProjectController::class, 'index'])->name('admin.projects.index');
+    Route::get('/admin-panel/projects/create', [AdminProjectController::class, 'create'])->name('admin.project.create');
+    Route::post('/admin-panel/projects/store', [AdminProjectController::class, 'store'])->name('admin.project.store');
+    Route::get('/admin-panel/projects/edit/{id}', [AdminProjectController::class, 'edit'])->name('admin.project.edit');
+    Route::put('/admin-panel/projects/update/{id}', [AdminProjectController::class, 'update'])->name('admin.project.update');
+    Route::delete('/admin-panel/projects/delete/{id}', [AdminProjectController::class, 'destroy'])->name('admin.project.destroy');  
+
+    Route::get('admin-panel/projects/overview/{id}', [AdminProjectController::class, 'overview'])->name('admin.project.overview');
+    
+    
+    // Route::get('admin-panel/projects/overview/{project_id}/add-member', [AdminProjectController::class, 'overview'])->name('admin.project.overview');
+    
+    //members
+    Route::get('admin-panel/projects/overview/{project_id}/create-member', [AdminMemberController::class, 'create'])->name('admin.member.create');
+    Route::post('admin-panel/projects/overview/{project_id}/store-member', [AdminMemberController::class, 'store'])->name('admin.member.store');
+    Route::put('admin-panel/projects/overview/{project_id}/update-member-type/{user_id}', [AdminMemberController::class, 'updateType'])->name('admin.member.update-type');
+    Route::put('admin-panel/projects/overview/{project_id}/update-member-active/{user_id}', [AdminMemberController::class, 'updateActive'])->name('admin.member.update-active');
+    Route::delete('admin-panel/projects/overview/{project_id}/delete-member/{user_id}', [AdminMemberController::class, 'destroy'])->name('admin.member.destroy');
+    
+    //tasks
+    Route::get('/admin-panel/tasks', [AdminTaskController::class, 'index'])->name('admin.tasks.index');
+    Route::get('/admin-panel/projects/overview/{project_id}/create-task', [AdminTaskController::class, 'create'])->name('admin.task.create');
+    Route::post('/admin-panel/projects/overview/{project_id}/store-task', [AdminTaskController::class, 'store'])->name('admin.task.store');
+    Route::get('/admin-panel/tasks/edit/{task_id}', [AdminTaskController::class, 'edit'])->name('admin.task.edit');
+    Route::put('/admin-panel/tasks/update/{task_id}', [AdminTaskController::class, 'update'])->name('admin.task.update');
+    Route::delete('/admin-panel/tasks/delete/{task_id}', [AdminTaskController::class, 'destroy'])->name('admin.task.destroy');
+});
+//end Admin
 
 require __DIR__ . '/auth.php';
