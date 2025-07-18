@@ -38,20 +38,20 @@
 
         <label>Status</label>
         <select name="state" id="state" class="w-full mb-2 px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 hover:border-blue-600 transition-colors">
-            <option value="0" {{ old('state') == 0 || $task->state == 0 ? 'selected' : '' }}>To Do</option>
-            <option value="1" {{ old('state') == 1 || $task->state == 1 ? 'selected' : '' }}>Stopped</option>
-            <option value="2" {{ old('state') == 2 || $task->state == 2 ? 'selected' : '' }}>In Progress</option>
-            <option value="3" {{ old('state') == 3 || $task->state == 3 ? 'selected' : '' }}>Done</option>
+            <option value="0" {{ old('state') == 0 || (isset($task) && $task->state == 0) ? 'selected' : '' }}>To Do</option>
+            <option value="1" {{ old('state') == 1 || (isset($task) && $task->state == 0) ? 'selected' : '' }}>Stopped</option>
+            <option value="2" {{ old('state') == 2 || (isset($task) && $task->state == 0) ? 'selected' : '' }}>In Progress</option>
+            <option value="3" {{ old('state') == 3 || (isset($task) && $task->state == 0) ? 'selected' : '' }}>Done</option>
         </select>
         <x-input-error :messages="$errors->get('state')"/>
 
         <br>
         <label>Priority</label><br>
         <select name="priority" id="priority" class="w-full mb-2 px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 hover:border-blue-600 transition-colors">
-            <option value="0" {{ old('priority') == 0 || $task->priority == 0 ? 'selected' : '' }}>Low</option>
-            <option value="1" {{ old('priority') == 1 || $task->priority == 1 ? 'selected' : '' }}>Normal</option>
-            <option value="2" {{ old('priority') == 2 || $task->priority == 2 ? 'selected' : '' }}>High</option>
-            <option value="3" {{ old('priority') == 3 || $task->priority == 3 ? 'selected' : '' }}>Urgent</option>
+            <option value="0" {{ old('priority') == 0 || (isset($task) && $task->priority == 0) ? 'selected' : '' }}>Low</option>
+            <option value="1" {{ old('priority') == 1 || (isset($task) && $task->priority == 1) ? 'selected' : '' }}>Normal</option>
+            <option value="2" {{ old('priority') == 2 || (isset($task) && $task->priority == 2) ? 'selected' : '' }}>High</option>
+            <option value="3" {{ old('priority') == 3 || (isset($task) && $task->priority == 3) ? 'selected' : '' }}>Urgent</option>
         </select>
         <x-input-error :messages="$errors->get('priority')"/>
 
