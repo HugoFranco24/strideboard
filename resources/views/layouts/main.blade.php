@@ -16,7 +16,7 @@
             const sepC = document.getElementById("sepC");
 
             let newState;
-            if (menu.style.width === "265px") {
+            if (menu.style.width === "240px") {
                 menu.style.width = "68px";
                 menu.style.transition = "500ms";
                 img.style.left = "8px";
@@ -32,17 +32,17 @@
                 sepC.style.visibility = "visible";
                 newState = 'collapsed';
             } else {
-                menu.style.width = "265px";
+                menu.style.width = "240px";
                 menu.style.transition = "500ms";
-                img.style.left = "198px";
+                img.style.left = "180px";
                 img.style.transition = "500ms";
                 open.style.opacity = "0";
                 close.style.opacity = "1";
                 icons8.style.display = "block";
                 links.classList.remove('links_collapse');
-                top_menu.style.margin = "0px 0px 0px 265px";
+                top_menu.style.margin = "0px 0px 0px 240px";
                 top_menu.style.transition = "500ms";
-                main.style.padding = "110px 30px 30px 296px";
+                main.style.padding = "110px 30px 30px 270px";
                 main.style.transition = "500ms";
                 sepC.style.visibility = "hidden";
                 newState = 'not_collapsed';
@@ -88,14 +88,14 @@
                     }
                     sepC.style.visibility = "visible";
                 } else {
-                    menu.style.width = "265px";
-                    img.style.left = "198px";
+                    menu.style.width = "240px";
+                    img.style.left = "180px";
                     open.style.opacity = "0";
                     close.style.opacity = "1";
                     icons8.style.display = "block";
                     links.classList.remove('links_collapse');
-                    top_menu.style.margin = "0px 0px 0px 265px";
-                    main.style.padding = "110px 30px 30px 296px";
+                    top_menu.style.margin = "0px 0px 0px 240px";
+                    main.style.padding = "110px 30px 30px 270px";
                     sepC.style.visibility = "hidden";
                 }
             }else{ //se a tela for menor ou igual a 540
@@ -218,7 +218,7 @@
         <img src="{{ asset('Images/Icons/Menu/Right-arrow.png') }}" alt="" width="32" height="32" id="open">
     </div>
 
-    <nav id="nav" style="width: 265px;">
+    <nav id="nav" style="width: 240px;">
         <div class="links" id="links">
             <span class="sep">Manage</span>
             <a href="/dashboard" title="Dashboard">
