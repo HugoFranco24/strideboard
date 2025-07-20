@@ -249,7 +249,7 @@ class ProjectsController extends Controller
             ->wherePivot('active', true)
             ->firstOrFail();
 
-        if($user->user_type == 0 && $user->id != $project_user->user_id){
+        if($user->pivot->user_type == 0 && $user->id != $project_user->user_id){
             abort(403);
         }
         if($user->pivot->user_type == 1 && $project_user->user_type == 1 && $user->id != $project_user->user_id){
@@ -264,11 +264,11 @@ class ProjectsController extends Controller
 
         foreach ($ownedTasks as $task) {
             $newOwner = ProjectUser::where('project_id', $task->project_id)
-                        ->where('user_id', '!=', $user->id)
+                        ->where('user_id', '!=', $project_user->user_id)
                         ->whereIn('user_type', [2, 1, 0])
                         ->orderByDesc('user_type')
                         ->first();
-
+            
             if ($newOwner) {
                 $task->user_id = $newOwner->user_id;
                 $task->save();

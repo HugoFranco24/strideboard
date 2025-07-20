@@ -61,6 +61,7 @@ class AdminProjectController extends Controller {
 
         return view('admin.projects.form', [
             'users' => $project->users,
+            'owner' => ProjectUser::where('project_id', $id)->where('user_type', 2)->first(),
             'project' => Project::findOrFail($id),
         ]);
     }

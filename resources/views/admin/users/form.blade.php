@@ -6,7 +6,7 @@
 
 @section('main-content')
     <h1 class="mb-6 text-2xl font-bold text-gray-800">{{ isset($user) ? 'Edit' : 'Create' }} User</h1>
-    <form method="POST" action="{{ isset($user) ? route('admin.user.update', $user->id) : route('admin.user.store') }}">
+    <form method="POST" enctype="multipart/form-data" action="{{ isset($user) ? route('admin.user.update', $user->id) : route('admin.user.store') }}">
         @csrf
         @if (isset($user))
             @method('PUT')

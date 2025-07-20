@@ -29,7 +29,7 @@ class AdminUserController extends Controller {
     public function store(Request $request): RedirectResponse{
         
         $request->validate([
-            'pfp' => 'nullable|image|mimes:jpeg,png,jpg,gif|dimensions:ratio=1/1|max:2048',
+            'pfp' => 'nullable|image|mimes:jpeg,png,jpg|dimensions:ratio=1/1|max:2048',
             'name' => 'required|string|max:50',
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:8',

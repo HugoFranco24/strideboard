@@ -214,8 +214,8 @@
 
 <body>
     <div class="hamburger" id="toogleM" onclick="toggleMenu()">
-        <img src="{{ asset('Images/Icons/Menu/Left-arrow.png') }}" alt="" width="35" height="35" id="close">
-        <img src="{{ asset('Images/Icons/Menu/Right-arrow.png') }}" alt="" width="35" height="35" id="open">
+        <img src="{{ asset('Images/Icons/Menu/Left-arrow.png') }}" alt="" width="32" height="32" id="close">
+        <img src="{{ asset('Images/Icons/Menu/Right-arrow.png') }}" alt="" width="32" height="32" id="open">
     </div>
 
     <nav id="nav" style="width: 265px;">

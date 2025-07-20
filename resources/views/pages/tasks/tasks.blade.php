@@ -9,11 +9,6 @@
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/dashboard/global/table.css') }}">
-    <style>
-        .box{
-            max-height: calc(100dvh - 140px);
-        }
-    </style>
 @endsection
 
 @section('body')
@@ -51,7 +46,7 @@
             <p>No tasks found. Try changing the filters, if it's still not showing any tasks, you might have none.</p>
         @else
             <div class="dtable">
-                <div class="dtable-wrapper">
+                <div class="dtable-wrapper" style="max-height: 350px;">
                     <table id="allTasks">
                         <tr>
                             <th onclick="sortTask(0)">Task Name <span class="sort-arrow"></span></th>

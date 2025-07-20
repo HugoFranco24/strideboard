@@ -15,7 +15,7 @@
         <label for="owner">Owner</label>
         <select name="owner" id="owner" class="w-full mb-2 px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 hover:border-blue-600 transition-colors">
             @foreach ($users as $u)
-                <option value="{{ $u->id }}" {{ old('owner') == $u->id ? 'selected' : '' }}>{{ $u->name }}</option>
+                <option value="{{ $u->id }}" {{ old('owner') == $u->id || (isset($project) && $owner->user_id == $u->id) ? 'selected' : '' }}>{{ $u->name }}</option>
             @endforeach
         </select>
         <x-input-error :messages="$errors->get('owner')" class="mt-2 mb-4"/>
