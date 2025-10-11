@@ -46,14 +46,10 @@ O proposito principal do **StrideBoard** é mostrar as minhas competencias de pr
 - **Desenvolvimento Back-End/Back-Office**: o Laravel foi usado para gerir a logica do backend.
 - **Desenvolvimento Front-End/Front-Office**: o CSS foi usado para haver uma interface intuitiva e o JS para ter um website interativo.
 - **UI/UX Design**: O foco para criar uma interface simples e facil de usar minimiza o tempo de familiarização dos utilizadores.
-  
-## Porquê este projeto?
 
-O proposito deste projeto  is to provide a functional and efficient **project management tool** that could be used in real-world applications. It not only shows my ability to build and manage a web application, but also my understanding of user needs and how to incorporate various technologies to achieve a seamless experience.
+<br><br>
 
-Este projeto ajudou-me a demonstrar **competência em resolução de problemas**, **atenção a detalhes**, e **comunicação efetiva** com utilizadores, enquanto utilizando ferramentas moderenas na programação.
-
-<br><br><br><br><br><br><br><br><br><br>
+---
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
